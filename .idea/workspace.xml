@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="f4279880-9db2-4e82-91da-7ce54060e021" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DarkyenusTimeTracker">
+    <option name="totalTimeSeconds" value="6681" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Go Application" />
+        <option value="HTML File" />
+        <option value="JavaScript File" />
+        <option value="Go File" />
+      </list>
+    </option>
+  </component>
+  <component name="GOROOT" path="$USER_HOME$/sdk/go1.15.5" />
+  <component name="GoLibraries">
+    <option name="indexEntireGoPath" value="false" />
+  </component>
+  <component name="ProjectId" id="1kMb7e5n4nCxZxQrimsEn2HhD5G" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+    <option name="showMembers" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="DefaultGoTemplateProperty" value="Go File" />
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="go.import.settings.migrated" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/js" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="restartRequiresConfirmation" value="false" />
+    <property name="settings.editor.selected.configurable" value="org.jetbrains.plugins.github.ui.GithubSettingsConfigurable" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/html" />
+      <recent name="$PROJECT_DIR$" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/js" />
+      <recent name="$PROJECT_DIR$/images" />
+      <recent name="$PROJECT_DIR$/html" />
+      <recent name="$PROJECT_DIR$/fonts" />
+      <recent name="$PROJECT_DIR$/css" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="go build system_webservice_beta" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="system_webservice_beta" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <filePath value="$PROJECT_DIR$/main.go" />
+      <package value="system_webservice_beta" />
+      <directory value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Go Build.go build system_webservice_beta" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VgoProject">
+    <integration-enabled>true</integration-enabled>
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="278" y="196" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1605517650874">
+      <screen x="0" y="25" width="1628" height="1025" />
+    </state>
+    <state x="278" y="196" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.25.1628.1025@0.25.1628.1025" timestamp="1605517650874" />
+    <state x="552" y="288" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1605516717070">
+      <screen x="0" y="25" width="1628" height="1025" />
+    </state>
+    <state x="552" y="288" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.25.1628.1025@0.25.1628.1025" timestamp="1605516717070" />
+    <state width="1586" height="277" key="GridCell.Tab.0.bottom" timestamp="1605522888569">
+      <screen x="0" y="25" width="1628" height="1025" />
+    </state>
+    <state width="1586" height="277" key="GridCell.Tab.0.bottom/0.25.1628.1025@0.25.1628.1025" timestamp="1605522888569" />
+    <state width="1586" height="277" key="GridCell.Tab.0.center" timestamp="1605522888569">
+      <screen x="0" y="25" width="1628" height="1025" />
+    </state>
+    <state width="1586" height="277" key="GridCell.Tab.0.center/0.25.1628.1025@0.25.1628.1025" timestamp="1605522888569" />
+    <state width="1586" height="277" key="GridCell.Tab.0.left" timestamp="1605522888568">
+      <screen x="0" y="25" width="1628" height="1025" />
+    </state>
+    <state width="1586" height="277" key="GridCell.Tab.0.left/0.25.1628.1025@0.25.1628.1025" timestamp="1605522888568" />
+    <state width="1586" height="277" key="GridCell.Tab.0.right" timestamp="1605522888569">
+      <screen x="0" y="25" width="1628" height="1025" />
+    </state>
+    <state width="1586" height="277" key="GridCell.Tab.0.right/0.25.1628.1025@0.25.1628.1025" timestamp="1605522888569" />
+  </component>
+</project>

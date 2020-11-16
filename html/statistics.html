@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="preload" href="../fonts/ProximaNova-Reg-webfont.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../fonts/ProximaNova-Light-webfont.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../css/uikit.min.css"/>
+<link rel="stylesheet" href="../css/theme.css"/>
+<script src="../js/uikit.min.js" defer></script>
+<script src="../js/live.js" defer></script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>System Web</title>
+</head>
+<body>
+<div class="uk-light uk-background-secondary" style="padding-top: 15px;padding-bottom: 1px">
+    <ul class="uk-flex-center" uk-tab>
+        <li id="live"><a style="font-size: large">Live</a></li>
+        <li id="charts"><a style="font-size: large">Charts</a></li>
+        <li id="statistics" class="uk-active"><a style="font-size: large">Statistics</a></li>
+        <li id="data"><a style="font-size: large">Data</a></li>
+        <li id="settings"><a style="font-size: large">Settings</a></li>
+    </ul>
+</div>
+<div class="grid" style="margin-top: 20px;" id="charts-container">
+    <div class="row">
+        <div class="cell-2"></div>
+        <div class="cell-8" style="text-align: center">
+            <div>
+                <p class="uk-text-large">Statistics</p>
+            </div>
+        </div>
+        <div class="cell-2"></div>
+    </div>
+</div>
+</body>
+</html>
