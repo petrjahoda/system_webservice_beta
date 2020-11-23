@@ -29,6 +29,66 @@ System_service has to be running. No need to make a specific setup.
 Use software only as a [part of a system](https://github.com/petrjahoda/system) using Docker runtime.<br/>
  Do not run under linux, windows or mac on its own.
  
+ ## Roadmap
+ - [x] Project structure
+ - [x] Main menu
+ - [x] Dynamically loaded submenu
+ - [x] User login
+ - [ ] Locale based user interface
+ - [ ] Live menu
+    - [ ] Factory submenu
+    - [ ] Group submenu
+    - [ ] Workplace submenu
+ - [ ] Charts menu
+    - [ ] Standard Charts submenu
+    - [ ] Special Charts submenu
+ - [ ] Statistics menu
+    - [ ] Factory submenu
+    - [ ] Group submenu
+    - [ ] Workplace submenu
+    - [ ] User submenu
+    - [ ] Downtime submenu
+    - [ ] Breakdown submenu
+    - [ ] Alarm submenu
+ - [ ] Comparisons menu
+     - [ ] Factory submenu
+     - [ ] Group submenu
+     - [ ] Workplace submenu
+     - [ ] User submenu
+     - [ ] Downtime submenu
+     - [ ] Breakdown submenu
+     - [ ] Alarm submenu
+ - [ ] Trends menu
+     - [ ] Factory submenu
+     - [ ] Group submenu
+     - [ ] Workplace submenu
+     - [ ] User submenu
+     - [ ] Downtime submenu
+     - [ ] Breakdown submenu
+     - [ ] Alarm submenu
+     - [ ] Top 10
+     - [ ] Bottom 10
+ - [ ] Data menu
+     - [ ] Factory submenu
+     - [ ] Group submenu
+     - [ ] Workplace submenu
+     - [ ] User submenu
+     - [ ] Downtime submenu
+     - [ ] Breakdown submenu
+     - [ ] Alarm submenu
+     - [ ] Order submenu
+     - [ ] Product submenu
+ - [ ] Settings menu
+     - [ ] Factory submenu
+     - [ ] Group submenu
+     - [ ] Workplace submenu
+     - [ ] User submenu
+     - [ ] Downtime submenu
+     - [ ] Breakdown submenu
+     - [ ] Alarm submenu      
+     - [ ] Device submenu      
+
+ 
 >![actual screenshot](screenshots/actual.png)
 
 © 2020 Petr Jahoda

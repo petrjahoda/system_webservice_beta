@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f4279880-9db2-4e82-91da-7ce54060e021" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/js/login.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/login.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -10,7 +11,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="DarkyenusTimeTracker">
-    <option name="totalTimeSeconds" value="26208" />
+    <option name="totalTimeSeconds" value="26622" />
     <option name="gitIntegration" value="true" />
     <option name="naggedAbout" value="1" />
   </component>
@@ -120,10 +121,10 @@
       <screen x="0" y="25" width="1628" height="1025" />
     </state>
     <state x="552" y="288" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.25.1628.1025@0.25.1628.1025" timestamp="1605688301220" />
-    <state x="381" y="127" key="CommitChangelistDialog2" timestamp="1606135211725">
+    <state x="439" y="57" key="CommitChangelistDialog2" timestamp="1606135373354">
       <screen x="0" y="25" width="1628" height="1025" />
     </state>
-    <state x="381" y="127" key="CommitChangelistDialog2/0.25.1628.1025@0.25.1628.1025" timestamp="1606135211725" />
+    <state x="439" y="57" key="CommitChangelistDialog2/0.25.1628.1025@0.25.1628.1025" timestamp="1606135373354" />
     <state x="636" y="438" key="Github.ShareDialog" timestamp="1605523318169">
       <screen x="0" y="25" width="1628" height="1025" />
     </state>
@@ -156,10 +157,10 @@
       <screen x="0" y="25" width="1628" height="1025" />
     </state>
     <state x="543" y="273" width="540" height="524" key="StructurePopup/0.25.1628.1025@0.25.1628.1025" timestamp="1605905706461" />
-    <state x="414" y="274" key="Vcs.Push.Dialog.v2" timestamp="1606135213607">
+    <state x="414" y="274" key="Vcs.Push.Dialog.v2" timestamp="1606135376646">
       <screen x="0" y="25" width="1628" height="1025" />
     </state>
-    <state x="414" y="274" key="Vcs.Push.Dialog.v2/0.25.1628.1025@0.25.1628.1025" timestamp="1606135213607" />
+    <state x="414" y="274" key="Vcs.Push.Dialog.v2/0.25.1628.1025@0.25.1628.1025" timestamp="1606135376646" />
     <state x="628" y="230" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1605905672969">
       <screen x="0" y="25" width="1628" height="1025" />
     </state>
