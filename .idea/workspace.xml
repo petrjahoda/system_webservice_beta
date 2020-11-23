@@ -2,22 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f4279880-9db2-4e82-91da-7ce54060e021" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/html/navbar-charts.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/html/navbar-comparisons.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/html/navbar-data.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/html/navbar-live.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/html/navbar-settings.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/html/navbar-statistics.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/html/navbar-trends.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/js/login.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/user.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/css/system.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/system.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/html/system.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/system.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/system.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/system.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/login.go" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -26,7 +13,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="DarkyenusTimeTracker">
-    <option name="totalTimeSeconds" value="25437" />
+    <option name="totalTimeSeconds" value="26110" />
     <option name="gitIntegration" value="true" />
     <option name="naggedAbout" value="1" />
   </component>
@@ -35,9 +22,9 @@
       <list>
         <option value="Go Application" />
         <option value="JavaScript File" />
-        <option value="Go File" />
         <option value="CSS File" />
         <option value="HTML File" />
+        <option value="Go File" />
       </list>
     </option>
   </component>
@@ -118,7 +105,8 @@
     <option name="CHECK_CODE_CLEANUP_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="## [2020.4.2.16] - 2020-11-16&#10;&#10;### Added&#10;- project structure&#10;- navigation menu&#10;- login template" />
-    <option name="LAST_COMMIT_MESSAGE" value="## [2020.4.2.16] - 2020-11-16&#10;&#10;### Added&#10;- project structure&#10;- navigation menu&#10;- login template" />
+    <MESSAGE value="## [2020.4.2.23] - 2020-11-23&#10;&#10;### Added &#10;- login with check in database&#10;- menu updated with all proper values&#10;- menu behavior updated with its own submenu" />
+    <option name="LAST_COMMIT_MESSAGE" value="## [2020.4.2.23] - 2020-11-23&#10;&#10;### Added &#10;- login with check in database&#10;- menu updated with all proper values&#10;- menu behavior updated with its own submenu" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
@@ -135,10 +123,10 @@
       <screen x="0" y="25" width="1628" height="1025" />
     </state>
     <state x="552" y="288" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.25.1628.1025@0.25.1628.1025" timestamp="1605688301220" />
-    <state x="381" y="127" key="CommitChangelistDialog2" timestamp="1605694915092">
+    <state x="381" y="127" key="CommitChangelistDialog2" timestamp="1606133659988">
       <screen x="0" y="25" width="1628" height="1025" />
     </state>
-    <state x="381" y="127" key="CommitChangelistDialog2/0.25.1628.1025@0.25.1628.1025" timestamp="1605694915092" />
+    <state x="381" y="127" key="CommitChangelistDialog2/0.25.1628.1025@0.25.1628.1025" timestamp="1606133659988" />
     <state x="636" y="438" key="Github.ShareDialog" timestamp="1605523318169">
       <screen x="0" y="25" width="1628" height="1025" />
     </state>
@@ -147,22 +135,22 @@
       <screen x="0" y="25" width="1628" height="1025" />
     </state>
     <state x="549" y="246" key="Github.UntrackedFilesDialog/0.25.1628.1025@0.25.1628.1025" timestamp="1605523324139" />
-    <state width="1585" height="277" key="GridCell.Tab.0.bottom" timestamp="1606133288004">
+    <state width="1585" height="277" key="GridCell.Tab.0.bottom" timestamp="1606133848995">
       <screen x="0" y="25" width="1628" height="1025" />
     </state>
-    <state width="1585" height="277" key="GridCell.Tab.0.bottom/0.25.1628.1025@0.25.1628.1025" timestamp="1606133288004" />
-    <state width="1585" height="277" key="GridCell.Tab.0.center" timestamp="1606133288003">
+    <state width="1585" height="277" key="GridCell.Tab.0.bottom/0.25.1628.1025@0.25.1628.1025" timestamp="1606133848995" />
+    <state width="1585" height="277" key="GridCell.Tab.0.center" timestamp="1606133848995">
       <screen x="0" y="25" width="1628" height="1025" />
     </state>
-    <state width="1585" height="277" key="GridCell.Tab.0.center/0.25.1628.1025@0.25.1628.1025" timestamp="1606133288003" />
-    <state width="1585" height="277" key="GridCell.Tab.0.left" timestamp="1606133288003">
+    <state width="1585" height="277" key="GridCell.Tab.0.center/0.25.1628.1025@0.25.1628.1025" timestamp="1606133848995" />
+    <state width="1585" height="277" key="GridCell.Tab.0.left" timestamp="1606133848995">
       <screen x="0" y="25" width="1628" height="1025" />
     </state>
-    <state width="1585" height="277" key="GridCell.Tab.0.left/0.25.1628.1025@0.25.1628.1025" timestamp="1606133288003" />
-    <state width="1585" height="277" key="GridCell.Tab.0.right" timestamp="1606133288003">
+    <state width="1585" height="277" key="GridCell.Tab.0.left/0.25.1628.1025@0.25.1628.1025" timestamp="1606133848995" />
+    <state width="1585" height="277" key="GridCell.Tab.0.right" timestamp="1606133848995">
       <screen x="0" y="25" width="1628" height="1025" />
     </state>
-    <state width="1585" height="277" key="GridCell.Tab.0.right/0.25.1628.1025@0.25.1628.1025" timestamp="1606133288003" />
+    <state width="1585" height="277" key="GridCell.Tab.0.right/0.25.1628.1025@0.25.1628.1025" timestamp="1606133848995" />
     <state width="245" height="471" key="HiddenNamespacesPopup" timestamp="1606118360317">
       <screen x="0" y="25" width="1628" height="1025" />
     </state>
@@ -171,10 +159,10 @@
       <screen x="0" y="25" width="1628" height="1025" />
     </state>
     <state x="543" y="273" width="540" height="524" key="StructurePopup/0.25.1628.1025@0.25.1628.1025" timestamp="1605905706461" />
-    <state x="414" y="274" key="Vcs.Push.Dialog.v2" timestamp="1605694917921">
+    <state x="414" y="274" key="Vcs.Push.Dialog.v2" timestamp="1606133662084">
       <screen x="0" y="25" width="1628" height="1025" />
     </state>
-    <state x="414" y="274" key="Vcs.Push.Dialog.v2/0.25.1628.1025@0.25.1628.1025" timestamp="1605694917921" />
+    <state x="414" y="274" key="Vcs.Push.Dialog.v2/0.25.1628.1025@0.25.1628.1025" timestamp="1606133662084" />
     <state x="628" y="230" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1605905672969">
       <screen x="0" y="25" width="1628" height="1025" />
     </state>
