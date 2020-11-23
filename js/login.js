@@ -17,6 +17,23 @@ if (sessionLogin === null || sessionLogin === "") {
     verifyUser();
 }
 
+userLoginButton.addEventListener("click", () => {
+    console.log(userEmail.value)
+    console.log(userPassword.value)
+    verifyUser();
+})
+
+userEmail.addEventListener("keydown", () => {
+    if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userEmail.value)) {
+        userEmail.classList.remove("false")
+    } else {
+        userEmail.classList.add("false")
+    }
+    if (userEmail.value === "") {
+        userEmail.classList.remove("false")
+    }
+})
+
 function verifyUser() {
     let data = {
         UserEmail: userEmail.value,
@@ -42,21 +59,3 @@ function verifyUser() {
         console.log(error)
     });
 }
-
-
-userEmail.addEventListener("keydown", (event) => {
-    if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userEmail.value)) {
-        userEmail.classList.remove("false")
-    } else {
-        userEmail.classList.add("false")
-    }
-    if (userEmail.value === "") {
-        userEmail.classList.remove("false")
-    }
-})
-
-userLoginButton.addEventListener("click", (event) => {
-    console.log(userEmail.value)
-    console.log(userPassword.value)
-    verifyUser();
-})
