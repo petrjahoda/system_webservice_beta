@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <link rel="stylesheet" href="../css/system.css">
+<script src="../js/login.js" defer></script>
 <script src="../js/system.js" defer></script>
 <html lang="en">
 <head>
@@ -8,11 +9,26 @@
 </head>
 <body>
 <div id="navbar">
-    <div class="navbar-item" id="navbar-live">Live</div>
-    <div class="navbar-item" id="navbar-charts">Charts</div>
-    <div class="navbar-item" id="navbar-statistics">Statistics</div>
-    <div class="navbar-item" id="navbar-data">Data</div>
-    <div class="navbar-item" id="navbar-settings">Settings</div>
+    <div class="navbar-item" id="navbar-live">live</div>
+    <div class="navbar-item" id="navbar-charts">charts</div>
+    <div class="navbar-item" id="navbar-statistics">statistics</div>
+    <div class="navbar-item" id="navbar-comparisons">comparisons</div>
+    <div class="navbar-item" id="navbar-trends">trends</div>
+    <div class="navbar-item" id="navbar-data">data</div>
+    <div class="navbar-item" id="navbar-settings">settings</div>
+</div>
+<div id="content">
+    <div id="navbar-menu"></div>
+</div>
+<div id="login" class="hidden">
+    <label>
+        <input id="user-email" class="input" type="email" placeholder="Please enter your email">
+        <input id="user-password" class="input" type="password" placeholder="Please enter your password">
+        <div style="display: flex;  align-items: center;  justify-content: center;">
+            <button id="user-login-button" class="button-default">OK</button>
+        </div>
+    </label>
 </div>
 </body>
 </html>
+

@@ -1,52 +1,44 @@
-const navbarLive = document.getElementById("navbar-live");
-const navbarCharts = document.getElementById("navbar-charts");
-const navbarStatistics = document.getElementById("navbar-statistics");
-const navbarData = document.getElementById("navbar-data");
-const navbarSettings = document.getElementById("navbar-settings");
+const content = document.getElementById("content");
+const navbar = document.getElementById("navbar");
 
-
-navbarLive.addEventListener("click", () => {
-    console.log("live clicked")
-    navbarLive.classList.add("underlined")
-    navbarCharts.classList.remove("underlined")
-    navbarStatistics.classList.remove("underlined")
-    navbarData.classList.remove("underlined")
-    navbarSettings.classList.remove("underlined")
-
+navbar.addEventListener("click", (event) => {
+    if (event.target.id !== "navbar") {
+        const menuItems = document.getElementsByClassName("navbar-item")
+        for (let i = 0; i < menuItems.length; i++) {
+            if (menuItems[i].id === event.target.id) {
+                menuItems[i].classList.add("underlined")
+            } else {
+                menuItems[i].classList.remove("underlined")
+            }
+        }
+        let data = {Content: event.target.id};
+        fetch("/get_content", {
+            method: "POST",
+            body: JSON.stringify(data)
+        }).then((response) => {
+            response.text().then(function (data) {
+                let result = JSON.parse(data);
+                content.innerHTML = result.Html
+            });
+        }).catch((error) => {
+            console.log(error)
+        });
+    }
 })
 
-navbarCharts.addEventListener("click", () => {
-    console.log("charts clicked")
-    navbarLive.classList.remove("underlined")
-    navbarCharts.classList.add("underlined")
-    navbarStatistics.classList.remove("underlined")
-    navbarData.classList.remove("underlined")
-    navbarSettings.classList.remove("underlined")
+
+content.addEventListener("click", (event) => {
+    if (event.target.id !== "navbar-menu") {
+        const menuItems = document.getElementsByClassName("navbar-menu-item")
+        for (let i = 0; i < menuItems.length; i++) {
+            if (event.target.id === menuItems[i].id) {
+                menuItems[i].classList.add("underlined")
+            } else {
+                menuItems[i].classList.remove("underlined")
+            }
+        }
+    }
 })
 
-navbarStatistics.addEventListener("click", () => {
-    console.log("statistics clicked")
-    navbarLive.classList.remove("underlined")
-    navbarCharts.classList.remove("underlined")
-    navbarStatistics.classList.add("underlined")
-    navbarData.classList.remove("underlined")
-    navbarSettings.classList.remove("underlined")
-})
 
-navbarData.addEventListener("click", () => {
-    console.log("data clicked")
-    navbarLive.classList.remove("underlined")
-    navbarCharts.classList.remove("underlined")
-    navbarStatistics.classList.remove("underlined")
-    navbarData.classList.add("underlined")
-    navbarSettings.classList.remove("underlined")
-})
 
-navbarSettings.addEventListener("click", () => {
-    console.log("settings clicked")
-    navbarLive.classList.remove("underlined")
-    navbarCharts.classList.remove("underlined")
-    navbarStatistics.classList.remove("underlined")
-    navbarData.classList.remove("underlined")
-    navbarSettings.classList.add("underlined")
-})

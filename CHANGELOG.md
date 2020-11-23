@@ -14,6 +14,15 @@ adhere to [Semantic Versioning](http://semver.org/spec/v2.0.0.html) rules.
 * ```Fixed``` for any bug fixes.
 * ```Security``` in case of vulnerabilities.
 
+
+## [2020.4.2.23] - 2020-11-23
+
+### Added 
+- login with check in database
+- menu updated with all proper values
+- menu behavior updated with its own submenu
+
+
 ## [2020.4.2.18] - 2020-11-18
 
 ### Added 

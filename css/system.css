@@ -8,22 +8,104 @@
     src: url(../fonts/ProximaNova-Light-webfont.woff2);
 }
 
-html {
-    font-family: ProximaNova, serif;
-}
-
 * {
     margin: 0;
     padding: 0;
+    font-family: ProximaNova, serif;
 }
 
 #navbar {
+    position: fixed;
     text-align: center;
     display: inline-block;
     width: 100%;
     height: 40px;
     background-color: #1e1f1f;
 }
+
+#navbar-menu {
+    position: fixed;
+    top: 40px;
+    text-align: center;
+    display: inline-block;
+    width: 100%;
+    height: 30px;
+    background-color: #1e1f1f;
+}
+
+#content-data {
+    padding-top: 70px;
+    display: inline-block;
+    width: 100%;
+}
+
+#login {
+    position: absolute;
+    left: 50%;
+    top: 45%;
+    transform: translate(-50%, -50%);
+    padding: 10px;
+    width: 400px;
+    height: 200px;
+}
+
+.button-default {
+    margin-top: 20px;
+    width: 120px;
+    border: 1px solid #0e6dcd;
+    overflow: visible;
+    font: inherit;
+    background-color: #1f87f0;
+    color: white;
+    -webkit-appearance: none;
+    border-radius: 0;
+    display: inline-block;
+    box-sizing: border-box;
+    padding: 0 30px;
+    vertical-align: middle;
+    font-size: 14px;
+    line-height: 38px;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: .1s ease-in-out;
+    transition-property: color, background-color, border-color;
+}
+
+.button-default:hover {
+    background-color: #0f7ae5;
+}
+
+.button-default:active {
+    background-color: #0e6dcd;
+}
+
+.input {
+    margin-top: 20px;
+    width: 97%;
+    height: 40px;
+    border: 1px solid #e5e5e5;
+    transition: .2s ease-in-out;
+    transition-property: color, background-color, border;
+    font-size: medium;
+    padding-left: 10px;
+}
+
+.input:focus {
+    outline: none;
+    border: 1px solid #1f87f0;
+    transition: .2s ease-in-out;
+    transition-property: color, background-color, border;
+}
+
+.false {
+    border: 1px solid #f0506e;
+}
+
+.false:focus {
+    border: 1px solid #f0506e;
+}
+
 
 .navbar-item {
     text-transform: uppercase;
@@ -38,7 +120,27 @@ html {
     border-bottom: none;
 }
 
+.navbar-menu-item {
+    text-transform: uppercase;
+    transition: 0.3s;
+    margin-top: 5px;
+    padding-left: 15px;
+    padding-right: 15px;
+    text-align: center;
+    display: inline-block;
+    color: white;
+    font-size: small;
+    border-bottom: none;
+}
+
 .navbar-item:hover {
+    transition: width 0.3s ease 0.3s, left 0.3s ease 0.3s;
+    border-bottom: 1px #1f87f0 solid;
+    color: #1f87f0;
+    cursor: default;
+}
+
+.navbar-menu-item:hover {
     transition: width 0.3s ease 0.3s, left 0.3s ease 0.3s;
     border-bottom: 1px #1f87f0 solid;
     color: #1f87f0;
@@ -48,3 +150,10 @@ html {
 .underlined {
     border-bottom: 1px white solid;
 }
+
+.hidden {
+    visibility: hidden;
+}
+
+
+
