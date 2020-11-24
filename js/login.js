@@ -23,7 +23,7 @@ userLoginButton.addEventListener("click", () => {
     verifyUser();
 })
 
-userEmail.addEventListener("keydown", () => {
+userEmail.addEventListener("keydown", (key) => {
     if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userEmail.value)) {
         userEmail.classList.remove("false")
     } else {
@@ -31,6 +31,15 @@ userEmail.addEventListener("keydown", () => {
     }
     if (userEmail.value === "") {
         userEmail.classList.remove("false")
+    }
+    if (key.key === "Enter") {
+        verifyUser();
+    }
+})
+
+userPassword.addEventListener("keydown", (key) => {
+    if (key.key === "Enter") {
+        verifyUser();
     }
 })
 
@@ -61,6 +70,9 @@ function verifyUser() {
                         console.log(menuLocale.Name + " not loaded for actual page")
                     }
                 }
+            } else {
+                userEmail.classList.add("false")
+                userPassword.classList.add("false")
             }
         });
     }).catch((error) => {
