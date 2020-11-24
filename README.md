@@ -31,6 +31,7 @@ Use software only as a [part of a system](https://github.com/petrjahoda/system) 
  
  ## Roadmap
  - [x] Project structure
+ - [ ] Service
  - [x] Main menu
  - [x] Dynamically loaded submenu
  - [x] User login
