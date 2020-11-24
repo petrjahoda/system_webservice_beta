@@ -19,6 +19,18 @@ navbar.addEventListener("click", (event) => {
             response.text().then(function (data) {
                 let result = JSON.parse(data);
                 content.innerHTML = result.Html
+                if (result.MenuLocales !== null) {
+                    for (menuLocale of result.MenuLocales) {
+                        const menuItem = document.getElementById(menuLocale.Name)
+                        try {
+                            menuItem.textContent = menuLocale[sessionStorage.getItem("locale")]
+                        } catch (e) {
+                            console.log(menuLocale.Name + " not loaded for actual page")
+                        }
+                    }
+                } else {
+                    console.log("no data")
+                }
             });
         }).catch((error) => {
             console.log(error)

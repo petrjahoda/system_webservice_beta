@@ -55,7 +55,11 @@ function verifyUser() {
                 sessionStorage.setItem("locale", result.Locale)
                 for (menuLocale of result.MenuLocales) {
                     const menuItem = document.getElementById(menuLocale.Name)
-                    menuItem.textContent = menuLocale[result.Locale]
+                    try {
+                        menuItem.textContent = menuLocale[result.Locale]
+                    } catch (e) {
+                        console.log(menuLocale.Name + " not loaded for actual page")
+                    }
                 }
             }
         });
