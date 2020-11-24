@@ -19,6 +19,7 @@ adhere to [Semantic Versioning](http://semver.org/spec/v2.0.0.html) rules.
 ### Added 
 - loading user menu based on user locale
 - loading user sub-menu based on user locale
+- loading page content dynamically
 
 ## Changed
 - font changed to open source milliard

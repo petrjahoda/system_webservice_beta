@@ -14,6 +14,7 @@ func main() {
 	router.ServeFiles("/fonts/*filepath", http.Dir("fonts"))
 	router.GET("/", system)
 	router.POST("/get_content", getContent)
+	router.POST("/get_content_data", getContentData)
 	router.POST("/verify_user", verifyUser)
 	_ = http.ListenAndServe(":80", router)
 }
