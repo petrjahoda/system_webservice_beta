@@ -18,9 +18,23 @@ type VerifyUserInput struct {
 }
 
 type VerifyUserOutput struct {
-	Result string
-	Data   string
-	Locale string
+	Result      string
+	Data        string
+	Locale      string
+	MenuLocales []MenuLocale
+}
+type MenuLocale struct {
+	Name string
+	CsCZ string
+	DeDE string
+	EnUS string
+	EsES string
+	FrFR string
+	ItIT string
+	PlPL string
+	PtPT string
+	SkSK string
+	RuRU string
 }
 
 func verifyUser(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
@@ -54,12 +68,14 @@ func verifyUser(writer http.ResponseWriter, request *http.Request, params httpro
 		var user database.User
 		db.Where("password = ?", data.UserSessionStorage).Find(&user)
 		logInfo("MAIN", user.Password)
+		menuLocales := downloadMenuLocales(db)
 		if user.Password == data.UserSessionStorage {
 			logInfo("MAIN", "User matches")
 			var responseData VerifyUserOutput
 			responseData.Result = "ok"
 			responseData.Data = user.Password
 			responseData.Locale = user.Locale
+			responseData.MenuLocales = menuLocales
 			writer.Header().Set("Content-Type", "application/json")
 			_ = json.NewEncoder(writer).Encode(responseData)
 			logInfo("MAIN", "Verifying user ended")
@@ -85,7 +101,7 @@ func verifyUser(writer http.ResponseWriter, request *http.Request, params httpro
 			logInfo("MAIN", "Verifying user ended")
 			return
 		} else {
-			logError("MAIN", "Password/email not empty")
+			logInfo("MAIN", "Password/email not empty")
 			db, err := gorm.Open(postgres.Open(config), &gorm.Config{})
 			sqlDB, _ := db.DB()
 			defer sqlDB.Close()
@@ -102,12 +118,14 @@ func verifyUser(writer http.ResponseWriter, request *http.Request, params httpro
 			db.Where("email = ?", data.UserEmail).Find(&user)
 			logInfo("MAIN", user.Password)
 			userMatchesPassword := comparePasswords(user.Password, []byte(data.UserPassword))
+			menuLocales := downloadMenuLocales(db)
 			if userMatchesPassword {
 				logInfo("MAIN", "User matches")
 				var responseData VerifyUserOutput
 				responseData.Result = "ok"
 				responseData.Data = user.Password
 				responseData.Locale = user.Locale
+				responseData.MenuLocales = menuLocales
 				writer.Header().Set("Content-Type", "application/json")
 				_ = json.NewEncoder(writer).Encode(responseData)
 				logInfo("MAIN", "Verifying user ended")
@@ -123,6 +141,28 @@ func verifyUser(writer http.ResponseWriter, request *http.Request, params httpro
 			}
 		}
 	}
+}
+
+func downloadMenuLocales(db *gorm.DB) []MenuLocale {
+	var databaseMenuLocales []database.Locale
+	db.Where("name like ?", "navbar-%").Find(&databaseMenuLocales)
+	var menuLocales []MenuLocale
+	for _, locale := range databaseMenuLocales {
+		var menuLocale MenuLocale
+		menuLocale.Name = locale.Name
+		menuLocale.CsCZ = locale.CsCZ
+		menuLocale.DeDE = locale.DeDE
+		menuLocale.EnUS = locale.EnUS
+		menuLocale.EsES = locale.EsES
+		menuLocale.FrFR = locale.FrFR
+		menuLocale.ItIT = locale.ItIT
+		menuLocale.PlPL = locale.PlPL
+		menuLocale.PtPT = locale.PtPT
+		menuLocale.SkSK = locale.SkSK
+		menuLocale.RuRU = locale.RuRU
+		menuLocales = append(menuLocales, menuLocale)
+	}
+	return menuLocales
 }
 
 func comparePasswords(hashedPwd string, plainPwd []byte) bool {

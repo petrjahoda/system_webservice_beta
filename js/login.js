@@ -38,7 +38,7 @@ function verifyUser() {
     let data = {
         UserEmail: userEmail.value,
         UserPassword: userPassword.value,
-        UserSessionStorage: sessionLogin
+        UserSessionStorage: sessionLogin,
     };
     console.log(data)
     fetch("/verify_user", {
@@ -53,6 +53,10 @@ function verifyUser() {
                 login.classList.add("hidden")
                 sessionStorage.setItem("user", result.Data)
                 sessionStorage.setItem("locale", result.Locale)
+                for (menuLocale of result.MenuLocales) {
+                    const menuItem = document.getElementById(menuLocale.Name)
+                    menuItem.textContent = menuLocale[result.Locale]
+                }
             }
         });
     }).catch((error) => {
