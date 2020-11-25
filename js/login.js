@@ -1,6 +1,6 @@
 const sessionLogin = sessionStorage.getItem("user")
 const navbarLogin = document.getElementById("navbar")
-const navbarContent = document.getElementById("content")
+const navbarMenu = document.getElementById("navbar-menu")
 const login = document.getElementById("login")
 const userEmail = document.getElementById("user-email")
 const userPassword = document.getElementById("user-password")
@@ -10,7 +10,7 @@ const userLoginButton = document.getElementById("user-login-button")
 if (sessionLogin === null || sessionLogin === "") {
     console.log("session is not logged in")
     navbarLogin.classList.add("hidden")
-    navbarContent.classList.add("hidden")
+    navbarMenu.classList.add("hidden")
     login.classList.remove("hidden")
 } else {
     console.log("session is logged in")
@@ -58,7 +58,7 @@ function verifyUser() {
             let result = JSON.parse(data);
             if (result.Result === "ok") {
                 navbarLogin.classList.remove("hidden")
-                navbarContent.classList.remove("hidden")
+                navbarMenu.classList.remove("hidden")
                 login.classList.add("hidden")
                 sessionStorage.setItem("user", result.Data)
                 sessionStorage.setItem("locale", result.Locale)

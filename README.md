@@ -31,12 +31,12 @@ Use software only as a [part of a system](https://github.com/petrjahoda/system) 
  
  ## Roadmap
  - [x] Project structure
- - [ ] Service
+ - [x] Service
  - [x] Main menu
  - [x] Dynamically loaded submenu
  - [x] User login
  - [x] Locale based user interface
- - [ ] Dynamically load menu content
+ - [x] Dynamically load menu content
  - [ ] Dynamically load proper javascript
  - [ ] All menus UI and UX structure
  - [ ] Live menu
