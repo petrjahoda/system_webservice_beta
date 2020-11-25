@@ -1,6 +1,5 @@
 const sessionLogin = sessionStorage.getItem("user")
 const navbarLogin = document.getElementById("navbar")
-const navbarMenu = document.getElementById("navbar-menu")
 const login = document.getElementById("login")
 const userEmail = document.getElementById("user-email")
 const userPassword = document.getElementById("user-password")
