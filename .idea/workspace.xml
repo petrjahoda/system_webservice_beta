@@ -2,15 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f4279880-9db2-4e82-91da-7ce54060e021" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/js/navbar-live-company.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/js/navbar-live-group.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/js/refresh.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/html/content/navbar-live-company.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/content/navbar-live-company.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/html/content/navbar-live-group.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/content/navbar-live-group.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/html/system.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/system.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/login.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/login.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/system.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/system.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,7 +10,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="DarkyenusTimeTracker">
-    <option name="totalTimeSeconds" value="43994" />
+    <option name="totalTimeSeconds" value="44132" />
     <option name="gitIntegration" value="true" />
     <option name="naggedAbout" value="1" />
   </component>
@@ -139,10 +131,10 @@
       <screen x="0" y="25" width="1628" height="1025" />
     </state>
     <state x="552" y="288" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.25.1628.1025@0.25.1628.1025" timestamp="1606207560897" />
-    <state x="439" y="57" key="CommitChangelistDialog2" timestamp="1606292045706">
+    <state x="439" y="57" key="CommitChangelistDialog2" timestamp="1606296968285">
       <screen x="0" y="25" width="1628" height="1025" />
     </state>
-    <state x="439" y="57" key="CommitChangelistDialog2/0.25.1628.1025@0.25.1628.1025" timestamp="1606292045706" />
+    <state x="439" y="57" key="CommitChangelistDialog2/0.25.1628.1025@0.25.1628.1025" timestamp="1606296968285" />
     <state x="636" y="438" key="Github.ShareDialog" timestamp="1605523318169">
       <screen x="0" y="25" width="1628" height="1025" />
     </state>
@@ -151,22 +143,22 @@
       <screen x="0" y="25" width="1628" height="1025" />
     </state>
     <state x="549" y="246" key="Github.UntrackedFilesDialog/0.25.1628.1025@0.25.1628.1025" timestamp="1605523324139" />
-    <state width="1585" height="154" key="GridCell.Tab.0.bottom" timestamp="1606292581095">
+    <state width="1585" height="154" key="GridCell.Tab.0.bottom" timestamp="1606297002406">
       <screen x="0" y="25" width="1628" height="1025" />
     </state>
-    <state width="1585" height="154" key="GridCell.Tab.0.bottom/0.25.1628.1025@0.25.1628.1025" timestamp="1606292581095" />
-    <state width="1585" height="154" key="GridCell.Tab.0.center" timestamp="1606292581095">
+    <state width="1585" height="154" key="GridCell.Tab.0.bottom/0.25.1628.1025@0.25.1628.1025" timestamp="1606297002406" />
+    <state width="1585" height="154" key="GridCell.Tab.0.center" timestamp="1606297002406">
       <screen x="0" y="25" width="1628" height="1025" />
     </state>
-    <state width="1585" height="154" key="GridCell.Tab.0.center/0.25.1628.1025@0.25.1628.1025" timestamp="1606292581095" />
-    <state width="1585" height="154" key="GridCell.Tab.0.left" timestamp="1606292581094">
+    <state width="1585" height="154" key="GridCell.Tab.0.center/0.25.1628.1025@0.25.1628.1025" timestamp="1606297002406" />
+    <state width="1585" height="154" key="GridCell.Tab.0.left" timestamp="1606297002406">
       <screen x="0" y="25" width="1628" height="1025" />
     </state>
-    <state width="1585" height="154" key="GridCell.Tab.0.left/0.25.1628.1025@0.25.1628.1025" timestamp="1606292581094" />
-    <state width="1585" height="154" key="GridCell.Tab.0.right" timestamp="1606292581095">
+    <state width="1585" height="154" key="GridCell.Tab.0.left/0.25.1628.1025@0.25.1628.1025" timestamp="1606297002406" />
+    <state width="1585" height="154" key="GridCell.Tab.0.right" timestamp="1606297002406">
       <screen x="0" y="25" width="1628" height="1025" />
     </state>
-    <state width="1585" height="154" key="GridCell.Tab.0.right/0.25.1628.1025@0.25.1628.1025" timestamp="1606292581095" />
+    <state width="1585" height="154" key="GridCell.Tab.0.right/0.25.1628.1025@0.25.1628.1025" timestamp="1606297002406" />
     <state width="245" height="471" key="HiddenNamespacesPopup" timestamp="1606118360317">
       <screen x="0" y="25" width="1628" height="1025" />
     </state>
@@ -175,10 +167,10 @@
       <screen x="0" y="25" width="1628" height="1025" />
     </state>
     <state x="543" y="273" width="540" height="524" key="StructurePopup/0.25.1628.1025@0.25.1628.1025" timestamp="1605905706461" />
-    <state x="414" y="274" key="Vcs.Push.Dialog.v2" timestamp="1606292047240">
+    <state x="414" y="274" key="Vcs.Push.Dialog.v2" timestamp="1606296969367">
       <screen x="0" y="25" width="1628" height="1025" />
     </state>
-    <state x="414" y="274" key="Vcs.Push.Dialog.v2/0.25.1628.1025@0.25.1628.1025" timestamp="1606292047240" />
+    <state x="414" y="274" key="Vcs.Push.Dialog.v2/0.25.1628.1025@0.25.1628.1025" timestamp="1606296969367" />
     <state x="100" y="125" width="1427" height="825" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1606294230640">
       <screen x="0" y="25" width="1628" height="1025" />
     </state>
