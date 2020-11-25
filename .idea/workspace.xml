@@ -2,12 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f4279880-9db2-4e82-91da-7ce54060e021" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/css/system.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/system.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fonts/Milliard_Medium.otf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/html/system.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/system.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/login.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/login.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,7 +10,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="DarkyenusTimeTracker">
-    <option name="totalTimeSeconds" value="36633" />
+    <option name="totalTimeSeconds" value="36882" />
     <option name="gitIntegration" value="true" />
     <option name="naggedAbout" value="1" />
   </component>
@@ -133,10 +128,10 @@
       <screen x="0" y="25" width="1628" height="1025" />
     </state>
     <state x="552" y="288" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.25.1628.1025@0.25.1628.1025" timestamp="1606207560897" />
-    <state x="439" y="57" key="CommitChangelistDialog2" timestamp="1606218396568">
+    <state x="439" y="57" key="CommitChangelistDialog2" timestamp="1606221966265">
       <screen x="0" y="25" width="1628" height="1025" />
     </state>
-    <state x="439" y="57" key="CommitChangelistDialog2/0.25.1628.1025@0.25.1628.1025" timestamp="1606218396568" />
+    <state x="439" y="57" key="CommitChangelistDialog2/0.25.1628.1025@0.25.1628.1025" timestamp="1606221966265" />
     <state x="636" y="438" key="Github.ShareDialog" timestamp="1605523318169">
       <screen x="0" y="25" width="1628" height="1025" />
     </state>
@@ -145,22 +140,22 @@
       <screen x="0" y="25" width="1628" height="1025" />
     </state>
     <state x="549" y="246" key="Github.UntrackedFilesDialog/0.25.1628.1025@0.25.1628.1025" timestamp="1605523324139" />
-    <state width="1585" height="275" key="GridCell.Tab.0.bottom" timestamp="1606218944948">
+    <state width="1585" height="275" key="GridCell.Tab.0.bottom" timestamp="1606226186584">
       <screen x="0" y="25" width="1628" height="1025" />
     </state>
-    <state width="1585" height="275" key="GridCell.Tab.0.bottom/0.25.1628.1025@0.25.1628.1025" timestamp="1606218944948" />
-    <state width="1585" height="275" key="GridCell.Tab.0.center" timestamp="1606218944948">
+    <state width="1585" height="275" key="GridCell.Tab.0.bottom/0.25.1628.1025@0.25.1628.1025" timestamp="1606226186584" />
+    <state width="1585" height="275" key="GridCell.Tab.0.center" timestamp="1606226186583">
       <screen x="0" y="25" width="1628" height="1025" />
     </state>
-    <state width="1585" height="275" key="GridCell.Tab.0.center/0.25.1628.1025@0.25.1628.1025" timestamp="1606218944948" />
-    <state width="1585" height="275" key="GridCell.Tab.0.left" timestamp="1606218944948">
+    <state width="1585" height="275" key="GridCell.Tab.0.center/0.25.1628.1025@0.25.1628.1025" timestamp="1606226186583" />
+    <state width="1585" height="275" key="GridCell.Tab.0.left" timestamp="1606226186583">
       <screen x="0" y="25" width="1628" height="1025" />
     </state>
-    <state width="1585" height="275" key="GridCell.Tab.0.left/0.25.1628.1025@0.25.1628.1025" timestamp="1606218944948" />
-    <state width="1585" height="275" key="GridCell.Tab.0.right" timestamp="1606218944948">
+    <state width="1585" height="275" key="GridCell.Tab.0.left/0.25.1628.1025@0.25.1628.1025" timestamp="1606226186583" />
+    <state width="1585" height="275" key="GridCell.Tab.0.right" timestamp="1606226186584">
       <screen x="0" y="25" width="1628" height="1025" />
     </state>
-    <state width="1585" height="275" key="GridCell.Tab.0.right/0.25.1628.1025@0.25.1628.1025" timestamp="1606218944948" />
+    <state width="1585" height="275" key="GridCell.Tab.0.right/0.25.1628.1025@0.25.1628.1025" timestamp="1606226186584" />
     <state width="245" height="471" key="HiddenNamespacesPopup" timestamp="1606118360317">
       <screen x="0" y="25" width="1628" height="1025" />
     </state>
@@ -169,10 +164,10 @@
       <screen x="0" y="25" width="1628" height="1025" />
     </state>
     <state x="543" y="273" width="540" height="524" key="StructurePopup/0.25.1628.1025@0.25.1628.1025" timestamp="1605905706461" />
-    <state x="414" y="274" key="Vcs.Push.Dialog.v2" timestamp="1606218398125">
+    <state x="414" y="274" key="Vcs.Push.Dialog.v2" timestamp="1606221967463">
       <screen x="0" y="25" width="1628" height="1025" />
     </state>
-    <state x="414" y="274" key="Vcs.Push.Dialog.v2/0.25.1628.1025@0.25.1628.1025" timestamp="1606218398125" />
+    <state x="414" y="274" key="Vcs.Push.Dialog.v2/0.25.1628.1025@0.25.1628.1025" timestamp="1606221967463" />
     <state x="628" y="230" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1605905672969">
       <screen x="0" y="25" width="1628" height="1025" />
     </state>
