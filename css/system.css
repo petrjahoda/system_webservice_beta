@@ -16,6 +16,7 @@
     width: 100%;
     height: 40px;
     background-color: #1e1f1f;
+    min-width: 1024px;
 }
 
 #navbar-menu {
@@ -26,12 +27,14 @@
     width: 100%;
     height: 30px;
     background-color: #1e1f1f;
+    min-width: 1024px;
 }
 
 #content {
-    padding-top: 70px;
+    margin-top: 70px;
     display: inline-block;
     width: 100%;
+    min-width: 1024px;
 }
 
 #login {
@@ -148,6 +151,42 @@
 
 .hidden {
     visibility: hidden;
+}
+
+.content-container {
+    background-color: grey;
+    border: 2px solid black;
+}
+
+#navbar-live-company-top {
+    margin: 10px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#navbar-live-company-middle {
+    margin: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#navbar-live-company-left {
+    height: 100%;
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#navbar-live-company-right {
+    height: 100%;
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 

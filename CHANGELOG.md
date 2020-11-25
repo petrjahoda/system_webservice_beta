@@ -19,6 +19,7 @@ adhere to [Semantic Versioning](http://semver.org/spec/v2.0.0.html) rules.
 ### Added 
 - service functionality
 - dynamically loading menu content
+- basic ui frame design
 
 ## [2020.4.2.24] - 2020-11-24
 

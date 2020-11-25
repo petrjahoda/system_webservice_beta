@@ -1,5 +1,5 @@
 const navbar = document.getElementById("navbar");
-const navbarMenu = document.getElementById("navbar-menu")
+
 const content = document.getElementById("content")
 
 navbar.addEventListener("click", (event) => {
@@ -71,10 +71,11 @@ navbarMenu.addEventListener("click", (event) => {
 })
 
 content.addEventListener("click", (event) => {
-    if (event.target.id === "navbar-live-company-button") {
+    console.log(event.target)
+    if (event.target.id.includes("navbar-live-company")) {
         callNavbarLiveCompanyJs()
     }
-    if (event.target.id === "navbar-live-group-button") {
+    if (event.target.id.includes("navbar-live-group")) {
         callNavbarLiveGroupJs()
     }
 })

@@ -4,7 +4,7 @@ const login = document.getElementById("login")
 const userEmail = document.getElementById("user-email")
 const userPassword = document.getElementById("user-password")
 const userLoginButton = document.getElementById("user-login-button")
-
+const navbarMenu = document.getElementById("navbar-menu")
 
 if (sessionLogin === null || sessionLogin === "") {
     console.log("session is not logged in")
