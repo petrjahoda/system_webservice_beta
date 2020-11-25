@@ -33,7 +33,6 @@ Use software only as a [part of a system](https://github.com/petrjahoda/system) 
  - [x] Project structure
  - [x] Service
  - [x] Main menu
- - [x] Dynamically loaded submenu
  - [x] User login
  - [x] Locale based user interface
  - [x] Dynamically load menu content
