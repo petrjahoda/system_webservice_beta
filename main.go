@@ -6,8 +6,10 @@ import (
 	"github.com/petrjahoda/database"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"html/template"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -17,6 +19,10 @@ const serviceDescription = "System web interface"
 const config = "user=postgres password=Zps05..... dbname=version3 host=localhost port=5432 sslmode=disable"
 
 type program struct{}
+
+type HomePageData struct {
+	Version string
+}
 
 func main() {
 	logInfo("MAIN", serviceName+" ["+version+"] starting...")
@@ -66,7 +72,16 @@ func (p *program) run() {
 }
 
 func system(writer http.ResponseWriter, request *http.Request, _ httprouter.Params) {
-	http.ServeFile(writer, request, "./html/system.html")
+	ipAddress := strings.Split(request.RemoteAddr, ":")
+	logInfo("MAIN", "Sending home page to "+ipAddress[0])
+	var data HomePageData
+	data.Version = version
+	writer.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
+	writer.Header().Set("Pragma", "no-cache")
+	writer.Header().Set("Expires", "0")
+	tmpl := template.Must(template.ParseFiles("./html/system.html"))
+	_ = tmpl.Execute(writer, data)
+	logInfo("MAIN", "Home page sent")
 }
 
 func updateProgramVersion() {
