@@ -34,7 +34,7 @@ Use software only as a [part of a system](https://github.com/petrjahoda/system) 
  - [x] Service
  - [x] Main menu
  - [x] User login
- - [x] Locale based user interface
+ - [x] Locale based user interface (česky, deutsch, english, español, français, italiano, polski, slovensky, русский )
  - [x] Dynamically load menu content
  - [x] Dynamically load proper javascript behavior
  - [x] All pages structure
