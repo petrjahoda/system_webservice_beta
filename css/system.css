@@ -66,24 +66,27 @@
     text-align: center;
     text-decoration: none;
     text-transform: uppercase;
-    transition: .1s ease-in-out;
+    transition: 0.3s ease-in-out;
     transition-property: color, background-color, border-color;
 }
 
 .button-default:hover {
     background-color: #0f7ae5;
+    transition: 0.3s ease-in-out;
 }
 
 .button-default:active {
     background-color: #0e6dcd;
+    transition: 0.3s ease-in-out;
 }
 
 .input {
+    text-align: center;
     margin-top: 20px;
     width: 97%;
     height: 40px;
     border: 1px solid #e5e5e5;
-    transition: .2s ease-in-out;
+    transition: 0.3s ease-in-out;
     transition-property: color, background-color, border;
     font-size: medium;
     padding-left: 10px;
@@ -92,16 +95,18 @@
 .input:focus {
     outline: none;
     border: 1px solid #1f87f0;
-    transition: .2s ease-in-out;
+    transition: 0.3s ease-in-out;
     transition-property: color, background-color, border;
 }
 
 .false {
     border: 1px solid #f0506e;
+    transition: 0.3s ease-in-out;
 }
 
 .false:focus {
     border: 1px solid #f0506e;
+    transition: 0.3s ease-in-out;
 }
 
 
@@ -152,6 +157,11 @@
 .hidden {
     visibility: hidden;
 }
+
+.none {
+    display: none;
+}
+
 
 .content-container {
     background-color: grey;
