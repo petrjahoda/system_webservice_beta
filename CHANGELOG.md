@@ -19,6 +19,9 @@ adhere to [Semantic Versioning](http://semver.org/spec/v2.0.0.html) rules.
 ### Changed 
 - minor css changes
 
+### Added
+- basic pages structure
+
 ## [2020.4.2.25] - 2020-11-25
 
 ### Added 

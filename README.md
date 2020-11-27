@@ -37,7 +37,7 @@ Use software only as a [part of a system](https://github.com/petrjahoda/system) 
  - [x] Locale based user interface
  - [x] Dynamically load menu content
  - [x] Dynamically load proper javascript behavior
- - [ ] All menus UI and UX structure
+ - [x] All pages structure
  - [ ] Live menu
     - [ ] Factory submenu
     - [ ] Group submenu

@@ -78,6 +78,9 @@ content.addEventListener("click", (event) => {
     if (event.target.id.includes("navbar-live-group")) {
         callNavbarLiveGroupJs()
     }
+    if (event.target.id.includes("navbar-live-workplace")) {
+        callNavbarLiveWorkplaceJs()
+    }
 })
 
 

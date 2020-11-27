@@ -1,3 +1,3 @@
-function callNavbarLiveGroupJs() {
+function callNavbarLiveWorkplaceJs() {
     console.log("clicked live group")
 }

@@ -1,3 +1,3 @@
 function callNavbarLiveCompanyJs() {
-    console.log("clicked company")
+    console.log("clicked live company")
 }

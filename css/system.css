@@ -168,7 +168,15 @@
     border: 2px solid black;
 }
 
-#navbar-live-company-top {
+.content-selection {
+    margin: 10px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.content-top {
     margin: 10px;
     height: 100px;
     display: flex;
@@ -176,14 +184,23 @@
     align-items: center;
 }
 
-#navbar-live-company-middle {
+.content-middle {
     margin: 10px;
+    height: 100px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-#navbar-live-company-left {
+.content-bottom {
+    margin: 10px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.content-left {
     height: 100%;
     width: 50%;
     display: flex;
@@ -191,7 +208,7 @@
     align-items: center;
 }
 
-#navbar-live-company-right {
+.content-right {
     height: 100%;
     width: 50%;
     display: flex;
