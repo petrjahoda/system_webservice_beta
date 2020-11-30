@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f4279880-9db2-4e82-91da-7ce54060e021" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screenshots/actual.png" beforeDir="false" afterPath="$PROJECT_DIR$/screenshots/actual.png" afterDir="false" />
-    </list>
+    <list default="true" id="f4279880-9db2-4e82-91da-7ce54060e021" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -136,9 +133,10 @@
       <screen x="0" y="25" width="1628" height="1025" />
     </state>
     <state x="552" y="288" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.25.1628.1025@0.25.1628.1025" timestamp="1606207560897" />
-    <state x="439" y="57" key="CommitChangelistDialog2" timestamp="1606469823878">
-      <screen x="0" y="25" width="1628" height="1025" />
+    <state x="438" y="57" key="CommitChangelistDialog2" timestamp="1606735619441">
+      <screen x="0" y="25" width="1626" height="1025" />
     </state>
+    <state x="438" y="57" key="CommitChangelistDialog2/0.25.1626.1025@0.25.1626.1025" timestamp="1606735619441" />
     <state x="439" y="57" key="CommitChangelistDialog2/0.25.1628.1025@0.25.1628.1025" timestamp="1606469823878" />
     <state x="636" y="438" key="Github.ShareDialog" timestamp="1605523318169">
       <screen x="0" y="25" width="1628" height="1025" />
@@ -176,9 +174,10 @@
       <screen x="0" y="25" width="1628" height="1025" />
     </state>
     <state x="543" y="273" width="540" height="524" key="StructurePopup/0.25.1628.1025@0.25.1628.1025" timestamp="1605905706461" />
-    <state x="414" y="274" key="Vcs.Push.Dialog.v2" timestamp="1606469825274">
-      <screen x="0" y="25" width="1628" height="1025" />
+    <state x="413" y="274" key="Vcs.Push.Dialog.v2" timestamp="1606735621081">
+      <screen x="0" y="25" width="1626" height="1025" />
     </state>
+    <state x="413" y="274" key="Vcs.Push.Dialog.v2/0.25.1626.1025@0.25.1626.1025" timestamp="1606735621081" />
     <state x="414" y="274" key="Vcs.Push.Dialog.v2/0.25.1628.1025@0.25.1628.1025" timestamp="1606469825274" />
     <state x="100" y="125" width="1427" height="825" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1606462931168">
       <screen x="0" y="25" width="1628" height="1025" />
