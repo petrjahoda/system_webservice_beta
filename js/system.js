@@ -34,12 +34,56 @@ navbar.addEventListener("click", (event) => {
                     console.log("no data")
                 }
             });
+
         }).catch((error) => {
             console.log(error)
         });
     }
 })
 
+
+function drawCalendarChart() {
+    // datas is an array of object
+    var datas = [
+        {date: 946702811, value: 15},
+        {date: 946702812, value: 25},
+        {date: 946702813, value: 10}
+    ]
+
+    var parser = function (data) {
+        var stats = {};
+        for (var d in data) {
+            stats[data[d].date] = data[d].value;
+        }
+        return stats;
+    };
+
+// Parser will output the object
+//{
+//	"946702811": 15,
+//	"946702812": 25,
+//	"946702813": 10
+
+
+    var calendar = new CalHeatMap();
+    calendar.init({
+        data: datas,
+        afterLoadData: parser
+    });
+}
+
+function Process(menuData) {
+    if (menuData.includes("navbar-live-company")) {
+        drawCalendarChart()
+    }
+    if (menuData.includes("navbar-live-group")) {
+        console.log("Processing page " + menuData)
+    }
+    if (menuData.includes("navbar-live-workplace")) {
+        console.log("Processing page " + menuData)
+    }
+
+}
 
 navbarMenu.addEventListener("click", (event) => {
     let menuData = null
@@ -54,7 +98,7 @@ navbarMenu.addEventListener("click", (event) => {
             }
         }
         console.log("Downloading data content for " + menuData)
-        let data = {Content: menuData};
+        let data = {Content: menuData,};
         fetch("/get_content", {
             method: "POST",
             body: JSON.stringify(data)
@@ -63,7 +107,21 @@ navbarMenu.addEventListener("click", (event) => {
                 const content = document.getElementById("content")
                 let result = JSON.parse(data);
                 content.innerHTML = result.Html
+                if (result.MenuLocales !== null) {
+                    for (menuLocale of result.MenuLocales) {
+                        const menuItem = document.getElementById(menuLocale.Name)
+                        try {
+                            menuItem.textContent = menuLocale[sessionStorage.getItem("locale")]
+                        } catch (e) {
+                            console.log(menuLocale.Name + " not loaded for actual page")
+                        }
+                    }
+                } else {
+                    console.log("no data")
+                }
+                Process(menuData)
             });
+
         }).catch((error) => {
             console.log(error)
         });

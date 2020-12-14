@@ -1,14 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f4279880-9db2-4e82-91da-7ce54060e021" name="Default Changelist" comment="" />
+    <list default="true" id="f4279880-9db2-4e82-91da-7ce54060e021" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/js/d3.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/content.go" beforeDir="false" afterPath="$PROJECT_DIR$/content.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/css/system.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/system.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html/content/navbar-charts-special.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/content/navbar-charts-special.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html/content/navbar-charts-standard.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/content/navbar-charts-standard.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html/content/navbar-comparisons-alarm.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/content/navbar-comparisons-alarm.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html/content/navbar-comparisons-breakdown.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/content/navbar-comparisons-breakdown.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html/content/navbar-comparisons-company.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/content/navbar-comparisons-company.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html/content/navbar-comparisons-downtime.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/content/navbar-comparisons-downtime.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html/content/navbar-comparisons-group.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/content/navbar-comparisons-group.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html/content/navbar-comparisons-user.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/content/navbar-comparisons-user.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html/content/navbar-comparisons-workplace.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/content/navbar-comparisons-workplace.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html/content/navbar-data-alarm.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/content/navbar-data-alarm.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html/content/navbar-data-breakdown.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/content/navbar-data-breakdown.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html/content/navbar-data-company.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/content/navbar-data-company.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html/content/navbar-data-downtime.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/content/navbar-data-downtime.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html/content/navbar-data-group.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/content/navbar-data-group.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html/content/navbar-data-order.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/content/navbar-data-order.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html/content/navbar-data-product.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/content/navbar-data-product.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html/content/navbar-data-user.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/content/navbar-data-user.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html/content/navbar-data-workplace.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/content/navbar-data-workplace.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html/content/navbar-live-company.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/content/navbar-live-company.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html/content/navbar-live-group.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/content/navbar-live-group.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html/content/navbar-live-workplace.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/content/navbar-live-workplace.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html/content/navbar-settings-alarm.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/content/navbar-settings-alarm.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html/content/navbar-settings-breakdown.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/content/navbar-settings-breakdown.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html/content/navbar-settings-company.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/content/navbar-settings-company.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html/content/navbar-settings-device.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/content/navbar-settings-device.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html/content/navbar-settings-downtime.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/content/navbar-settings-downtime.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html/content/navbar-settings-group.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/content/navbar-settings-group.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html/content/navbar-settings-user.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/content/navbar-settings-user.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html/content/navbar-settings-workplace.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/content/navbar-settings-workplace.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html/content/navbar-statistics-alarm.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/content/navbar-statistics-alarm.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html/content/navbar-statistics-breakdown.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/content/navbar-statistics-breakdown.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html/content/navbar-statistics-company.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/content/navbar-statistics-company.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html/content/navbar-statistics-downtime.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/content/navbar-statistics-downtime.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html/content/navbar-statistics-group.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/content/navbar-statistics-group.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html/content/navbar-statistics-user.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/content/navbar-statistics-user.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html/content/navbar-statistics-workplace.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/content/navbar-statistics-workplace.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html/content/navbar-trends-alarm.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/content/navbar-trends-alarm.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html/content/navbar-trends-breakdown.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/content/navbar-trends-breakdown.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html/content/navbar-trends-company.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/content/navbar-trends-company.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html/content/navbar-trends-downtime.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/content/navbar-trends-downtime.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html/content/navbar-trends-group.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/content/navbar-trends-group.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html/content/navbar-trends-top10.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/content/navbar-trends-top10.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html/content/navbar-trends-user.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/content/navbar-trends-user.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html/content/navbar-trends-workplace.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/content/navbar-trends-workplace.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html/content/navbar-trends-worst10.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/content/navbar-trends-worst10.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html/system.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/system.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/system.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/system.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/linux/system_webservice_beta" beforeDir="false" afterPath="$PROJECT_DIR$/linux/system_webservice_beta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="DarkyenusTimeTracker">
-    <option name="totalTimeSeconds" value="53043" />
+    <option name="totalTimeSeconds" value="63891" />
     <option name="gitIntegration" value="true" />
     <option name="naggedAbout" value="1" />
   </component>
@@ -23,7 +79,7 @@
       </list>
     </option>
   </component>
-  <component name="GOROOT" path="$PROJECT_DIR$/../sdk/go1.15.5" />
+  <component name="GOROOT" url="file://$PROJECT_DIR$/../sdk/go1.15.6" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -49,7 +105,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/screenshots" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/css" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
@@ -58,22 +114,22 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="restartRequiresConfirmation" value="false" />
-    <property name="settings.editor.selected.configurable" value="org.jetbrains.plugins.github.ui.GithubSettingsConfigurable" />
+    <property name="settings.editor.selected.configurable" value="go.sdk" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/css" />
+      <recent name="$PROJECT_DIR$/js" />
+      <recent name="$PROJECT_DIR$/screenshots" />
+      <recent name="$PROJECT_DIR$/html/content" />
+      <recent name="$PROJECT_DIR$/html" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/screenshots" />
       <recent name="$PROJECT_DIR$/html/content" />
       <recent name="$PROJECT_DIR$/fonts" />
       <recent name="$PROJECT_DIR$/html" />
       <recent name="$PROJECT_DIR$" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/screenshots" />
-      <recent name="$PROJECT_DIR$/js" />
-      <recent name="$PROJECT_DIR$/html/content" />
-      <recent name="$PROJECT_DIR$/html" />
-      <recent name="$PROJECT_DIR$/css" />
     </key>
   </component>
   <component name="RunManager">
@@ -119,73 +175,5 @@
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>
-  </component>
-  <component name="WindowStateProjectService">
-    <state x="278" y="196" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1606118344216">
-      <screen x="0" y="25" width="1628" height="1025" />
-    </state>
-    <state x="278" y="196" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.25.1628.1025@0.25.1628.1025" timestamp="1606118344216" />
-    <state x="465" y="343" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1606207357258">
-      <screen x="0" y="25" width="1628" height="1025" />
-    </state>
-    <state x="465" y="343" key="#com.intellij.fileTypes.FileTypeChooser/0.25.1628.1025@0.25.1628.1025" timestamp="1606207357258" />
-    <state x="552" y="288" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1606207560897">
-      <screen x="0" y="25" width="1628" height="1025" />
-    </state>
-    <state x="552" y="288" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.25.1628.1025@0.25.1628.1025" timestamp="1606207560897" />
-    <state x="438" y="57" key="CommitChangelistDialog2" timestamp="1606741518572">
-      <screen x="0" y="25" width="1626" height="1025" />
-    </state>
-    <state x="438" y="57" key="CommitChangelistDialog2/0.25.1626.1025@0.25.1626.1025" timestamp="1606741518572" />
-    <state x="439" y="57" key="CommitChangelistDialog2/0.25.1628.1025@0.25.1628.1025" timestamp="1606469823878" />
-    <state x="636" y="438" key="Github.ShareDialog" timestamp="1605523318169">
-      <screen x="0" y="25" width="1628" height="1025" />
-    </state>
-    <state x="636" y="438" key="Github.ShareDialog/0.25.1628.1025@0.25.1628.1025" timestamp="1605523318169" />
-    <state x="549" y="246" key="Github.UntrackedFilesDialog" timestamp="1605523324139">
-      <screen x="0" y="25" width="1628" height="1025" />
-    </state>
-    <state x="549" y="246" key="Github.UntrackedFilesDialog/0.25.1628.1025@0.25.1628.1025" timestamp="1605523324139" />
-    <state width="1584" height="154" key="GridCell.Tab.0.bottom" timestamp="1606724497776">
-      <screen x="0" y="25" width="1626" height="1025" />
-    </state>
-    <state width="1584" height="154" key="GridCell.Tab.0.bottom/0.25.1626.1025@0.25.1626.1025" timestamp="1606724497776" />
-    <state width="1585" height="154" key="GridCell.Tab.0.bottom/0.25.1628.1025@0.25.1628.1025" timestamp="1606485618483" />
-    <state width="1584" height="154" key="GridCell.Tab.0.center" timestamp="1606724497776">
-      <screen x="0" y="25" width="1626" height="1025" />
-    </state>
-    <state width="1584" height="154" key="GridCell.Tab.0.center/0.25.1626.1025@0.25.1626.1025" timestamp="1606724497776" />
-    <state width="1585" height="154" key="GridCell.Tab.0.center/0.25.1628.1025@0.25.1628.1025" timestamp="1606485618482" />
-    <state width="1584" height="154" key="GridCell.Tab.0.left" timestamp="1606724497776">
-      <screen x="0" y="25" width="1626" height="1025" />
-    </state>
-    <state width="1584" height="154" key="GridCell.Tab.0.left/0.25.1626.1025@0.25.1626.1025" timestamp="1606724497776" />
-    <state width="1585" height="154" key="GridCell.Tab.0.left/0.25.1628.1025@0.25.1628.1025" timestamp="1606485618482" />
-    <state width="1584" height="154" key="GridCell.Tab.0.right" timestamp="1606724497776">
-      <screen x="0" y="25" width="1626" height="1025" />
-    </state>
-    <state width="1584" height="154" key="GridCell.Tab.0.right/0.25.1626.1025@0.25.1626.1025" timestamp="1606724497776" />
-    <state width="1585" height="154" key="GridCell.Tab.0.right/0.25.1628.1025@0.25.1628.1025" timestamp="1606485618482" />
-    <state width="245" height="471" key="HiddenNamespacesPopup" timestamp="1606118360317">
-      <screen x="0" y="25" width="1628" height="1025" />
-    </state>
-    <state width="245" height="471" key="HiddenNamespacesPopup/0.25.1628.1025@0.25.1628.1025" timestamp="1606118360317" />
-    <state x="543" y="273" width="540" height="524" key="StructurePopup" timestamp="1605905706461">
-      <screen x="0" y="25" width="1628" height="1025" />
-    </state>
-    <state x="543" y="273" width="540" height="524" key="StructurePopup/0.25.1628.1025@0.25.1628.1025" timestamp="1605905706461" />
-    <state x="413" y="274" key="Vcs.Push.Dialog.v2" timestamp="1606741519755">
-      <screen x="0" y="25" width="1626" height="1025" />
-    </state>
-    <state x="413" y="274" key="Vcs.Push.Dialog.v2/0.25.1626.1025@0.25.1626.1025" timestamp="1606741519755" />
-    <state x="414" y="274" key="Vcs.Push.Dialog.v2/0.25.1628.1025@0.25.1628.1025" timestamp="1606469825274" />
-    <state x="100" y="125" width="1427" height="825" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1606462931168">
-      <screen x="0" y="25" width="1628" height="1025" />
-    </state>
-    <state x="100" y="125" width="1427" height="825" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.25.1628.1025@0.25.1628.1025" timestamp="1606462931168" />
-    <state x="628" y="230" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1605905672969">
-      <screen x="0" y="25" width="1628" height="1025" />
-    </state>
-    <state x="628" y="230" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.25.1628.1025@0.25.1628.1025" timestamp="1605905672969" />
   </component>
 </project>
