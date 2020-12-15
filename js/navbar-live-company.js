@@ -42,7 +42,8 @@ function displayData(result, elementId, actual, last) {
     let lastColor = document.createElement("div");
     lastColor.style.width = "0.9em"
     lastColor.style.height = "0.9em"
-    lastColor.style.background = "rgba(0,128,9," + (+last) / 100
+    lastColor.style.background = "rgba(137,171,15," + (+last) / 100
+    lastColor.style.border = "0.2px solid black"
     data.appendChild(lastColor)
     let arrow = document.createElement("div");
     arrow.style.width = "45px"
@@ -58,7 +59,8 @@ function displayData(result, elementId, actual, last) {
     let actualColor = document.createElement("div");
     actualColor.style.width = "0.9em"
     actualColor.style.height = "0.9em"
-    actualColor.style.background = "rgba(0,128,9," + (+actual) / 100
+    actualColor.style.background = "rgba(137,171,15," + (+actual) / 100
+    actualColor.style.border = "0.2px solid black"
     data.appendChild(actualColor)
     let actualPercent = document.createElement("div");
     actualPercent.textContent = actual + "%";
