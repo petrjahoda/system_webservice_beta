@@ -41,40 +41,10 @@ navbar.addEventListener("click", (event) => {
     }
 })
 
-
-function drawCalendarChart() {
-    // datas is an array of object
-    var datas = [
-        {date: 946702811, value: 15},
-        {date: 946702812, value: 25},
-        {date: 946702813, value: 10}
-    ]
-
-    var parser = function (data) {
-        var stats = {};
-        for (var d in data) {
-            stats[data[d].date] = data[d].value;
-        }
-        return stats;
-    };
-
-// Parser will output the object
-//{
-//	"946702811": 15,
-//	"946702812": 25,
-//	"946702813": 10
-
-
-    var calendar = new CalHeatMap();
-    calendar.init({
-        data: datas,
-        afterLoadData: parser
-    });
-}
-
 function Process(menuData) {
     if (menuData.includes("navbar-live-company")) {
-        drawCalendarChart()
+        console.log("Processing page " + menuData)
+        callNavbarLiveCompanyJs()
     }
     if (menuData.includes("navbar-live-group")) {
         console.log("Processing page " + menuData)

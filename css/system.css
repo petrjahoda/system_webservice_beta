@@ -165,7 +165,6 @@
 
 .content-container-full {
     background-color: whitesmoke;
-    /*border: 2px solid black;*/
     padding: 10px;
     height: auto;
     width: 99%;
@@ -194,15 +193,4 @@
     background: #fff;
     margin: 5px;
 }
-
-.workplace-view {
-    display: inline-block;
-}
-
-.workplace-view-status {
-    display: inline-block;
-    width: 0.9em;
-    height: 0.9em;
-}
-
 

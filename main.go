@@ -60,9 +60,12 @@ func (p *program) run() {
 	router.ServeFiles("/css/*filepath", http.Dir("css"))
 	router.ServeFiles("/fonts/*filepath", http.Dir("fonts"))
 	router.GET("/", system)
+
 	router.POST("/get_menu", getMenu)
 	router.POST("/get_content", getContent)
 	router.POST("/verify_user", verifyUser)
+	router.POST("/get_live_productivity_data", getLiveProductivityData)
+
 	err := http.ListenAndServe(":80", router)
 	if err != nil {
 		logError("MAIN", "Problem starting service: "+err.Error())
