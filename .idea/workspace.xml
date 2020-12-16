@@ -2,14 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f4279880-9db2-4e82-91da-7ce54060e021" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/dji.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/css/system.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/system.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/html/content/navbar-live-company.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/content/navbar-live-company.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/navbar-live-company.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/navbar-live-company.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/navbar_live.go" beforeDir="false" afterPath="$PROJECT_DIR$/navbar_live.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,7 +11,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="DarkyenusTimeTracker">
-    <option name="totalTimeSeconds" value="75560" />
+    <option name="totalTimeSeconds" value="77397" />
     <option name="gitIntegration" value="true" />
     <option name="naggedAbout" value="1" />
   </component>
@@ -123,7 +117,8 @@
     <MESSAGE value="## [2020.4.2.27] - 2020-11-27&#10;&#10;### Changed &#10;- minor css changes&#10;&#10;### Added&#10;- basic pages structure" />
     <MESSAGE value="## [2020.4.3.14] - 2020-12-14&#10;&#10;### Added&#10;- workplace live company productivity html structure" />
     <MESSAGE value="## [2020.4.3.15] - 2020-12-15&#10;&#10;### Added&#10;- workplace live company productivity complete frontend functionality&#10;- html structure reformatted" />
-    <option name="LAST_COMMIT_MESSAGE" value="## [2020.4.3.15] - 2020-12-15&#10;&#10;### Added&#10;- workplace live company productivity complete frontend functionality&#10;- html structure reformatted" />
+    <MESSAGE value="## [2020.4.3.16] - 2020-12-16&#10;&#10;### Added&#10;- workplace live company calendar view" />
+    <option name="LAST_COMMIT_MESSAGE" value="## [2020.4.3.16] - 2020-12-16&#10;&#10;### Added&#10;- workplace live company calendar view" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />

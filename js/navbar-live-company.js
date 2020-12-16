@@ -103,14 +103,14 @@ function drawCalendar(data) {
         .attr("height", height)
         .append("g")
         .attr("transform", "translate(" + ((width - cellSize * 53) / 2) + "," + (height - cellSize * 7 - 1) + ")");
-    svg.append("text")
-        .attr("transform", "translate(-6," + cellSize * 3.5 + ")rotate(-90)")
-        .attr("font-family", "sans-serif")
-        .attr("font-size", 10)
-        .attr("text-anchor", "middle")
-        .text(function (d) {
-            return d;
-        });
+    // svg.append("text")
+    //     .attr("transform", "translate(-6," + cellSize * 3.5 + ")rotate(-90)")
+    //     .attr("font-family", "sans-serif")
+    //     .attr("font-size", 10)
+    //     .attr("text-anchor", "middle")
+    //     .text(function (d) {
+    //         return d;
+    //     });
     svg.append("g")
         .attr("fill", "none")
         .attr("stroke", "#000")
@@ -123,10 +123,10 @@ function drawCalendar(data) {
         .attr("width", cellSize)
         .attr("height", cellSize)
         .attr("x", function (d) {
-            return d3.timeWeek.count(d3.timeYear(d), d) * cellSize;
+            return d3.timeMonday.count(d3.timeYear(d), d) * cellSize;
         })
         .attr("y", function (d) {
-            return d.getDay() * cellSize;
+            return d.getUTCDay() * cellSize;
         })
         .datum(d3.timeFormat("%Y-%m-%d"))
         .attr('fill', function (d) {
@@ -155,8 +155,8 @@ function drawCalendar(data) {
         .enter().append("path")
         .attr("d", function (d) {
             const t1 = new Date(d.getFullYear(), d.getMonth() + 1, 0),
-                d0 = d.getDay(), w0 = d3.timeWeek.count(d3.timeYear(d), d),
-                d1 = t1.getDay(), w1 = d3.timeWeek.count(d3.timeYear(t1), t1);
+                d0 = d.getUTCDay(), w0 = d3.timeMonday.count(d3.timeYear(d), d),
+                d1 = t1.getUTCDay(), w1 = d3.timeMonday.count(d3.timeYear(t1), t1);
             return "M" + (w0 + 1) * cellSize + "," + d0 * cellSize
                 + "H" + w0 * cellSize + "V" + 7 * cellSize
                 + "H" + w1 * cellSize + "V" + (d1 + 1) * cellSize

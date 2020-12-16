@@ -2,8 +2,8 @@
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
-Please note, that this project, while following numbering syntax, it DOES NOT
-adhere to [Semantic Versioning](http://semver.org/spec/v2.0.0.html) rules.
+Please note, that this project, while following numbering syntax, it DOES NOT adhere
+to [Semantic Versioning](http://semver.org/spec/v2.0.0.html) rules.
 
 ## Types of changes
 
@@ -18,7 +18,7 @@ adhere to [Semantic Versioning](http://semver.org/spec/v2.0.0.html) rules.
 
 ### Added
 
-- workplace live company calendar view
+- workplace live company calendar view with start on mondays
 
 ## [2020.4.3.15] - 2020-12-15
 
@@ -40,47 +40,52 @@ adhere to [Semantic Versioning](http://semver.org/spec/v2.0.0.html) rules.
 - minor css changes
 
 ### Added
+
 - basic pages structure
 
 ## [2020.4.2.25] - 2020-11-25
 
-### Added 
+### Added
+
 - service functionality
 - dynamically loading menu content
 - basic ui frame design
 
 ## [2020.4.2.24] - 2020-11-24
 
-### Added 
+### Added
+
 - loading user menu based on user locale
 - loading user sub-menu based on user locale
 - loading page content dynamically
 
 ## Changed
+
 - font changed to open source milliard
 
 ## [2020.4.2.23] - 2020-11-23
 
-### Added 
+### Added
+
 - login with check in database
 - menu updated with all proper values
 - menu behavior updated with its own submenu
 
-
 ## [2020.4.2.18] - 2020-11-18
 
-### Added 
+### Added
+
 - project structure
 - main menu
 
 ### Removed
+
 - all previous work :-)
-
-
 
 ## [2020.4.2.16] - 2020-11-16
 
 ### Added
+
 - project structure
 - navigation menu
 - login template
