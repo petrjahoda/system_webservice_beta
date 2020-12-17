@@ -14,10 +14,14 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html) rules.
 * ```Fixed``` for any bug fixes.
 * ```Security``` in case of vulnerabilities.
 
+## [2020.4.3.17] - 2020-12-17
+
+### Added
+- live company workplaces overview
+
 ## [2020.4.3.16] - 2020-12-16
 
 ### Added
-
 - workplace live company calendar view with start on mondays
 
 ## [2020.4.3.15] - 2020-12-15

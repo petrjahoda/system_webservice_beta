@@ -20,10 +20,9 @@ function displayLiveProductivityData(input) {
     }).then((response) => {
         response.text().then(function (data) {
             let result = JSON.parse(data);
-            console.log(result)
-            displayData(result, "navbar-live-company-1-data-day", result.Today, result.Yesterday);
-            displayData(result, "navbar-live-company-1-data-week", result.ThisWeek, result.LastWeek);
-            displayData(result, "navbar-live-company-1-data-month", result.ThisMonth, result.LastMonth);
+            displayData(result, "navbar-live-company-1-data-day", result["Today"], result["Yesterday"]);
+            displayData(result, "navbar-live-company-1-data-week", result["ThisWeek"], result["LastWeek"]);
+            displayData(result, "navbar-live-company-1-data-month", result["ThisMonth"], result["LastMonth"]);
         });
     }).catch((error) => {
         console.log(error)
@@ -83,7 +82,7 @@ function displayCalendar(input) {
     }).then((response) => {
         response.text().then(function (data) {
             let result = JSON.parse(data);
-            drawCalendar(result.Data);
+            drawCalendar(result["Data"]);
         });
     }).catch((error) => {
         console.log(error)
@@ -91,26 +90,27 @@ function displayCalendar(input) {
 }
 
 function drawCalendar(data) {
+    let thisYear = new Date().getFullYear()
     const width = 960, height = 136, cellSize = 17;
     const color = d3.scaleQuantize()
         .domain([0, 100])
-        .range(["#ffffff", "#f3f6e7", "#e7eecf", "#dbe5b7", "#d0dd9f", "#c4d587", "#b8cd6f", "#acc457", "#a1bc3f", "#94b327", "#89ab0f"]);
+        .range(["#f3f6e7", "#e7eecf", "#dbe5b7", "#d0dd9f", "#c4d587", "#b8cd6f", "#acc457", "#a1bc3f", "#94b327", "#89ab0f"]);
     const svg = d3.select("#navbar-live-company-2-calendar-chart")
         .selectAll("svg")
-        .data(d3.range(2019, 2021))
+        .data(d3.range(thisYear - 1, thisYear + 1))
         .enter().append("svg")
         .attr("width", width)
         .attr("height", height)
         .append("g")
         .attr("transform", "translate(" + ((width - cellSize * 53) / 2) + "," + (height - cellSize * 7 - 1) + ")");
-    // svg.append("text")
-    //     .attr("transform", "translate(-6," + cellSize * 3.5 + ")rotate(-90)")
-    //     .attr("font-family", "sans-serif")
-    //     .attr("font-size", 10)
-    //     .attr("text-anchor", "middle")
-    //     .text(function (d) {
-    //         return d;
-    //     });
+    svg.append("text")
+        .attr("transform", "translate(-6," + cellSize * 3.5 + ")rotate(-90)")
+        .attr("font-family", "sans-serif")
+        .attr("font-size", "1em")
+        .attr("text-anchor", "middle")
+        .text(function (d) {
+            return d;
+        });
     svg.append("g")
         .attr("fill", "none")
         .attr("stroke", "#000")
@@ -131,19 +131,26 @@ function drawCalendar(data) {
         .datum(d3.timeFormat("%Y-%m-%d"))
         .attr('fill', function (d) {
             for (let oneDate of data) {
-                if (oneDate.Date === d) {
-                    return color(oneDate.ProductionValue)
+                if (oneDate["Date"] === d) {
+                    return color(oneDate["ProductionValue"])
                 }
             }
+        })
+        .on("mouseover", function () {
+            d3.select(this).attr('stroke-width', "1px");
+        })
+        .on("mouseout", function () {
+            d3.select(this).attr('stroke-width', "0.1px");
         })
         .append("title")
         .text(function (d) {
             for (let oneDate of data) {
-                if (oneDate.Date === d) {
-                    return d + ": " + oneDate.ProductionValue + "%"
+                if (oneDate["Date"] === d) {
+                    return d + ": " + oneDate["ProductionValue"] + "%"
                 }
             }
-        });
+        })
+
     svg.append("g")
         .attr("fill", "none")
         .attr("stroke", "#000")
@@ -165,8 +172,45 @@ function drawCalendar(data) {
         });
 }
 
+
+
 function displayOverview(input) {
     console.log("displaying overview for " + input)
+    let data = {
+        input: input,
+    };
+    fetch("/get_live_overview_data", {
+        method: "POST",
+        body: JSON.stringify(data)
+    }).then((response) => {
+        response.text().then(function (data) {
+            let result = JSON.parse(data);
+            console.log(result)
+            displayOverViewData(result, "navbar-live-company-3-data-production", result["Production"], "#89ab0f");
+            displayOverViewData(result, "navbar-live-company-3-data-downtime", result["Downtime"], "#e6ad3c");
+            displayOverViewData(result, "navbar-live-company-3-data-poweroff", result["Poweroff"], "#de6b59");
+        });
+    }).catch((error) => {
+        console.log(error)
+    });
+}
+
+function displayOverViewData(result, elementId, resultElement, elementColor) {
+    const data = document.getElementById(elementId)
+    console.log(data)
+    let color = document.createElement("div");
+    color.style.width = "0.9em"
+    color.style.height = "0.9em"
+    color.style.background = elementColor
+    color.style.border = "0.2px solid black"
+    data.appendChild(color)
+    let actualPercent = document.createElement("div");
+    actualPercent.textContent = resultElement;
+    actualPercent.style.width = "30px";
+    actualPercent.style.textAlign = "right";
+    actualPercent.style.paddingLeft = "5px";
+    actualPercent.style.fontWeight = "bold"
+    data.appendChild(actualPercent)
 }
 
 function displayBestWorkplaces(input) {

@@ -16,8 +16,6 @@ if (sessionLogin === null || sessionLogin === "") {
 }
 
 userLoginButton.addEventListener("click", () => {
-    console.log(userEmail.value)
-    console.log(userPassword.value)
     verifyUser();
 })
 
@@ -55,7 +53,6 @@ function verifyUser() {
         UserPassword: userPassword.value,
         UserSessionStorage: sessionLogin,
     };
-    console.log(data)
     fetch("/verify_user", {
         method: "POST",
         body: JSON.stringify(data)

@@ -22,6 +22,13 @@ type LiveDataOutput struct {
 	Result    string
 }
 
+type LiveOverviewDataOutput struct {
+	Production string
+	Downtime   string
+	Poweroff   string
+	Result     string
+}
+
 type CalendarDataOutput struct {
 	Data []CalendarData
 }
@@ -86,6 +93,32 @@ func getLiveProductivityData(writer http.ResponseWriter, request *http.Request, 
 	outputData.ThisWeek = "12.7"
 	outputData.LastMonth = "6.1"
 	outputData.ThisMonth = "43.4"
+	writer.Header().Set("Content-Type", "application/json")
+	_ = json.NewEncoder(writer).Encode(outputData)
+	logInfo("MAIN", "Parsing data ended")
+	return
+}
+
+func getLiveOverviewData(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
+	logInfo("MAIN", "Parsing data")
+	var data LiveDataInput
+	err := json.NewDecoder(request.Body).Decode(&data)
+	if err != nil {
+		logError("MAIN", "Error parsing data: "+err.Error())
+		var responseData LiveDataOutput
+		responseData.Result = "nok"
+		writer.Header().Set("Content-Type", "application/json")
+		_ = json.NewEncoder(writer).Encode(responseData)
+		logInfo("MAIN", "Parsing data ended")
+		return
+	}
+	logInfo("MAIN", "Processing live overview data started for "+data.Input)
+	//todo: process real live data from database
+	var outputData LiveOverviewDataOutput
+	outputData.Result = "ok"
+	outputData.Production = "999"
+	outputData.Downtime = "17"
+	outputData.Poweroff = "4"
 	writer.Header().Set("Content-Type", "application/json")
 	_ = json.NewEncoder(writer).Encode(outputData)
 	logInfo("MAIN", "Parsing data ended")
