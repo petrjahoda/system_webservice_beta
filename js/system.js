@@ -100,15 +100,6 @@ navbarMenu.addEventListener("click", (event) => {
 
 content.addEventListener("click", (event) => {
     console.log(event.target)
-    if (event.target.id.includes("navbar-live-company")) {
-        callNavbarLiveCompanyJs()
-    }
-    if (event.target.id.includes("navbar-live-group")) {
-        callNavbarLiveGroupJs()
-    }
-    if (event.target.id.includes("navbar-live-workplace")) {
-        callNavbarLiveWorkplaceJs()
-    }
 })
 
 
