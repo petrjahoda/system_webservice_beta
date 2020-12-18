@@ -173,7 +173,6 @@ function drawCalendar(data) {
 }
 
 
-
 function displayOverview(input) {
     console.log("displaying overview for " + input)
     let data = {
@@ -185,7 +184,6 @@ function displayOverview(input) {
     }).then((response) => {
         response.text().then(function (data) {
             let result = JSON.parse(data);
-            console.log(result)
             displayOverViewData(result, "navbar-live-company-3-data-production", result["Production"], "#89ab0f");
             displayOverViewData(result, "navbar-live-company-3-data-downtime", result["Downtime"], "#e6ad3c");
             displayOverViewData(result, "navbar-live-company-3-data-poweroff", result["Poweroff"], "#de6b59");
@@ -197,7 +195,6 @@ function displayOverview(input) {
 
 function displayOverViewData(result, elementId, resultElement, elementColor) {
     const data = document.getElementById(elementId)
-    console.log(data)
     let color = document.createElement("div");
     color.style.width = "0.9em"
     color.style.height = "0.9em"
@@ -207,24 +204,156 @@ function displayOverViewData(result, elementId, resultElement, elementColor) {
     let actualPercent = document.createElement("div");
     actualPercent.textContent = resultElement;
     actualPercent.style.width = "30px";
-    actualPercent.style.textAlign = "right";
+    actualPercent.style.textAlign = "center";
     actualPercent.style.paddingLeft = "5px";
     actualPercent.style.fontWeight = "bold"
     data.appendChild(actualPercent)
 }
 
+
 function displayBestWorkplaces(input) {
     console.log("displaying best workplaces for " + input)
+    let data = {
+        input: input,
+    };
+    fetch("/get_live_best_data", {
+        method: "POST",
+        body: JSON.stringify(data)
+    }).then((response) => {
+        response.text().then(function (data) {
+            let result = JSON.parse(data);
+            displayBestWorstPoweroffData(result, "navbar-live-company-4-best-data-first", result["Data"][0], "rgba(137,171,15,");
+            displayBestWorstPoweroffData(result, "navbar-live-company-4-best-data-second", result["Data"][1], "rgba(137,171,15,");
+            displayBestWorstPoweroffData(result, "navbar-live-company-4-best-data-third", result["Data"][2], "rgba(137,171,15,");
+        });
+    }).catch((error) => {
+        console.log(error)
+    });
+}
+
+function displayBestWorstPoweroffData(result, elementId, resultElement, workplaceColor) {
+    const data = document.getElementById(elementId)
+    let color = document.createElement("div");
+    color.style.width = "0.9em"
+    color.style.height = "0.9em"
+    if (elementId.includes("poweroff")) {
+        color.style.background = workplaceColor
+    } else {
+        color.style.background = workplaceColor + (+resultElement["WorkplaceProduction"]) / 100
+    }
+    color.style.border = "0.2px solid black"
+    data.appendChild(color)
+
+    let actualPercent = document.createElement("div");
+    if (elementId.includes("poweroff")) {
+        actualPercent.textContent = resultElement["WorkplaceProduction"];
+    } else {
+        actualPercent.textContent = resultElement["WorkplaceProduction"] + "%";
+    }
+    actualPercent.style.width = "60px";
+    actualPercent.style.textAlign = "center";
+    actualPercent.style.paddingLeft = "5px";
+    actualPercent.style.fontWeight = "bold"
+    data.appendChild(actualPercent)
+    let workplaceName = document.createElement("div");
+    workplaceName.textContent = resultElement["WorkplaceName"];
+    workplaceName.style.width = "220px";
+    workplaceName.style.textAlign = "left";
+    workplaceName.style.paddingLeft = "5px";
+    workplaceName.style.fontWeight = "bold"
+    data.appendChild(workplaceName)
+
+
 }
 
 function displayWorstWorkplaces(input) {
     console.log("displaying worst workplaces for " + input)
+    let data = {
+        input: input,
+    };
+    fetch("/get_live_worst_data", {
+        method: "POST",
+        body: JSON.stringify(data)
+    }).then((response) => {
+        response.text().then(function (data) {
+            let result = JSON.parse(data);
+            displayBestWorstPoweroffData(result, "navbar-live-company-4-worst-data-first", result["Data"][0], "rgba(230,173,60,");
+            displayBestWorstPoweroffData(result, "navbar-live-company-4-worst-data-second", result["Data"][1], "rgba(230,173,60,");
+            displayBestWorstPoweroffData(result, "navbar-live-company-4-worst-data-third", result["Data"][2], "rgba(230,173,60,");
+        });
+    }).catch((error) => {
+        console.log(error)
+    });
 }
 
 function displayPowerOffWorkplaces(input) {
     console.log("displaying power off workplaces for " + input)
+    let data = {
+        input: input,
+    };
+    fetch("/get_live_poweroff_data", {
+        method: "POST",
+        body: JSON.stringify(data)
+    }).then((response) => {
+        response.text().then(function (data) {
+            let result = JSON.parse(data);
+            displayBestWorstPoweroffData(result, "navbar-live-company-4-poweroff-data-first", result["Data"][0], "#de6b59");
+            displayBestWorstPoweroffData(result, "navbar-live-company-4-poweroff-data-second", result["Data"][1], "#de6b59");
+            displayBestWorstPoweroffData(result, "navbar-live-company-4-poweroff-data-third", result["Data"][2], "#de6b59");
+        });
+    }).catch((error) => {
+        console.log(error)
+    });
 }
+
 
 function displayWorkplaceOverview(input) {
     console.log("displaying workplace overview for " + input)
+    let data = {
+        input: input,
+    };
+    fetch("/get_live_all_data", {
+        method: "POST",
+        body: JSON.stringify(data)
+    }).then((response) => {
+        response.text().then(function (data) {
+            let result = JSON.parse(data);
+            for (const workplace of result["Data"]) {
+                console.log(workplace)
+                displayWorkplaceData("navbar-live-company-5-all-data", workplace);
+            }
+        });
+    }).catch((error) => {
+        console.log(error)
+    });
+}
+
+function displayWorkplaceData(elementId, workplace) {
+    const data = document.getElementById(elementId)
+    let container = document.createElement("div")
+    container.style.display = "inline-block"
+    let color = document.createElement("div");
+    color.style.width = "0.9em"
+    color.style.height = "0.9em"
+    if (workplace["WorkplaceProduction"].includes("production")) {
+        color.style.background = "#89ab0f"
+    } else if (workplace["WorkplaceProduction"].includes("downtime")) {
+        color.style.background = "#e6ad3c"
+    } else {
+        color.style.background = "#de6b59"
+    }
+    color.style.border = "0.2px solid black"
+    color.style.display = "inline-block"
+    container.appendChild(color)
+
+    let workplaceName = document.createElement("div");
+    workplaceName.textContent = workplace["WorkplaceName"];
+    workplaceName.style.width = "220px";
+    workplaceName.style.display = "flex"
+    workplaceName.style.textAlign = "left";
+    workplaceName.style.paddingLeft = "5px";
+    workplaceName.style.fontWeight = "bold"
+    workplaceName.style.display = "inline-block"
+    container.appendChild(workplaceName)
+    data.appendChild(container)
 }

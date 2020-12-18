@@ -38,9 +38,9 @@ Use software only as a [part of a system](https://github.com/petrjahoda/system) 
  - [x] Dynamically load menu content
  - [x] Dynamically load proper javascript behavior
  - [x] All pages structure
- - [ ] Live menu --IN PROGRESS--
-    - [ ] Factory submenu
-    - [ ] Group submenu
+ - [ ] Live menu
+    - [x] Factory submenu
+    - [ ] Group submenu --IN PROGRESS--
     - [ ] Workplace submenu
  - [ ] Charts menu
     - [ ] Standard Charts submenu
