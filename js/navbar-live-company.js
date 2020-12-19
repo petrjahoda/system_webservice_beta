@@ -233,6 +233,15 @@ function displayBestWorkplaces(input) {
 
 function displayBestWorstPoweroffData(result, elementId, resultElement, workplaceColor) {
     const data = document.getElementById(elementId)
+    // data.style.border = "1px solid black"
+    let workplaceName = document.createElement("div");
+    workplaceName.textContent = resultElement["WorkplaceName"].replace(/(.{20})..+/, "$1…");
+    workplaceName.title = resultElement["WorkplaceName"];
+    workplaceName.style.width = "220px";
+    workplaceName.style.textAlign = "right";
+    workplaceName.style.paddingRight = "5px";
+    data.appendChild(workplaceName)
+
     let color = document.createElement("div");
     color.style.width = "0.9em"
     color.style.height = "0.9em"
@@ -242,6 +251,7 @@ function displayBestWorstPoweroffData(result, elementId, resultElement, workplac
         color.style.background = workplaceColor + (+resultElement["WorkplaceProduction"]) / 100
     }
     color.style.border = "0.2px solid black"
+    color.style.marginTop = "1px"
     data.appendChild(color)
 
     let actualPercent = document.createElement("div");
@@ -251,17 +261,10 @@ function displayBestWorstPoweroffData(result, elementId, resultElement, workplac
         actualPercent.textContent = resultElement["WorkplaceProduction"] + "%";
     }
     actualPercent.style.width = "60px";
-    actualPercent.style.textAlign = "center";
+    actualPercent.style.textAlign = "left";
     actualPercent.style.paddingLeft = "5px";
-    actualPercent.style.fontWeight = "bold"
     data.appendChild(actualPercent)
-    let workplaceName = document.createElement("div");
-    workplaceName.textContent = resultElement["WorkplaceName"];
-    workplaceName.style.width = "220px";
-    workplaceName.style.textAlign = "left";
-    workplaceName.style.paddingLeft = "5px";
-    workplaceName.style.fontWeight = "bold"
-    data.appendChild(workplaceName)
+
 
 
 }
@@ -332,9 +335,21 @@ function displayWorkplaceData(elementId, workplace) {
     const data = document.getElementById(elementId)
     let container = document.createElement("div")
     container.style.display = "inline-block"
+
+    let workplaceName = document.createElement("div");
+    workplaceName.textContent = workplace["WorkplaceName"].replace(/(.{20})..+/, "$1…");
+    workplaceName.title = workplace["WorkplaceName"];
+    workplaceName.style.width = "220px";
+    workplaceName.style.display = "flex"
+    workplaceName.style.textAlign = "right";
+    workplaceName.style.paddingRight = "5px";
+    workplaceName.style.display = "inline-block"
+    container.appendChild(workplaceName)
+
     let color = document.createElement("div");
     color.style.width = "0.9em"
     color.style.height = "0.9em"
+    color.style.verticalAlign = "middle"
     if (workplace["WorkplaceProduction"].includes("production")) {
         color.style.background = "#89ab0f"
     } else if (workplace["WorkplaceProduction"].includes("downtime")) {
@@ -344,16 +359,9 @@ function displayWorkplaceData(elementId, workplace) {
     }
     color.style.border = "0.2px solid black"
     color.style.display = "inline-block"
+    color.style.marginRight = "2px"
     container.appendChild(color)
 
-    let workplaceName = document.createElement("div");
-    workplaceName.textContent = workplace["WorkplaceName"];
-    workplaceName.style.width = "220px";
-    workplaceName.style.display = "flex"
-    workplaceName.style.textAlign = "left";
-    workplaceName.style.paddingLeft = "5px";
-    workplaceName.style.fontWeight = "bold"
-    workplaceName.style.display = "inline-block"
-    container.appendChild(workplaceName)
+
     data.appendChild(container)
 }

@@ -157,7 +157,7 @@ func getLiveBestData(writer http.ResponseWriter, request *http.Request, params h
 	first.WorkplaceProduction = "99.7"
 	workplacesData = append(workplacesData, first)
 	var second WorkplaceData
-	second.WorkplaceName = "MATSUSHITA 620C"
+	second.WorkplaceName = "MATSUSHITA 620C LEFT ORDERED PRODUCTION"
 	second.WorkplaceProduction = "97.1"
 	workplacesData = append(workplacesData, second)
 	var third WorkplaceData
@@ -282,7 +282,7 @@ func getLiveAllData(writer http.ResponseWriter, request *http.Request, params ht
 	workplacesData = append(workplacesData, WorkplaceData{WorkplaceName: "CNC-14", WorkplaceProduction: "poweroff"})
 	workplacesData = append(workplacesData, WorkplaceData{WorkplaceName: "MATSUSHITA-120-I", WorkplaceProduction: "production"})
 	workplacesData = append(workplacesData, WorkplaceData{WorkplaceName: "MATSUSHITA-120-II", WorkplaceProduction: "downtime"})
-	workplacesData = append(workplacesData, WorkplaceData{WorkplaceName: "MATSUSHITA-620C", WorkplaceProduction: "production"})
+	workplacesData = append(workplacesData, WorkplaceData{WorkplaceName: "MATSUSHITA 620C LEFT ORDERED PRODUCTION", WorkplaceProduction: "production"})
 	workplacesData = append(workplacesData, WorkplaceData{WorkplaceName: "MATSUSHITA-620D", WorkplaceProduction: "production"})
 	var outputData BestWorstPoweroffOutputData
 	outputData.Result = "ok"

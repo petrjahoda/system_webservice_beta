@@ -91,7 +91,10 @@ Use software only as a [part of a system](https://github.com/petrjahoda/system) 
      - [ ] Alarm submenu      
      - [ ] Device submenu      
 
- 
+ Sketch design
+>![design](screenshots/design.png)
+
+Actual screenshot
 >![actual screenshot](screenshots/actual.png)
 
 © 2020 Petr Jahoda
