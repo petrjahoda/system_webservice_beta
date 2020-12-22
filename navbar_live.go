@@ -23,9 +23,9 @@ type LiveDataOutput struct {
 }
 
 type LiveOverviewDataOutput struct {
-	Production string
-	Downtime   string
-	Poweroff   string
+	Production []WorkplaceData
+	Downtime   []WorkplaceData
+	Poweroff   []WorkplaceData
 	Result     string
 }
 
@@ -38,17 +38,13 @@ type CalendarData struct {
 	ProductionValue int
 }
 
-type BestWorstPoweroffOutputData struct {
-	Data   []WorkplaceData
-	Result string
-}
-
 type WorkplaceData struct {
-	WorkplaceName       string
-	WorkplaceProduction string
+	WorkplaceName string
+	State         string
+	StateDuration string
 }
 
-func getCalendarData(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
+func getCalendarData(writer http.ResponseWriter, request *http.Request, _ httprouter.Params) {
 	logInfo("MAIN", "Parsing data")
 	var data LiveDataInput
 	err := json.NewDecoder(request.Body).Decode(&data)
@@ -80,7 +76,7 @@ func getCalendarData(writer http.ResponseWriter, request *http.Request, params h
 	return
 }
 
-func getLiveProductivityData(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
+func getLiveProductivityData(writer http.ResponseWriter, request *http.Request, _ httprouter.Params) {
 	logInfo("MAIN", "Parsing data")
 	var data LiveDataInput
 	err := json.NewDecoder(request.Body).Decode(&data)
@@ -109,7 +105,7 @@ func getLiveProductivityData(writer http.ResponseWriter, request *http.Request, 
 	return
 }
 
-func getLiveOverviewData(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
+func getLiveOverviewData(writer http.ResponseWriter, request *http.Request, _ httprouter.Params) {
 	logInfo("MAIN", "Parsing data")
 	var data LiveDataInput
 	err := json.NewDecoder(request.Body).Decode(&data)
@@ -124,169 +120,28 @@ func getLiveOverviewData(writer http.ResponseWriter, request *http.Request, para
 	}
 	logInfo("MAIN", "Processing live overview data started for "+data.Input)
 	//todo: process real live data from database
+	var productionWorkplaces []WorkplaceData
+	productionWorkplaces = append(productionWorkplaces, WorkplaceData{WorkplaceName: "CNC-1", State: "production", StateDuration: "4h1m"})
+	productionWorkplaces = append(productionWorkplaces, WorkplaceData{WorkplaceName: "CNC-4", State: "production", StateDuration: "4h0m"})
+	productionWorkplaces = append(productionWorkplaces, WorkplaceData{WorkplaceName: "CNC-5", State: "production", StateDuration: "3h51m"})
+	productionWorkplaces = append(productionWorkplaces, WorkplaceData{WorkplaceName: "CNC-9", State: "production", StateDuration: "3h43m"})
+	productionWorkplaces = append(productionWorkplaces, WorkplaceData{WorkplaceName: "CNC-7", State: "production", StateDuration: "2h43m"})
+	productionWorkplaces = append(productionWorkplaces, WorkplaceData{WorkplaceName: "CNC-8", State: "production", StateDuration: "1h17m"})
+
+	var downtimeWorkplaces []WorkplaceData
+	downtimeWorkplaces = append(downtimeWorkplaces, WorkplaceData{WorkplaceName: "MATSUSHITA 620C LEFT ORDERED PRODUCTION", State: "downtime", StateDuration: "12h1m"})
+	downtimeWorkplaces = append(downtimeWorkplaces, WorkplaceData{WorkplaceName: "MATSUSHITA 620D", State: "downtime", StateDuration: "8h12m"})
+	downtimeWorkplaces = append(downtimeWorkplaces, WorkplaceData{WorkplaceName: "CNC-2", State: "downtime", StateDuration: "3h11m"})
+
+	var poweroffWorkplaces []WorkplaceData
+	poweroffWorkplaces = append(poweroffWorkplaces, WorkplaceData{WorkplaceName: "CNC-3", State: "poweroff", StateDuration: "3d11h1m"})
+	poweroffWorkplaces = append(poweroffWorkplaces, WorkplaceData{WorkplaceName: "CNC-6", State: "poweroff", StateDuration: "12h12m"})
+
 	var outputData LiveOverviewDataOutput
 	outputData.Result = "ok"
-	outputData.Production = "999"
-	outputData.Downtime = "17"
-	outputData.Poweroff = "4"
-	writer.Header().Set("Content-Type", "application/json")
-	_ = json.NewEncoder(writer).Encode(outputData)
-	logInfo("MAIN", "Parsing data ended")
-	return
-}
-
-func getLiveBestData(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
-	logInfo("MAIN", "Parsing data")
-	var data LiveDataInput
-	err := json.NewDecoder(request.Body).Decode(&data)
-	if err != nil {
-		logError("MAIN", "Error parsing data: "+err.Error())
-		var responseData LiveDataOutput
-		responseData.Result = "nok"
-		writer.Header().Set("Content-Type", "application/json")
-		_ = json.NewEncoder(writer).Encode(responseData)
-		logInfo("MAIN", "Parsing data ended")
-		return
-	}
-	logInfo("MAIN", "Processing live best data started for "+data.Input)
-	//todo: process real live data from database
-
-	var workplacesData []WorkplaceData
-	var first WorkplaceData
-	first.WorkplaceName = "CNC-7"
-	first.WorkplaceProduction = "99.7"
-	workplacesData = append(workplacesData, first)
-	var second WorkplaceData
-	second.WorkplaceName = "MATSUSHITA 620C LEFT ORDERED PRODUCTION"
-	second.WorkplaceProduction = "97.1"
-	workplacesData = append(workplacesData, second)
-	var third WorkplaceData
-	third.WorkplaceName = "MATSUSHITA 120-I"
-	third.WorkplaceProduction = "96.9"
-	workplacesData = append(workplacesData, third)
-	var outputData BestWorstPoweroffOutputData
-	outputData.Result = "ok"
-	outputData.Data = workplacesData
-	writer.Header().Set("Content-Type", "application/json")
-	_ = json.NewEncoder(writer).Encode(outputData)
-	logInfo("MAIN", "Parsing data ended")
-	return
-}
-
-func getLiveWorstData(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
-	logInfo("MAIN", "Parsing data")
-	var data LiveDataInput
-	err := json.NewDecoder(request.Body).Decode(&data)
-	if err != nil {
-		logError("MAIN", "Error parsing data: "+err.Error())
-		var responseData LiveDataOutput
-		responseData.Result = "nok"
-		writer.Header().Set("Content-Type", "application/json")
-		_ = json.NewEncoder(writer).Encode(responseData)
-		logInfo("MAIN", "Parsing data ended")
-		return
-	}
-	logInfo("MAIN", "Processing live worst data started for "+data.Input)
-	//todo: process real live data from database
-
-	var workplacesData []WorkplaceData
-	var first WorkplaceData
-	first.WorkplaceName = "CNC-4"
-	first.WorkplaceProduction = "100.0"
-	workplacesData = append(workplacesData, first)
-	var second WorkplaceData
-	second.WorkplaceName = "CNC-5"
-	second.WorkplaceProduction = "99.1"
-	workplacesData = append(workplacesData, second)
-	var third WorkplaceData
-	third.WorkplaceName = "MATSUSHITA 120-II"
-	third.WorkplaceProduction = "96.4"
-	workplacesData = append(workplacesData, third)
-	var outputData BestWorstPoweroffOutputData
-	outputData.Result = "ok"
-	outputData.Data = workplacesData
-	writer.Header().Set("Content-Type", "application/json")
-	_ = json.NewEncoder(writer).Encode(outputData)
-	logInfo("MAIN", "Parsing data ended")
-	return
-}
-
-func getLivePoweroffData(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
-	logInfo("MAIN", "Parsing data")
-	var data LiveDataInput
-	err := json.NewDecoder(request.Body).Decode(&data)
-	if err != nil {
-		logError("MAIN", "Error parsing data: "+err.Error())
-		var responseData LiveDataOutput
-		responseData.Result = "nok"
-		writer.Header().Set("Content-Type", "application/json")
-		_ = json.NewEncoder(writer).Encode(responseData)
-		logInfo("MAIN", "Parsing data ended")
-		return
-	}
-	logInfo("MAIN", "Processing live poweroff data started for "+data.Input)
-	//todo: process real live data from database
-
-	var workplacesData []WorkplaceData
-	var first WorkplaceData
-	first.WorkplaceName = "CNC-14"
-	first.WorkplaceProduction = "24d 3h"
-	workplacesData = append(workplacesData, first)
-	var second WorkplaceData
-	second.WorkplaceName = "CNC-13"
-	second.WorkplaceProduction = "22d 12h"
-	workplacesData = append(workplacesData, second)
-	var third WorkplaceData
-	third.WorkplaceName = "CNC-11"
-	third.WorkplaceProduction = "6d 23h"
-	workplacesData = append(workplacesData, third)
-	var outputData BestWorstPoweroffOutputData
-	outputData.Result = "ok"
-	outputData.Data = workplacesData
-	writer.Header().Set("Content-Type", "application/json")
-	_ = json.NewEncoder(writer).Encode(outputData)
-	logInfo("MAIN", "Parsing data ended")
-	return
-}
-
-func getLiveAllData(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
-	logInfo("MAIN", "Parsing data")
-	var data LiveDataInput
-	err := json.NewDecoder(request.Body).Decode(&data)
-	if err != nil {
-		logError("MAIN", "Error parsing data: "+err.Error())
-		var responseData LiveDataOutput
-		responseData.Result = "nok"
-		writer.Header().Set("Content-Type", "application/json")
-		_ = json.NewEncoder(writer).Encode(responseData)
-		logInfo("MAIN", "Parsing data ended")
-		return
-	}
-	logInfo("MAIN", "Processing live all data started for "+data.Input)
-	//todo: process real live data from database
-
-	var workplacesData []WorkplaceData
-	workplacesData = append(workplacesData, WorkplaceData{WorkplaceName: "CNC-1", WorkplaceProduction: "production"})
-	workplacesData = append(workplacesData, WorkplaceData{WorkplaceName: "CNC-2", WorkplaceProduction: "downtime"})
-	workplacesData = append(workplacesData, WorkplaceData{WorkplaceName: "CNC-3", WorkplaceProduction: "production"})
-	workplacesData = append(workplacesData, WorkplaceData{WorkplaceName: "CNC-4", WorkplaceProduction: "downtime"})
-	workplacesData = append(workplacesData, WorkplaceData{WorkplaceName: "CNC-5", WorkplaceProduction: "downtime"})
-	workplacesData = append(workplacesData, WorkplaceData{WorkplaceName: "CNC-6", WorkplaceProduction: "downtime"})
-	workplacesData = append(workplacesData, WorkplaceData{WorkplaceName: "CNC-7", WorkplaceProduction: "production"})
-	workplacesData = append(workplacesData, WorkplaceData{WorkplaceName: "CNC-8", WorkplaceProduction: "production"})
-	workplacesData = append(workplacesData, WorkplaceData{WorkplaceName: "CNC-9", WorkplaceProduction: "production"})
-	workplacesData = append(workplacesData, WorkplaceData{WorkplaceName: "CNC-10", WorkplaceProduction: "downtime"})
-	workplacesData = append(workplacesData, WorkplaceData{WorkplaceName: "CNC-11", WorkplaceProduction: "poweroff"})
-	workplacesData = append(workplacesData, WorkplaceData{WorkplaceName: "CNC-12", WorkplaceProduction: "production"})
-	workplacesData = append(workplacesData, WorkplaceData{WorkplaceName: "CNC-13", WorkplaceProduction: "poweroff"})
-	workplacesData = append(workplacesData, WorkplaceData{WorkplaceName: "CNC-14", WorkplaceProduction: "poweroff"})
-	workplacesData = append(workplacesData, WorkplaceData{WorkplaceName: "MATSUSHITA-120-I", WorkplaceProduction: "production"})
-	workplacesData = append(workplacesData, WorkplaceData{WorkplaceName: "MATSUSHITA-120-II", WorkplaceProduction: "downtime"})
-	workplacesData = append(workplacesData, WorkplaceData{WorkplaceName: "MATSUSHITA 620C LEFT ORDERED PRODUCTION", WorkplaceProduction: "production"})
-	workplacesData = append(workplacesData, WorkplaceData{WorkplaceName: "MATSUSHITA-620D", WorkplaceProduction: "production"})
-	var outputData BestWorstPoweroffOutputData
-	outputData.Result = "ok"
-	outputData.Data = workplacesData
+	outputData.Production = productionWorkplaces
+	outputData.Downtime = downtimeWorkplaces
+	outputData.Poweroff = poweroffWorkplaces
 	writer.Header().Set("Content-Type", "application/json")
 	_ = json.NewEncoder(writer).Encode(outputData)
 	logInfo("MAIN", "Parsing data ended")
