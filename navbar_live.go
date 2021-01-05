@@ -121,21 +121,21 @@ func getLiveOverviewData(writer http.ResponseWriter, request *http.Request, _ ht
 	logInfo("MAIN", "Processing live overview data started for "+data.Input)
 	//todo: process real live data from database
 	var productionWorkplaces []WorkplaceData
-	productionWorkplaces = append(productionWorkplaces, WorkplaceData{WorkplaceName: "CNC-1", State: "production", StateDuration: "4h1m"})
-	productionWorkplaces = append(productionWorkplaces, WorkplaceData{WorkplaceName: "CNC-4", State: "production", StateDuration: "4h0m"})
-	productionWorkplaces = append(productionWorkplaces, WorkplaceData{WorkplaceName: "CNC-5", State: "production", StateDuration: "3h51m"})
-	productionWorkplaces = append(productionWorkplaces, WorkplaceData{WorkplaceName: "CNC-9", State: "production", StateDuration: "3h43m"})
-	productionWorkplaces = append(productionWorkplaces, WorkplaceData{WorkplaceName: "CNC-7", State: "production", StateDuration: "2h43m"})
-	productionWorkplaces = append(productionWorkplaces, WorkplaceData{WorkplaceName: "CNC-8", State: "production", StateDuration: "1h17m"})
+	productionWorkplaces = append(productionWorkplaces, WorkplaceData{WorkplaceName: "CNC-1", State: "production", StateDuration: "4h 1m"})
+	productionWorkplaces = append(productionWorkplaces, WorkplaceData{WorkplaceName: "CNC-4", State: "production", StateDuration: "4h 0m"})
+	productionWorkplaces = append(productionWorkplaces, WorkplaceData{WorkplaceName: "CNC-5", State: "production", StateDuration: "3h 51m"})
+	productionWorkplaces = append(productionWorkplaces, WorkplaceData{WorkplaceName: "CNC-9", State: "production", StateDuration: "3h 43m"})
+	productionWorkplaces = append(productionWorkplaces, WorkplaceData{WorkplaceName: "CNC-7", State: "production", StateDuration: "2h 43m"})
+	productionWorkplaces = append(productionWorkplaces, WorkplaceData{WorkplaceName: "CNC-8", State: "production", StateDuration: "1h 17m"})
 
 	var downtimeWorkplaces []WorkplaceData
-	downtimeWorkplaces = append(downtimeWorkplaces, WorkplaceData{WorkplaceName: "MATSUSHITA 620C LEFT ORDERED PRODUCTION", State: "downtime", StateDuration: "12h1m"})
-	downtimeWorkplaces = append(downtimeWorkplaces, WorkplaceData{WorkplaceName: "MATSUSHITA 620D", State: "downtime", StateDuration: "8h12m"})
-	downtimeWorkplaces = append(downtimeWorkplaces, WorkplaceData{WorkplaceName: "CNC-2", State: "downtime", StateDuration: "3h11m"})
+	downtimeWorkplaces = append(downtimeWorkplaces, WorkplaceData{WorkplaceName: "MATSUSHITA 620C LEFT ORDERED PRODUCTION", State: "downtime", StateDuration: "12 h1m"})
+	downtimeWorkplaces = append(downtimeWorkplaces, WorkplaceData{WorkplaceName: "MATSUSHITA 620D", State: "downtime", StateDuration: "8h 12m"})
+	downtimeWorkplaces = append(downtimeWorkplaces, WorkplaceData{WorkplaceName: "CNC-2", State: "downtime", StateDuration: "3h 11m"})
 
 	var poweroffWorkplaces []WorkplaceData
-	poweroffWorkplaces = append(poweroffWorkplaces, WorkplaceData{WorkplaceName: "CNC-3", State: "poweroff", StateDuration: "3d11h1m"})
-	poweroffWorkplaces = append(poweroffWorkplaces, WorkplaceData{WorkplaceName: "CNC-6", State: "poweroff", StateDuration: "12h12m"})
+	poweroffWorkplaces = append(poweroffWorkplaces, WorkplaceData{WorkplaceName: "CNC-3", State: "poweroff", StateDuration: "3d 11h 1m"})
+	poweroffWorkplaces = append(poweroffWorkplaces, WorkplaceData{WorkplaceName: "CNC-6", State: "poweroff", StateDuration: "12h 12m"})
 
 	var outputData LiveOverviewDataOutput
 	outputData.Result = "ok"

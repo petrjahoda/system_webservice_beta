@@ -52,8 +52,8 @@ function displayData(result, elementId, actual, last) {
     }
     data.appendChild(arrow)
     let actualColor = document.createElement("div");
-    actualColor.style.width = "0.9em"
-    actualColor.style.height = "0.9em"
+    actualColor.style.width = "15px"
+    actualColor.style.height = "15px"
     actualColor.style.background = "rgba(137,171,15," + (+actual) / 100
     actualColor.style.border = "0.2px solid black"
     data.appendChild(actualColor)
@@ -167,7 +167,7 @@ function displayOverview(input) {
 function displayOverViewData(elementId, resultElement, elementColor) {
     console.log("Processing data with size of " + resultElement.length + " for " + elementId)
     const data = document.getElementById(elementId)
-    data.textContent = resultElement.length + " " + data.textContent
+    data.textContent = resultElement.length + " " + data.textContent.toUpperCase()
     let content = document.createElement("div")
     content.style.display = "block"
     content.style.marginTop = "20px"
@@ -175,11 +175,11 @@ function displayOverViewData(elementId, resultElement, elementColor) {
     for (const workplace of resultElement) {
         let workplaceContent = document.createElement("div")
         workplaceContent.style.marginTop = "5px"
+        workplaceContent.style.marginLeft = "5px"
+        workplaceContent.style.marginRight = "5px"
         workplaceContent.style.display = "flex"
-        workplaceContent.style.justifyContent = "center"
-
+        workplaceContent.style.justifyContent = "space-evenly"
         content.appendChild(workplaceContent)
-
 
         let color = document.createElement("div");
         color.style.width = "15px"
@@ -189,26 +189,19 @@ function displayOverViewData(elementId, resultElement, elementColor) {
         color.style.display = "flex"
         workplaceContent.appendChild(color)
 
-        let actualPercent = document.createElement("div");
-        actualPercent.textContent = workplace["StateDuration"];
-        actualPercent.style.fontSize = "0.9em"
-        actualPercent.style.fontWeight = "bold"
-        actualPercent.style.paddingLeft = "5px";
-        // actualPercent.style.color = elementColor
-        workplaceContent.appendChild(actualPercent)
-
-
-
-
         let workplaceName = document.createElement("div");
-        workplaceName.textContent = workplace["WorkplaceName"].replace(/(.{20})..+/, "$1…");
+        workplaceName.textContent = workplace["WorkplaceName"].substring(0,25) + " . " + workplace["StateDuration"];
         workplaceName.title = workplace["WorkplaceName"];
-        workplaceName.style.paddingLeft = "5px";
+        workplaceName.style.fontWeight = "normal"
         workplaceName.style.fontSize = "0.9em"
-        workplaceName.style.fontWeight = "bold"
-        // workplaceName.style.color = elementColor
+        
+        workplaceName.id = workplace["WorkplaceName"]
         workplaceContent.appendChild(workplaceName)
-
-
+        let elementData = document.getElementById(workplace["WorkplaceName"])
+        console.log(elementData.clientWidth)
+        while (elementData.clientWidth <= 275) {
+            elementData.textContent = elementData.textContent.replace(".", "..")
+        }
+        elementData.style.marginRight = "" + 278-elementData.clientWidth + "px"
     }
 }
