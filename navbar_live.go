@@ -3,13 +3,17 @@ package main
 import (
 	"encoding/json"
 	"github.com/julienschmidt/httprouter"
+	"github.com/petrjahoda/database"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 	"math/rand"
 	"net/http"
 	"time"
 )
 
 type LiveDataInput struct {
-	Input string
+	Input     string
+	Selection string
 }
 
 type LiveDataOutput struct {
@@ -44,6 +48,16 @@ type WorkplaceData struct {
 	StateDuration string
 }
 
+type SelectionDataOutput struct {
+	Result        string
+	SelectionData []string
+}
+
+type CompanyOutput struct {
+	Result      string
+	CompanyName string
+}
+
 func getCalendarData(writer http.ResponseWriter, request *http.Request, _ httprouter.Params) {
 	logInfo("MAIN", "Parsing data")
 	var data LiveDataInput
@@ -57,7 +71,7 @@ func getCalendarData(writer http.ResponseWriter, request *http.Request, _ httpro
 		logInfo("MAIN", "Parsing data ended")
 		return
 	}
-	logInfo("MAIN", "Processing calendar data started for "+data.Input)
+	logInfo("MAIN", "Processing calendar data started for "+data.Input+" and "+data.Selection)
 	//todo: process real calendar data from database
 
 	var calendarData []CalendarData
@@ -118,7 +132,7 @@ func getLiveOverviewData(writer http.ResponseWriter, request *http.Request, _ ht
 		logInfo("MAIN", "Parsing data ended")
 		return
 	}
-	logInfo("MAIN", "Processing live overview data started for "+data.Input)
+	logInfo("MAIN", "Processing live overview data started for "+data.Input+" and "+data.Selection)
 	//todo: process real live data from database
 	var productionWorkplaces []WorkplaceData
 	productionWorkplaces = append(productionWorkplaces, WorkplaceData{WorkplaceName: "CNC-1", State: "production", StateDuration: "4h 1m"})
@@ -142,6 +156,67 @@ func getLiveOverviewData(writer http.ResponseWriter, request *http.Request, _ ht
 	outputData.Production = productionWorkplaces
 	outputData.Downtime = downtimeWorkplaces
 	outputData.Poweroff = poweroffWorkplaces
+	writer.Header().Set("Content-Type", "application/json")
+	_ = json.NewEncoder(writer).Encode(outputData)
+	logInfo("MAIN", "Parsing data ended")
+	return
+}
+
+func getLiveSelection(writer http.ResponseWriter, request *http.Request, _ httprouter.Params) {
+	logInfo("MAIN", "Parsing data")
+	var data LiveDataInput
+	err := json.NewDecoder(request.Body).Decode(&data)
+	if err != nil {
+		logError("MAIN", "Error parsing data: "+err.Error())
+		var responseData LiveDataOutput
+		responseData.Result = "nok"
+		writer.Header().Set("Content-Type", "application/json")
+		_ = json.NewEncoder(writer).Encode(responseData)
+		logInfo("MAIN", "Parsing data ended")
+		return
+	}
+	logInfo("MAIN", "Processing selection started for "+data.Input)
+	//todo: download real live data from database
+	var selectionData []string
+	if data.Input == "group" {
+		selectionData = append(selectionData, "Hall A")
+		selectionData = append(selectionData, "Hall B")
+		selectionData = append(selectionData, "Hall C")
+	}
+	if data.Input == "workplace" {
+		selectionData = append(selectionData, "CNC 1")
+		selectionData = append(selectionData, "CNC 2")
+		selectionData = append(selectionData, "MATSUSHITA 620D")
+	}
+
+	var outputData SelectionDataOutput
+	outputData.Result = "ok"
+	outputData.SelectionData = selectionData
+	writer.Header().Set("Content-Type", "application/json")
+	_ = json.NewEncoder(writer).Encode(outputData)
+	logInfo("MAIN", "Parsing data ended")
+	return
+}
+func getCompanyName(writer http.ResponseWriter, request *http.Request, _ httprouter.Params) {
+	logInfo("MAIN", "Downloading company name")
+
+	db, err := gorm.Open(postgres.Open(config), &gorm.Config{})
+	sqlDB, _ := db.DB()
+	defer sqlDB.Close()
+	if err != nil {
+		logError("MAIN", "Cannot connect to database")
+		var responseData CompanyOutput
+		responseData.Result = "nok"
+		writer.Header().Set("Content-Type", "application/json")
+		_ = json.NewEncoder(writer).Encode(responseData)
+		logInfo("MAIN", "Verifying user ended")
+		return
+	}
+	var settings database.Setting
+	db.Where("name = 'company'").First(&settings)
+	var outputData CompanyOutput
+	outputData.Result = "ok"
+	outputData.CompanyName = settings.Value
 	writer.Header().Set("Content-Type", "application/json")
 	_ = json.NewEncoder(writer).Encode(outputData)
 	logInfo("MAIN", "Parsing data ended")

@@ -54,7 +54,7 @@ func getContent(writer http.ResponseWriter, request *http.Request, params httpro
 		logInfo("MAIN", "Verifying user ended")
 		return
 	}
-
+	logInfo("MAIN", "Downloading translation for "+data.Content)
 	var databaseMenuLocales []database.Locale
 	db.Where("name like ?", data.Content+"-%").Find(&databaseMenuLocales)
 	var menuLocales []MenuLocale

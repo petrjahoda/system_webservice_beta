@@ -1,14 +1,8 @@
-function callNavbarLiveCompanyJs() {
-    console.log("Starting processing data for navbar-live-company")
-    displayLiveProductivityData("company")
-    displayCalendar("company")
-    displayOverview("company")
-}
-
-function displayLiveProductivityData(input) {
+function displayLiveProductivityData(input, selectionData) {
     console.log("displaying live productivity data for " + input)
     let data = {
         input: input,
+        selectionData: selectionData
     };
     fetch("/get_live_productivity_data", {
         method: "POST",
@@ -16,9 +10,9 @@ function displayLiveProductivityData(input) {
     }).then((response) => {
         response.text().then(function (data) {
             let result = JSON.parse(data);
-            displayData(result, "navbar-live-company-1-data-day", result["Today"], result["Yesterday"]);
-            displayData(result, "navbar-live-company-1-data-week", result["ThisWeek"], result["LastWeek"]);
-            displayData(result, "navbar-live-company-1-data-month", result["ThisMonth"], result["LastMonth"]);
+            displayData(result, "navbar-live-" + input + "-1-data-day", result["Today"], result["Yesterday"]);
+            displayData(result, "navbar-live-" + input + "-1-data-week", result["ThisWeek"], result["LastWeek"]);
+            displayData(result, "navbar-live-" + input + "-1-data-month", result["ThisMonth"], result["LastMonth"]);
         });
     }).catch((error) => {
         console.log(error)
@@ -27,6 +21,7 @@ function displayLiveProductivityData(input) {
 
 function displayData(result, elementId, actual, last) {
     const data = document.getElementById(elementId)
+    data.innerHTML = ""
     let lastPercent = document.createElement("div");
     lastPercent.textContent = last + "%";
     lastPercent.style.width = "55px";
@@ -66,19 +61,22 @@ function displayData(result, elementId, actual, last) {
     data.appendChild(actualPercent)
 }
 
-function displayCalendar(input) {
+function displayCalendar(input, selectionData) {
     console.log("displaying calendar for " + input)
     d3.json("/get_calendar_data", {
         method: "POST",
-        body: JSON.stringify({input: input})
+        body: JSON.stringify({input: input, selection: selectionData})
     }).then((data) => {
-        drawCalendar(data["Data"]);
+        drawCalendar(data["Data"], input);
     }).catch((error) => {
         console.error("Error loading the data: " + error);
     });
 }
 
-function drawCalendar(data) {
+function drawCalendar(data, input) {
+    if ((input === "group") || (input === "workplace")) {
+        document.getElementById("navbar-live-" + input + "-2-calendar-chart").innerHTML = ""
+    }
     let result = new Map(data.map(value => [value["Date"], value["ProductionValue"]]));
     let thisYear = new Date().getFullYear()
     const width = 960, height = 136, cellSize = 17;
@@ -86,7 +84,7 @@ function drawCalendar(data) {
         .domain([0, 100])
         .range(["#f3f6e7", "#e7eecf", "#dbe5b7", "#d0dd9f", "#c4d587", "#b8cd6f", "#acc457", "#a1bc3f", "#94b327", "#89ab0f"]);
 
-    const svg = d3.select("#navbar-live-company-2-calendar-chart")
+    const svg = d3.select("#navbar-live-" + input + "-2-calendar-chart")
         .selectAll("svg")
         .data(d3.range(thisYear - 1, thisYear + 1))
         .enter().append("svg")
@@ -144,10 +142,11 @@ function drawCalendar(data) {
 }
 
 
-function displayOverview(input) {
+function displayOverview(input, selectionData) {
     console.log("displaying overview for " + input)
     let data = {
         input: input,
+        selection: selectionData,
     };
     fetch("/get_live_overview_data", {
         method: "POST",
@@ -155,9 +154,9 @@ function displayOverview(input) {
     }).then((response) => {
         response.text().then(function (data) {
             let result = JSON.parse(data);
-            displayOverViewData("navbar-live-company-3-production", result["Production"], "#89ab0f");
-            displayOverViewData("navbar-live-company-3-downtime", result["Downtime"], "#e6ad3c");
-            displayOverViewData("navbar-live-company-3-poweroff", result["Poweroff"], "#de6b59");
+            displayOverViewData("navbar-live-" + input + "-3-production", result["Production"], "#89ab0f");
+            displayOverViewData("navbar-live-" + input + "-3-downtime", result["Downtime"], "#e6ad3c");
+            displayOverViewData("navbar-live-" + input + "-3-poweroff", result["Poweroff"], "#de6b59");
         });
     }).catch((error) => {
         console.log(error)
@@ -165,9 +164,18 @@ function displayOverview(input) {
 }
 
 function displayOverViewData(elementId, resultElement, elementColor) {
-    console.log("Processing data with size of " + resultElement.length + " for " + elementId)
+    console.log("Clearing previous data")
+    let node = document.getElementById(elementId);
+    node.querySelectorAll('*').forEach(n => n.remove());
+    console.log("Updating text for " + elementId)
     const data = document.getElementById(elementId)
-    data.textContent = resultElement.length + " " + data.textContent.toUpperCase()
+    let alreadyUpdatedText = data.textContent.substring(data.textContent.indexOf("workplace"))
+    if (alreadyUpdatedText.length > 0) {
+        data.textContent = resultElement.length + " " + alreadyUpdatedText
+    } else {
+        data.textContent = resultElement.length + " " + data.textContent.toUpperCase()
+    }
+    console.log("Adding new data with size of " + resultElement.length + " for " + elementId)
     let content = document.createElement("div")
     content.style.display = "block"
     content.style.marginTop = "20px"
@@ -190,18 +198,76 @@ function displayOverViewData(elementId, resultElement, elementColor) {
         workplaceContent.appendChild(color)
 
         let workplaceName = document.createElement("div");
-        workplaceName.textContent = workplace["WorkplaceName"].substring(0,25) + " . " + workplace["StateDuration"];
+        workplaceName.textContent = workplace["WorkplaceName"].substring(0, 25) + " . " + workplace["StateDuration"];
         workplaceName.title = workplace["WorkplaceName"];
         workplaceName.style.fontWeight = "normal"
         workplaceName.style.fontSize = "0.9em"
-        
+
         workplaceName.id = workplace["WorkplaceName"]
         workplaceContent.appendChild(workplaceName)
         let elementData = document.getElementById(workplace["WorkplaceName"])
-        console.log(elementData.clientWidth)
         while (elementData.clientWidth <= 275) {
             elementData.textContent = elementData.textContent.replace(".", "..")
         }
-        elementData.style.marginRight = "" + 278-elementData.clientWidth + "px"
+        elementData.style.marginRight = "" + 278 - elementData.clientWidth + "px"
     }
+}
+
+
+function downloadSelection(input) {
+    console.log("downloading selection for " + input)
+    let data = {
+        input: input,
+    };
+    fetch("/get_live_selection", {
+        method: "POST",
+        body: JSON.stringify(data)
+    }).then((response) => {
+        response.text().then(function (data) {
+            let result = JSON.parse(data);
+            displayLiveSelection("live-select-" + input, result["SelectionData"], input);
+            let selectionElement = document.getElementById("live-select-" + input);
+            selectionElement.addEventListener("change", (event) => {
+                console.log(selectionElement.value)
+                sessionStorage.setItem(input + "Name", selectionElement.value)
+                displayLiveProductivityData(input, selectionElement.value)
+                displayCalendar(input, selectionElement.value)
+                displayOverview(input, selectionElement.value)
+            })
+            return result["SelectionData"]
+        });
+
+    }).catch((error) => {
+        console.log(error)
+    });
+}
+
+function displayLiveSelection(element, selectionData, input) {
+    let content = document.getElementById(element)
+    for (let selection of selectionData) {
+        let selectionData = document.createElement("option")
+        selectionData.value = selection
+        selectionData.appendChild(document.createTextNode(selection));
+        if (selection === sessionStorage.getItem(input + "Name")) {
+            console.log("match for " + selection)
+            selectionData.selected = "selected"
+        }
+        content.appendChild(selectionData)
+    }
+}
+
+function displayCompanyName(company) {
+    console.log("downloading name for " + company)
+
+    fetch("/get_company_name", {
+        method: "POST",
+    }).then((response) => {
+        response.text().then(function (data) {
+            let result = JSON.parse(data);
+            document.getElementById("navbar-live-company-name").textContent = result["CompanyName"]
+        });
+
+    }).catch((error) => {
+        console.log(error)
+    });
 }

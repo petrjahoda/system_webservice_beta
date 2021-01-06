@@ -67,10 +67,8 @@ func (p *program) run() {
 	router.POST("/get_live_productivity_data", getLiveProductivityData)
 	router.POST("/get_calendar_data", getCalendarData)
 	router.POST("/get_live_overview_data", getLiveOverviewData)
-	//router.POST("/get_live_best_data", getLiveBestData)
-	//router.POST("/get_live_worst_data", getLiveWorstData)
-	//router.POST("/get_live_poweroff_data", getLivePoweroffData)
-	//router.POST("/get_live_all_data", getLiveAllData)
+	router.POST("/get_live_selection", getLiveSelection)
+	router.POST("/get_company_name", getCompanyName)
 
 	err := http.ListenAndServe(":80", router)
 	if err != nil {

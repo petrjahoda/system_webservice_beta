@@ -40,9 +40,9 @@ Use software only as a [part of a system](https://github.com/petrjahoda/system) 
  - [x] All pages structure
  - [ ] Live menu
     - [x] Factory submenu
-    - [ ] Group submenu --IN PROGRESS--
-    - [ ] Workplace submenu
- - [ ] Charts menu
+    - [x] Group submenu 
+    - [x] Workplace submenu
+ - [ ] Charts menu --IN PROGRESS--
     - [ ] Standard Charts submenu
     - [ ] Special Charts submenu
  - [ ] Statistics menu

@@ -16,6 +16,11 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html) rules.
 
 ## [2021.1.1.5] - 2021-01-05
 
+### Added
+- completed whole live menu for all three submenus
+
+## [2021.1.1.5] - 2021-01-05
+
 ### Changed
 - company live design changed
 

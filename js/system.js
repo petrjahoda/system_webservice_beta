@@ -41,18 +41,39 @@ navbar.addEventListener("click", (event) => {
     }
 })
 
+
+
+
 function Process(menuData) {
     if (menuData.includes("navbar-live-company")) {
         console.log("Processing page " + menuData)
-        callNavbarLiveCompanyJs()
+        displayCompanyName("company")
+        displayLiveProductivityData("company", "")
+        displayCalendar("company", "")
+        displayOverview("company", "")
     }
     if (menuData.includes("navbar-live-group")) {
         console.log("Processing page " + menuData)
+        let selectionData = downloadSelection("group")
+        let savedSelection = sessionStorage.getItem("groupName")
+        if (savedSelection.length === 0) {
+            savedSelection = selectionData[0]
+        }
+        displayLiveProductivityData("group", savedSelection)
+        displayCalendar("group", savedSelection)
+        displayOverview("group", savedSelection)
     }
     if (menuData.includes("navbar-live-workplace")) {
         console.log("Processing page " + menuData)
+        let selectionData = downloadSelection("workplace")
+        let savedSelection = sessionStorage.getItem("workplaceName")
+        if (savedSelection.length === 0) {
+            savedSelection = selectionData[0]
+        }
+        displayLiveProductivityData("workplace", savedSelection)
+        displayCalendar("workplace", savedSelection)
+        displayWorkplaceData("workplace", savedSelection)
     }
-
 }
 
 navbarMenu.addEventListener("click", (event) => {
