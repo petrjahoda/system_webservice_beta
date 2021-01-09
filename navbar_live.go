@@ -53,6 +53,19 @@ type SelectionDataOutput struct {
 	SelectionData []string
 }
 
+type WorkplaceDataOutput struct {
+	Result            string
+	Order             string
+	OrderDuration     time.Duration
+	User              string
+	Downtime          string
+	DowntimeDuration  time.Duration
+	Breakdown         string
+	BreakdownDuration time.Duration
+	Alarm             string
+	AlarmDuration     time.Duration
+}
+
 type CompanyOutput struct {
 	Result      string
 	CompanyName string
@@ -217,6 +230,33 @@ func getCompanyName(writer http.ResponseWriter, request *http.Request, _ httprou
 	var outputData CompanyOutput
 	outputData.Result = "ok"
 	outputData.CompanyName = settings.Value
+	writer.Header().Set("Content-Type", "application/json")
+	_ = json.NewEncoder(writer).Encode(outputData)
+	logInfo("MAIN", "Parsing data ended")
+	return
+}
+func getWorkplaceData(writer http.ResponseWriter, request *http.Request, _ httprouter.Params) {
+	logInfo("MAIN", "Parsing data")
+	var data LiveDataInput
+	err := json.NewDecoder(request.Body).Decode(&data)
+	if err != nil {
+		logError("MAIN", "Error parsing data: "+err.Error())
+		var responseData WorkplaceDataOutput
+		responseData.Result = "nok"
+		writer.Header().Set("Content-Type", "application/json")
+		_ = json.NewEncoder(writer).Encode(responseData)
+		logInfo("MAIN", "Parsing data ended")
+		return
+	}
+	logInfo("MAIN", "Processing workplace data for "+data.Input)
+	//todo: download real live data for workplace from database
+	var outputData WorkplaceDataOutput
+	outputData.Result = "ok"
+	outputData.Order = "OP-1234-12"
+	outputData.OrderDuration = 127 * time.Minute
+	outputData.User = "Petr Jahoda"
+	outputData.Downtime = "Cleaning"
+	outputData.DowntimeDuration = 12 * time.Minute
 	writer.Header().Set("Content-Type", "application/json")
 	_ = json.NewEncoder(writer).Encode(outputData)
 	logInfo("MAIN", "Parsing data ended")

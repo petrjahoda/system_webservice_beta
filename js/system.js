@@ -41,9 +41,6 @@ navbar.addEventListener("click", (event) => {
     }
 })
 
-
-
-
 function Process(menuData) {
     if (menuData.includes("navbar-live-company")) {
         console.log("Processing page " + menuData)

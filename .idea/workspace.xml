@@ -1,25 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f4279880-9db2-4e82-91da-7ce54060e021" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/189878a8-ac07-4d15-9931-ed82d7860fe1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/189878a8-ac07-4d15-9931-ed82d7860fe1.xml" afterDir="false" />
+    <list default="true" id="f4279880-9db2-4e82-91da-7ce54060e021" name="Default Changelist" comment="## [2021.1.1.5] - 2021-01-05&#10;&#10;### Added&#10;- completed whole live menu for all three submenus">
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources/88225f09-21eb-47eb-a45e-bc45ba457630.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources/88225f09-21eb-47eb-a45e-bc45ba457630/storage_v2/_src_/schema/information_schema.FNRwLQ.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources/88225f09-21eb-47eb-a45e-bc45ba457630/storage_v2/_src_/schema/sys.zb4BAA.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources/88225f09-21eb-47eb-a45e-bc45ba457630/storage_v2/_src_/schema/sys.zb4BAA.zip" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources/d3eca79a-36d1-45a6-ad0d-8c6125d4b2ca.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources/d3eca79a-36d1-45a6-ad0d-8c6125d4b2ca/storage_v2/_src_/schema/mysql.osA4Bg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources/d3eca79a-36d1-45a6-ad0d-8c6125d4b2ca/storage_v2/_src_/schema/mysql.osA4Bg.zip" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources/f7975c0e-e8f5-4bf9-a6b9-ab892dc73cb6.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources/f7975c0e-e8f5-4bf9-a6b9-ab892dc73cb6/storage_v2/_src_/database/master.YiqNvw.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources/f7975c0e-e8f5-4bf9-a6b9-ab892dc73cb6/storage_v2/_src_/database/master.YiqNvw/schema/INFORMATION_SCHEMA.NBgcMw.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources/f7975c0e-e8f5-4bf9-a6b9-ab892dc73cb6/storage_v2/_src_/database/master.YiqNvw/schema/db_accessadmin.KqpDJg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources/f7975c0e-e8f5-4bf9-a6b9-ab892dc73cb6/storage_v2/_src_/database/master.YiqNvw/schema/db_backupoperator.R9Ifpg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources/f7975c0e-e8f5-4bf9-a6b9-ab892dc73cb6/storage_v2/_src_/database/master.YiqNvw/schema/db_datareader.To823g.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources/f7975c0e-e8f5-4bf9-a6b9-ab892dc73cb6/storage_v2/_src_/database/master.YiqNvw/schema/db_datawriter._tp55w.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources/f7975c0e-e8f5-4bf9-a6b9-ab892dc73cb6/storage_v2/_src_/database/master.YiqNvw/schema/db_ddladmin.hGWOrg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources/f7975c0e-e8f5-4bf9-a6b9-ab892dc73cb6/storage_v2/_src_/database/master.YiqNvw/schema/db_denydatareader.2lWItw.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources/f7975c0e-e8f5-4bf9-a6b9-ab892dc73cb6/storage_v2/_src_/database/master.YiqNvw/schema/db_denydatawriter.iqHLwA.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources/f7975c0e-e8f5-4bf9-a6b9-ab892dc73cb6/storage_v2/_src_/database/master.YiqNvw/schema/db_owner.souIfA.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources/f7975c0e-e8f5-4bf9-a6b9-ab892dc73cb6/storage_v2/_src_/database/master.YiqNvw/schema/db_securityadmin.Dj5jKg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources/f7975c0e-e8f5-4bf9-a6b9-ab892dc73cb6/storage_v2/_src_/database/master.YiqNvw/schema/dbo.sYMBAA.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources/f7975c0e-e8f5-4bf9-a6b9-ab892dc73cb6/storage_v2/_src_/database/master.YiqNvw/schema/dbo.sYMBAA.zip" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources/f7975c0e-e8f5-4bf9-a6b9-ab892dc73cb6/storage_v2/_src_/database/master.YiqNvw/schema/guest.2C3iBQ.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources/f7975c0e-e8f5-4bf9-a6b9-ab892dc73cb6/storage_v2/_src_/database/master.YiqNvw/schema/sys.zb4BAA.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/js/humanize-duration.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/content.go" beforeDir="false" afterPath="$PROJECT_DIR$/content.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/css/system.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/system.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/html/content/navbar-live-company.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/content/navbar-live-company.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/html/content/navbar-live-group.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/content/navbar-live-group.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/html/content/navbar-live-workplace.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/content/navbar-live-workplace.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/html/system.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/system.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/navbar-live-company.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/navbar-live.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/navbar-live-group.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/navbar-live-workplace.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/navbar-live.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/navbar-live.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/system.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/system.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/navbar_live.go" beforeDir="false" afterPath="$PROJECT_DIR$/navbar_live.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screenshots/actual.png" beforeDir="false" afterPath="$PROJECT_DIR$/screenshots/actual.png" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,7 +40,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="DarkyenusTimeTracker">
-    <option name="totalTimeSeconds" value="116699" />
+    <option name="totalTimeSeconds" value="119169" />
     <option name="gitIntegration" value="true" />
     <option name="naggedAbout" value="1" />
   </component>
@@ -45,6 +58,14 @@
   <component name="GOROOT" url="file://$PROJECT_DIR$/../sdk/go1.15.6" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
   </component>
   <component name="GoLibraries">
     <option name="indexEntireGoPath" value="false" />
@@ -69,7 +90,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/js" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
@@ -82,9 +103,9 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/js" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/css" />
-      <recent name="$PROJECT_DIR$/js" />
       <recent name="$PROJECT_DIR$/screenshots" />
       <recent name="$PROJECT_DIR$/html/content" />
     </key>
@@ -143,7 +164,8 @@
     <MESSAGE value="## [2020.4.3.21] - 2020-12-21&#10;&#10;### Changed&#10;- d3 code reformat" />
     <MESSAGE value="## [2020.4.3.22] - 2020-12-22&#10;&#10;### Changed&#10;- company live design changed" />
     <MESSAGE value="## [2021.1.1.5] - 2021-01-05&#10;&#10;### Changed&#10;- company live design changed" />
-    <option name="LAST_COMMIT_MESSAGE" value="## [2021.1.1.5] - 2021-01-05&#10;&#10;### Changed&#10;- company live design changed" />
+    <MESSAGE value="## [2021.1.1.5] - 2021-01-05&#10;&#10;### Added&#10;- completed whole live menu for all three submenus" />
+    <option name="LAST_COMMIT_MESSAGE" value="## [2021.1.1.5] - 2021-01-05&#10;&#10;### Added&#10;- completed whole live menu for all three submenus" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
   </component>

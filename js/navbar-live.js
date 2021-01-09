@@ -258,13 +258,61 @@ function displayLiveSelection(element, selectionData, input) {
 
 function displayCompanyName(company) {
     console.log("downloading name for " + company)
-
     fetch("/get_company_name", {
         method: "POST",
     }).then((response) => {
         response.text().then(function (data) {
             let result = JSON.parse(data);
             document.getElementById("navbar-live-company-name").textContent = result["CompanyName"]
+        });
+
+    }).catch((error) => {
+        console.log(error)
+    });
+}
+
+
+function displayWorkplaceData(workplace, savedSelection) {
+    console.log("downloading workplace data for  for " + savedSelection)
+    let data = {
+        input: savedSelection,
+    };
+    fetch("/get_workplace_data", {
+        method: "POST",
+        body: JSON.stringify(data)
+    }).then((response) => {
+        response.text().then(function (data) {
+            let result = JSON.parse(data);
+            console.log(result["OrderDuration"])
+            const shortEnglishHumanizer = humanizeDuration.humanizer({
+                language: "shortEn",
+                languages: {
+                    shortEn: {
+                        y: () => "y",
+                        mo: () => "mo",
+                        w: () => "w",
+                        d: () => "d",
+                        h: () => "h",
+                        m: () => "m",
+                        s: () => "s",
+                        ms: () => "ms",
+                    },
+                },
+            });
+            if (result["Order"].length > 0) {
+                document.getElementById("navbar-live-workplace-3-order-data").textContent = result["Order"] + " (" + shortEnglishHumanizer(result["OrderDuration"] / 1000000) + ")"
+            }
+            document.getElementById("navbar-live-workplace-3-user-data").textContent = result["User"]
+            if (result["Downtime"].length > 0) {
+                document.getElementById("navbar-live-workplace-3-downtime-data").textContent = result["Downtime"] + " (" + shortEnglishHumanizer(result["DowntimeDuration"] / 1000000) + ")"
+            }
+            if (result["Breakdown"].length > 0) {
+                document.getElementById("navbar-live-workplace-3-breakdown-data").textContent = result["Breakdown"] + " (" + shortEnglishHumanizer(result["BreakdownDuration"] / 1000000) + ")"
+            }
+            if (result["Alarm"].length > 0) {
+                document.getElementById("navbar-live-workplace-3-alarm-data").textContent = result["Alarm"] + " (" + shortEnglishHumanizer(result["AlarmDuration"] / 1000000) + ")"
+            }
+
         });
 
     }).catch((error) => {
