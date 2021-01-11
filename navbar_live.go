@@ -37,7 +37,8 @@ type LiveOverviewDataOutput struct {
 }
 
 type CalendarDataOutput struct {
-	Data []CalendarData
+	Result string
+	Data   []CalendarData
 }
 
 type CalendarData struct {
@@ -75,12 +76,13 @@ type CompanyOutput struct {
 }
 
 func getCalendarData(writer http.ResponseWriter, request *http.Request, _ httprouter.Params) {
+	start := time.Now()
 	logInfo("MAIN", "Parsing data")
 	var data LiveDataInput
 	err := json.NewDecoder(request.Body).Decode(&data)
 	if err != nil {
 		logError("MAIN", "Error parsing data: "+err.Error())
-		var responseData LiveDataOutput
+		var responseData CalendarDataOutput
 		responseData.Result = "nok: " + err.Error()
 		writer.Header().Set("Content-Type", "application/json")
 		_ = json.NewEncoder(writer).Encode(responseData)
@@ -89,7 +91,24 @@ func getCalendarData(writer http.ResponseWriter, request *http.Request, _ httpro
 	}
 	logInfo("MAIN", "Processing calendar data started for "+data.Input+" and "+data.Selection)
 	//todo: process real calendar data from database
-
+	db, err := gorm.Open(postgres.Open(config), &gorm.Config{})
+	sqlDB, _ := db.DB()
+	defer sqlDB.Close()
+	if err != nil {
+		logError("MAIN", "Cannot connect to database")
+		var responseData CalendarDataOutput
+		responseData.Result = "nok: " + err.Error()
+		writer.Header().Set("Content-Type", "application/json")
+		_ = json.NewEncoder(writer).Encode(responseData)
+		logInfo("MAIN", "Parsing data ended in "+time.Since(start).String())
+		return
+	}
+	lastYear := time.Now().AddDate(-1, 0, 0)
+	lastYearStart := time.Date(lastYear.Year(), 1, 1, 0, 0, 0, 0, time.UTC)
+	workplaceStateRecords := downloadWorkplaceStateRecords(data, db, lastYearStart)
+	for workplace := range workplaceStateRecords {
+		// todo: process data
+	}
 	var calendarData []CalendarData
 	for i := 0; i < 365; i++ {
 		var oneCalendarData CalendarData
