@@ -4,11 +4,13 @@ import (
 	"encoding/json"
 	"github.com/julienschmidt/httprouter"
 	"github.com/petrjahoda/database"
+	"github.com/snabb/isoweek"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"math/rand"
 	"net/http"
 	"sort"
+	"strconv"
 	"time"
 )
 
@@ -105,6 +107,7 @@ func getCalendarData(writer http.ResponseWriter, request *http.Request, _ httpro
 }
 
 func getLiveProductivityData(writer http.ResponseWriter, request *http.Request, _ httprouter.Params) {
+	start := time.Now()
 	logInfo("MAIN", "Parsing data")
 	var data LiveDataInput
 	err := json.NewDecoder(request.Body).Decode(&data)
@@ -114,23 +117,159 @@ func getLiveProductivityData(writer http.ResponseWriter, request *http.Request, 
 		responseData.Result = "nok: " + err.Error()
 		writer.Header().Set("Content-Type", "application/json")
 		_ = json.NewEncoder(writer).Encode(responseData)
-		logInfo("MAIN", "Parsing data ended")
+		logInfo("MAIN", "Parsing data ended in "+time.Since(start).String())
 		return
 	}
-	logInfo("MAIN", "Processing live productivity data started for "+data.Input)
-	//todo: process real live data from database
+	logInfo("MAIN", "Processing live productivity data started for "+data.Input+" "+data.Selection)
+
+	db, err := gorm.Open(postgres.Open(config), &gorm.Config{})
+	sqlDB, _ := db.DB()
+	defer sqlDB.Close()
+	if err != nil {
+		logError("MAIN", "Cannot connect to database")
+		var responseData LiveDataOutput
+		responseData.Result = "nok: " + err.Error()
+		writer.Header().Set("Content-Type", "application/json")
+		_ = json.NewEncoder(writer).Encode(responseData)
+		logInfo("MAIN", "Parsing data ended in "+time.Since(start).String())
+		return
+	}
+	lastMonth := time.Now().AddDate(0, -1, 0)
+	yesterday := time.Now().AddDate(0, 0, -1)
+	lastMonthStart := time.Date(lastMonth.Year(), lastMonth.Month(), 1, 0, 0, 0, 0, time.UTC)
+	thisMonthStart := time.Date(time.Now().Year(), time.Now().Month(), 1, 0, 0, 0, 0, time.UTC)
+	yesterdayStart := time.Date(yesterday.Year(), yesterday.Month(), yesterday.Day(), 0, 0, 0, 0, time.UTC)
+	todayStart := time.Date(time.Now().Year(), time.Now().Month(), time.Now().Day(), 0, 0, 0, 0, time.UTC)
+	year, week := time.Now().ISOWeek()
+	thisWeekStart := isoweek.StartTime(year, week, time.UTC)
+	lastWeekStart := thisWeekStart.AddDate(0, 0, -7)
+	workplaceStateRecords := downloadWorkplaceStateRecords(data, db, lastMonthStart)
+	logInfo("MAIN", "Found total of "+strconv.Itoa(len(workplaceStateRecords))+" state records")
+	var lastMonthTotalTime time.Duration
+	var lastMonthProductivityTime time.Duration
+	var thisMonthTotalTime time.Duration
+	var thisMonthProductivityTime time.Duration
+	var lastWeekTotalTime time.Duration
+	var lastWeekProductivityTime time.Duration
+	var thisWeekTotalTime time.Duration
+	var thisWeekProductivityTime time.Duration
+	var yesterdayTotalTime time.Duration
+	var yesterdayProductivityTime time.Duration
+	var todayTotalTime time.Duration
+	var todayProductivityTime time.Duration
+	for _, records := range workplaceStateRecords {
+		var previousTime time.Time
+		var initial int
+
+		for _, record := range records {
+			previousTime, initial = initiate(previousTime, record, initial)
+			if record.DateTimeStart.Before(thisMonthStart) {
+				lastMonthTotalTime += record.DateTimeStart.Sub(previousTime)
+				if initial == 1 {
+					lastMonthProductivityTime += record.DateTimeStart.Sub(previousTime)
+				}
+			} else {
+				thisMonthTotalTime += record.DateTimeStart.Sub(previousTime)
+				if initial == 1 {
+					thisMonthProductivityTime += record.DateTimeStart.Sub(previousTime)
+				}
+			}
+			if record.DateTimeStart.After(lastWeekStart) && record.DateTimeStart.Before(thisWeekStart) {
+				lastWeekTotalTime += record.DateTimeStart.Sub(previousTime)
+				if initial == 1 {
+					lastWeekProductivityTime += record.DateTimeStart.Sub(previousTime)
+				}
+			} else if record.DateTimeStart.After(thisWeekStart) {
+				thisWeekTotalTime += record.DateTimeStart.Sub(previousTime)
+				if initial == 1 {
+					thisWeekProductivityTime += record.DateTimeStart.Sub(previousTime)
+				}
+			}
+			if record.DateTimeStart.After(yesterdayStart) && record.DateTimeStart.Before(todayStart) {
+				yesterdayTotalTime += record.DateTimeStart.Sub(previousTime)
+				if initial == 1 {
+					yesterdayProductivityTime += record.DateTimeStart.Sub(previousTime)
+				}
+			} else if record.DateTimeStart.After(todayStart) {
+				todayTotalTime += record.DateTimeStart.Sub(previousTime)
+				if initial == 1 {
+					todayProductivityTime += record.DateTimeStart.Sub(previousTime)
+				}
+			}
+			previousTime = record.DateTimeStart
+			initial = record.StateID
+
+		}
+	}
+	logInfo("MAIN", "Last month, total time: "+lastMonthTotalTime.String()+",  productivity time: "+lastMonthProductivityTime.String())
+	logInfo("MAIN", "This month, total time: "+thisMonthTotalTime.String()+",  productivity time: "+thisMonthProductivityTime.String())
+	logInfo("MAIN", "Last week, total time: "+lastWeekTotalTime.String()+",  productivity time: "+lastWeekProductivityTime.String())
+	logInfo("MAIN", "This week, total time: "+thisWeekTotalTime.String()+",  productivity time: "+thisWeekProductivityTime.String())
+	logInfo("MAIN", "Yesterday, total time: "+yesterdayTotalTime.String()+",  productivity time: "+yesterdayProductivityTime.String())
+	logInfo("MAIN", "Today, total time: "+todayTotalTime.String()+",  productivity time: "+todayProductivityTime.String())
+
 	var outputData LiveDataOutput
 	outputData.Result = "ok"
-	outputData.Today = "67.5"
-	outputData.Yesterday = "17.5"
-	outputData.LastWeek = "15.3"
-	outputData.ThisWeek = "12.7"
-	outputData.LastMonth = "6.1"
-	outputData.ThisMonth = "43.4"
+	outputData.Today = strconv.FormatFloat(todayProductivityTime.Seconds()*100/todayTotalTime.Seconds(), 'f', 1, 64)
+	outputData.Yesterday = strconv.FormatFloat(yesterdayProductivityTime.Seconds()*100/yesterdayTotalTime.Seconds(), 'f', 1, 64)
+	outputData.LastWeek = strconv.FormatFloat(lastWeekProductivityTime.Seconds()*100/lastWeekTotalTime.Seconds(), 'f', 1, 64)
+	outputData.ThisWeek = strconv.FormatFloat(thisWeekProductivityTime.Seconds()*100/thisWeekTotalTime.Seconds(), 'f', 1, 64)
+	outputData.LastMonth = strconv.FormatFloat(lastMonthProductivityTime.Seconds()*100/lastMonthTotalTime.Seconds(), 'f', 1, 64)
+	outputData.ThisMonth = strconv.FormatFloat(thisMonthProductivityTime.Seconds()*100/thisMonthTotalTime.Seconds(), 'f', 1, 64)
 	writer.Header().Set("Content-Type", "application/json")
 	_ = json.NewEncoder(writer).Encode(outputData)
-	logInfo("MAIN", "Parsing data ended")
+	logInfo("MAIN", "Parsing data ended in "+time.Since(start).String())
 	return
+}
+
+func initiate(previousTime time.Time, record database.StateRecord, initial int) (time.Time, int) {
+	if previousTime.Year() == 1 {
+		previousTime = record.DateTimeStart
+	}
+	if initial == 0 {
+		initial = record.StateID
+	}
+	return previousTime, initial
+}
+
+func downloadWorkplaceStateRecords(data LiveDataInput, db *gorm.DB, lastMonthStart time.Time) map[database.Workplace][]database.StateRecord {
+	var workplacesData map[database.Workplace][]database.StateRecord
+	workplacesData = make(map[database.Workplace][]database.StateRecord)
+
+	switch data.Input {
+	case "workplace":
+		{
+			var workplace database.Workplace
+			var stateRecords []database.StateRecord
+			db.Where("name = ?", data.Selection).Find(&workplace)
+			db.Where("date_time_start > ?", lastMonthStart).Where("workplace_id = ?", workplace.ID).Order("date_time_start asc").Find(&stateRecords)
+			workplacesData[workplace] = stateRecords
+		}
+	case "group":
+		{
+			var workplaceSection database.WorkplaceSection
+			db.Where("name = ?", data.Selection).Find(&workplaceSection)
+			var workplaces []database.Workplace
+			var stateRecords []database.StateRecord
+
+			db.Where("workplace_section_id = ?", workplaceSection.ID).Find(&workplaces)
+			for _, workplace := range workplaces {
+				db.Where("date_time_start > ?", lastMonthStart).Where("workplace_id = ?", workplace.ID).Order("date_time_start asc").Find(&stateRecords)
+				workplacesData[workplace] = stateRecords
+			}
+		}
+	default:
+		{
+			var workplaces []database.Workplace
+			var stateRecords []database.StateRecord
+			db.Find(&workplaces)
+			for _, workplace := range workplaces {
+				db.Where("date_time_start > ?", lastMonthStart).Where("workplace_id = ?", workplace.ID).Order("date_time_start asc").Find(&stateRecords)
+				workplacesData[workplace] = stateRecords
+			}
+		}
+	}
+	return workplacesData
 }
 
 func getLiveOverviewData(writer http.ResponseWriter, request *http.Request, _ httprouter.Params) {
@@ -147,24 +286,52 @@ func getLiveOverviewData(writer http.ResponseWriter, request *http.Request, _ ht
 		return
 	}
 	logInfo("MAIN", "Processing live overview data started for "+data.Input+" and "+data.Selection)
-	//todo: process real live data from database
 	var productionWorkplaces []WorkplaceData
-	productionWorkplaces = append(productionWorkplaces, WorkplaceData{WorkplaceName: "CNC-1", State: "production", StateDuration: "4h 1m"})
-	productionWorkplaces = append(productionWorkplaces, WorkplaceData{WorkplaceName: "CNC-4", State: "production", StateDuration: "4h 0m"})
-	productionWorkplaces = append(productionWorkplaces, WorkplaceData{WorkplaceName: "CNC-5", State: "production", StateDuration: "3h 51m"})
-	productionWorkplaces = append(productionWorkplaces, WorkplaceData{WorkplaceName: "CNC-9", State: "production", StateDuration: "3h 43m"})
-	productionWorkplaces = append(productionWorkplaces, WorkplaceData{WorkplaceName: "CNC-7", State: "production", StateDuration: "2h 43m"})
-	productionWorkplaces = append(productionWorkplaces, WorkplaceData{WorkplaceName: "CNC-8", State: "production", StateDuration: "1h 17m"})
-
 	var downtimeWorkplaces []WorkplaceData
-	downtimeWorkplaces = append(downtimeWorkplaces, WorkplaceData{WorkplaceName: "MATSUSHITA 620C LEFT ORDERED PRODUCTION", State: "downtime", StateDuration: "12 h1m"})
-	downtimeWorkplaces = append(downtimeWorkplaces, WorkplaceData{WorkplaceName: "MATSUSHITA 620D", State: "downtime", StateDuration: "8h 12m"})
-	downtimeWorkplaces = append(downtimeWorkplaces, WorkplaceData{WorkplaceName: "CNC-2", State: "downtime", StateDuration: "3h 11m"})
-
 	var poweroffWorkplaces []WorkplaceData
-	poweroffWorkplaces = append(poweroffWorkplaces, WorkplaceData{WorkplaceName: "CNC-3", State: "poweroff", StateDuration: "3d 11h 1m"})
-	poweroffWorkplaces = append(poweroffWorkplaces, WorkplaceData{WorkplaceName: "CNC-6", State: "poweroff", StateDuration: "12h 12m"})
+	db, err := gorm.Open(postgres.Open(config), &gorm.Config{})
+	sqlDB, _ := db.DB()
+	defer sqlDB.Close()
+	if err != nil {
+		logError("MAIN", "Cannot connect to database")
+		var responseData LiveDataOutput
+		responseData.Result = "nok: " + err.Error()
+		writer.Header().Set("Content-Type", "application/json")
+		_ = json.NewEncoder(writer).Encode(responseData)
+		logInfo("MAIN", "Verifying user ended")
+		return
+	}
+	var workplaces []database.Workplace
+	if data.Input == "company" {
+		db.Find(&workplaces)
+	} else {
+		var workplaceSection database.WorkplaceSection
+		db.Where("name = ?", data.Selection).Find(&workplaceSection)
+		db.Where("workplace_section_id = ?", workplaceSection.ID).Find(&workplaces)
+	}
+	for _, workplace := range workplaces {
+		var stateRecord database.StateRecord
+		db.Where("workplace_id = ?", workplace.ID).Last(&stateRecord)
+		if stateRecord.StateID == 1 {
+			productionWorkplaces = append(productionWorkplaces, WorkplaceData{WorkplaceName: workplace.Name, State: "production", StateDuration: time.Now().Sub(stateRecord.DateTimeStart).Round(1 * time.Second).String()})
+		}
+		if stateRecord.StateID == 2 {
+			downtimeWorkplaces = append(downtimeWorkplaces, WorkplaceData{WorkplaceName: workplace.Name, State: "downtime", StateDuration: time.Now().Sub(stateRecord.DateTimeStart).Round(1 * time.Second).String()})
+		}
+		if stateRecord.StateID == 3 {
+			poweroffWorkplaces = append(poweroffWorkplaces, WorkplaceData{WorkplaceName: workplace.Name, State: "poweroff", StateDuration: time.Now().Sub(stateRecord.DateTimeStart).Round(1 * time.Second).String()})
+		}
+	}
 
+	sort.Slice(productionWorkplaces, func(i, j int) bool {
+		return productionWorkplaces[i].WorkplaceName < productionWorkplaces[j].WorkplaceName
+	})
+	sort.Slice(downtimeWorkplaces, func(i, j int) bool {
+		return downtimeWorkplaces[i].WorkplaceName < downtimeWorkplaces[j].WorkplaceName
+	})
+	sort.Slice(poweroffWorkplaces, func(i, j int) bool {
+		return poweroffWorkplaces[i].WorkplaceName < poweroffWorkplaces[j].WorkplaceName
+	})
 	var outputData LiveOverviewDataOutput
 	outputData.Result = "ok"
 	outputData.Production = productionWorkplaces
@@ -282,7 +449,7 @@ func getWorkplaceData(writer http.ResponseWriter, request *http.Request, _ httpr
 	db.Where("Name = ?", data.Input).Find(&workplace)
 	var orderRecord database.OrderRecord
 	db.Where("workplace_id = ?", workplace.ID).Where("date_time_end is null").Find(&orderRecord)
-	logInfo("MAIN", orderRecord.DateTimeStart.String())
+	logInfo("MAIN", "Order record start at "+orderRecord.DateTimeStart.String())
 	var order database.Order
 	db.Where("id = ?", orderRecord.OrderID).Find(&order)
 	logInfo("MAIN", "Order: "+order.Name)

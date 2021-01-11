@@ -64,6 +64,7 @@ navbarMenu.addEventListener("click", (event) => {
                 let result = JSON.parse(data);
                 content.innerHTML = result.Html
                 if (result.MenuLocales !== null) {
+                    console.log(result.MenuLocales)
                     for (menuLocale of result.MenuLocales) {
                         const menuItem = document.getElementById(menuLocale.Name)
                         try {

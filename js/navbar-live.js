@@ -1,8 +1,8 @@
 function displayLiveProductivity(input, selectionData) {
-    console.log("displaying live productivity data for " + input)
+    console.log("displaying live productivity data for " + input + " and " +selectionData)
     let data = {
         input: input,
-        selectionData: selectionData
+        selection: selectionData
     };
     fetch("/get_live_productivity_data", {
         method: "POST",
@@ -168,48 +168,51 @@ function displayOverViewData(elementId, resultElement, elementColor) {
     node.querySelectorAll('*').forEach(n => n.remove());
     console.log("Updating text for " + elementId)
     const data = document.getElementById(elementId)
-    let alreadyUpdatedText = data.textContent.substring(data.textContent.indexOf("workplace"))
-    if (alreadyUpdatedText.length > 0) {
-        data.textContent = resultElement.length + " " + alreadyUpdatedText
-    } else {
-        data.textContent = resultElement.length + " " + data.textContent.toUpperCase()
-    }
-    console.log("Adding new data with size of " + resultElement.length + " for " + elementId)
-    let content = document.createElement("div")
-    content.style.display = "block"
-    content.style.marginTop = "20px"
-    data.appendChild(content)
-    for (const workplace of resultElement) {
-        let workplaceContent = document.createElement("div")
-        workplaceContent.style.marginTop = "5px"
-        workplaceContent.style.marginLeft = "5px"
-        workplaceContent.style.marginRight = "5px"
-        workplaceContent.style.display = "flex"
-        workplaceContent.style.justifyContent = "space-evenly"
-        content.appendChild(workplaceContent)
-
-        let color = document.createElement("div");
-        color.style.width = "15px"
-        color.style.height = "15px"
-        color.style.background = elementColor
-        color.style.border = "0.2px solid black"
-        color.style.display = "flex"
-        workplaceContent.appendChild(color)
-
-        let workplaceName = document.createElement("div");
-        workplaceName.textContent = workplace["WorkplaceName"].substring(0, 25) + " . " + workplace["StateDuration"];
-        workplaceName.title = workplace["WorkplaceName"];
-        workplaceName.style.fontWeight = "normal"
-        workplaceName.style.fontSize = "0.9em"
-
-        workplaceName.id = workplace["WorkplaceName"]
-        workplaceContent.appendChild(workplaceName)
-        let elementData = document.getElementById(workplace["WorkplaceName"])
-        while (elementData.clientWidth <= 275) {
-            elementData.textContent = elementData.textContent.replace(".", "..")
+    let alreadyUpdatedText = data.textContent.substring(data.textContent.indexOf("x"))
+    if (resultElement != null) {
+        if (alreadyUpdatedText.length > 0) {
+            data.textContent = resultElement.length + "" + alreadyUpdatedText
         }
-        elementData.style.marginRight = "" + 278 - elementData.clientWidth + "px"
+        console.log("Adding new data with size of " + resultElement.length + " for " + elementId)
+        let content = document.createElement("div")
+        content.style.display = "block"
+        content.style.marginTop = "20px"
+        data.appendChild(content)
+        for (const workplace of resultElement) {
+            let workplaceContent = document.createElement("div")
+            workplaceContent.style.marginTop = "5px"
+            workplaceContent.style.marginLeft = "5px"
+            workplaceContent.style.marginRight = "5px"
+            workplaceContent.style.display = "flex"
+            workplaceContent.style.justifyContent = "space-evenly"
+            content.appendChild(workplaceContent)
+
+            let color = document.createElement("div");
+            color.style.width = "15px"
+            color.style.height = "15px"
+            color.style.background = elementColor
+            color.style.border = "0.2px solid black"
+            color.style.display = "flex"
+            workplaceContent.appendChild(color)
+
+            let workplaceName = document.createElement("div");
+            workplaceName.textContent = workplace["WorkplaceName"].substring(0, 25) + " . " + workplace["StateDuration"];
+            workplaceName.title = workplace["WorkplaceName"];
+            workplaceName.style.fontWeight = "normal"
+            workplaceName.style.fontSize = "0.9em"
+
+            workplaceName.id = workplace["WorkplaceName"]
+            workplaceContent.appendChild(workplaceName)
+            let elementData = document.getElementById(workplace["WorkplaceName"])
+            while (elementData.clientWidth <= 270) {
+                elementData.textContent = elementData.textContent.replace(".", "..")
+            }
+            elementData.style.marginRight = "" + 276 - elementData.clientWidth + "px"
+        }
+    } else {
+        data.textContent = "0" + alreadyUpdatedText
     }
+
 }
 
 

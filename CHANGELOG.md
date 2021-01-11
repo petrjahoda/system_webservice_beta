@@ -22,6 +22,7 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html) rules.
 ### Added
 - year for calendar view is calculated from data
 - go backend for downloading workplace data
+- go backend for production overview
 
 ## [2021.1.1.9] - 2021-01-09
 
