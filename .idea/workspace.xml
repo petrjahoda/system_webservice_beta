@@ -3,11 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="f4279880-9db2-4e82-91da-7ce54060e021" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/html/content/navbar-live-workplace.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/content/navbar-live-workplace.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/navbar-live.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/navbar-live.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/system.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/system.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/navbar_live.go" beforeDir="false" afterPath="$PROJECT_DIR$/navbar_live.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -16,7 +11,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="DarkyenusTimeTracker">
-    <option name="totalTimeSeconds" value="136676" />
+    <option name="totalTimeSeconds" value="138951" />
     <option name="gitIntegration" value="true" />
     <option name="naggedAbout" value="1" />
   </component>
@@ -119,7 +114,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_CLEANUP_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="## [2020.4.2.16] - 2020-11-16&#10;&#10;### Added&#10;- project structure&#10;- navigation menu&#10;- login template" />
     <MESSAGE value="## [2020.4.2.23] - 2020-11-23&#10;&#10;### Added &#10;- login with check in database&#10;- menu updated with all proper values&#10;- menu behavior updated with its own submenu" />
     <MESSAGE value="## [2020.4.2.24] - 2020-11-24&#10;&#10;### Added &#10;- loading user menu based on user locale" />
     <MESSAGE value="## [2020.4.2.24] - 2020-11-24&#10;&#10;### Added &#10;- loading user menu based on user locale&#10;- loading user sub-menu based on user locale" />
@@ -144,7 +138,8 @@
     <MESSAGE value="## [2021.1.1.9] - 2021-01-09&#10;&#10;### Changed&#10;- updated menu for live workplace" />
     <MESSAGE value="## [2021.1.1.11] - 2021-01-11&#10;&#10;### Fixed&#10;- errors while displaying live pages&#10;&#10;### Added&#10;- year for calendar view is calculated from data" />
     <MESSAGE value="## [2021.1.1.11] - 2021-01-11&#10;&#10;### Fixed&#10;- errors while displaying live pages&#10;&#10;### Added&#10;- year for calendar view is calculated from data&#10;- go backend for downloading workplace data" />
-    <option name="LAST_COMMIT_MESSAGE" value="## [2021.1.1.11] - 2021-01-11&#10;&#10;### Fixed&#10;- errors while displaying live pages&#10;&#10;### Added&#10;- year for calendar view is calculated from data&#10;- go backend for downloading workplace data" />
+    <MESSAGE value="## [2021.1.1.11] - 2021-01-11&#10;&#10;### Fixed&#10;- errors while displaying live pages&#10;&#10;### Added&#10;- year for calendar view is calculated from data&#10;- go backend for downloading workplace data&#10;- go backend for production overview" />
+    <option name="LAST_COMMIT_MESSAGE" value="## [2021.1.1.11] - 2021-01-11&#10;&#10;### Fixed&#10;- errors while displaying live pages&#10;&#10;### Added&#10;- year for calendar view is calculated from data&#10;- go backend for downloading workplace data&#10;- go backend for production overview" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
   </component>

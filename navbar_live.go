@@ -160,38 +160,94 @@ func getLiveProductivityData(writer http.ResponseWriter, request *http.Request, 
 	for _, records := range workplaceStateRecords {
 		var previousTime time.Time
 		var initial int
-
+		var lastMonthCompleted bool
+		var lastWeekCompleted bool
+		var yesterdayCompleted bool
 		for _, record := range records {
 			previousTime, initial = initiate(previousTime, record, initial)
 			if record.DateTimeStart.Before(thisMonthStart) {
-				lastMonthTotalTime += record.DateTimeStart.Sub(previousTime)
+				if lastMonthTotalTime.Seconds() == 0 {
+					lastMonthTotalTime += record.DateTimeStart.Sub(lastMonthStart)
+					if initial == 1 {
+						lastMonthProductivityTime += record.DateTimeStart.Sub(lastMonthStart)
+					}
+				} else {
+					lastMonthTotalTime += record.DateTimeStart.Sub(previousTime)
+				}
 				if initial == 1 {
 					lastMonthProductivityTime += record.DateTimeStart.Sub(previousTime)
 				}
 			} else {
-				thisMonthTotalTime += record.DateTimeStart.Sub(previousTime)
+				if !lastMonthCompleted {
+					lastMonthTotalTime += thisMonthStart.Sub(previousTime)
+					lastMonthCompleted = true
+				}
+				if thisMonthTotalTime.Seconds() == 0 {
+					thisMonthTotalTime += record.DateTimeStart.Sub(thisMonthStart)
+					if initial == 1 {
+						thisMonthProductivityTime += record.DateTimeStart.Sub(thisMonthStart)
+					}
+				} else {
+					thisMonthTotalTime += record.DateTimeStart.Sub(previousTime)
+				}
 				if initial == 1 {
 					thisMonthProductivityTime += record.DateTimeStart.Sub(previousTime)
 				}
 			}
 			if record.DateTimeStart.After(lastWeekStart) && record.DateTimeStart.Before(thisWeekStart) {
-				lastWeekTotalTime += record.DateTimeStart.Sub(previousTime)
+				if lastWeekTotalTime.Seconds() == 0 {
+					lastWeekTotalTime += record.DateTimeStart.Sub(lastWeekStart)
+					if initial == 1 {
+						lastWeekProductivityTime += record.DateTimeStart.Sub(lastWeekStart)
+					}
+				} else {
+					lastWeekTotalTime += record.DateTimeStart.Sub(previousTime)
+				}
 				if initial == 1 {
 					lastWeekProductivityTime += record.DateTimeStart.Sub(previousTime)
 				}
 			} else if record.DateTimeStart.After(thisWeekStart) {
-				thisWeekTotalTime += record.DateTimeStart.Sub(previousTime)
+				if !lastWeekCompleted {
+					lastWeekTotalTime += thisWeekStart.Sub(previousTime)
+					lastWeekCompleted = true
+				}
+				if thisWeekTotalTime.Seconds() == 0 {
+					thisWeekTotalTime += record.DateTimeStart.Sub(thisWeekStart)
+					if initial == 1 {
+						thisWeekProductivityTime += record.DateTimeStart.Sub(thisWeekStart)
+					}
+				} else {
+					thisWeekTotalTime += record.DateTimeStart.Sub(previousTime)
+				}
 				if initial == 1 {
 					thisWeekProductivityTime += record.DateTimeStart.Sub(previousTime)
 				}
 			}
 			if record.DateTimeStart.After(yesterdayStart) && record.DateTimeStart.Before(todayStart) {
-				yesterdayTotalTime += record.DateTimeStart.Sub(previousTime)
+				if yesterdayTotalTime.Seconds() == 0 {
+					yesterdayTotalTime += record.DateTimeStart.Sub(yesterdayStart)
+					if initial == 1 {
+						yesterdayProductivityTime += record.DateTimeStart.Sub(yesterdayStart)
+					}
+				} else {
+					yesterdayTotalTime += record.DateTimeStart.Sub(previousTime)
+				}
 				if initial == 1 {
 					yesterdayProductivityTime += record.DateTimeStart.Sub(previousTime)
 				}
 			} else if record.DateTimeStart.After(todayStart) {
-				todayTotalTime += record.DateTimeStart.Sub(previousTime)
+				if !yesterdayCompleted {
+					yesterdayTotalTime += todayStart.Sub(previousTime)
+					yesterdayCompleted = true
+				}
+				if todayTotalTime.Seconds() == 0 {
+					todayTotalTime += record.DateTimeStart.Sub(todayStart)
+					if initial == 1 {
+						todayProductivityTime += record.DateTimeStart.Sub(todayStart)
+					}
+				} else {
+					todayTotalTime += record.DateTimeStart.Sub(previousTime)
+				}
 				if initial == 1 {
 					todayProductivityTime += record.DateTimeStart.Sub(previousTime)
 				}
@@ -199,6 +255,14 @@ func getLiveProductivityData(writer http.ResponseWriter, request *http.Request, 
 			previousTime = record.DateTimeStart
 			initial = record.StateID
 
+		}
+		thisMonthTotalTime += time.Now().Sub(previousTime)
+		thisWeekTotalTime += time.Now().Sub(previousTime)
+		todayTotalTime += time.Now().Sub(previousTime)
+		if initial == 1 {
+			thisMonthProductivityTime += time.Now().Sub(previousTime)
+			thisWeekProductivityTime += time.Now().Sub(previousTime)
+			todayProductivityTime += time.Now().Sub(previousTime)
 		}
 	}
 	logInfo("MAIN", "Last month, total time: "+lastMonthTotalTime.String()+",  productivity time: "+lastMonthProductivityTime.String())
