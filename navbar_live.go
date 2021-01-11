@@ -8,6 +8,7 @@ import (
 	"gorm.io/gorm"
 	"math/rand"
 	"net/http"
+	"sort"
 	"time"
 )
 
@@ -56,14 +57,14 @@ type SelectionDataOutput struct {
 type WorkplaceDataOutput struct {
 	Result            string
 	Order             string
-	OrderDuration     time.Duration
+	OrderDuration     string
 	User              string
 	Downtime          string
-	DowntimeDuration  time.Duration
+	DowntimeDuration  string
 	Breakdown         string
-	BreakdownDuration time.Duration
+	BreakdownDuration string
 	Alarm             string
-	AlarmDuration     time.Duration
+	AlarmDuration     string
 }
 
 type CompanyOutput struct {
@@ -78,7 +79,7 @@ func getCalendarData(writer http.ResponseWriter, request *http.Request, _ httpro
 	if err != nil {
 		logError("MAIN", "Error parsing data: "+err.Error())
 		var responseData LiveDataOutput
-		responseData.Result = "nok"
+		responseData.Result = "nok: " + err.Error()
 		writer.Header().Set("Content-Type", "application/json")
 		_ = json.NewEncoder(writer).Encode(responseData)
 		logInfo("MAIN", "Parsing data ended")
@@ -110,7 +111,7 @@ func getLiveProductivityData(writer http.ResponseWriter, request *http.Request, 
 	if err != nil {
 		logError("MAIN", "Error parsing data: "+err.Error())
 		var responseData LiveDataOutput
-		responseData.Result = "nok"
+		responseData.Result = "nok: " + err.Error()
 		writer.Header().Set("Content-Type", "application/json")
 		_ = json.NewEncoder(writer).Encode(responseData)
 		logInfo("MAIN", "Parsing data ended")
@@ -139,7 +140,7 @@ func getLiveOverviewData(writer http.ResponseWriter, request *http.Request, _ ht
 	if err != nil {
 		logError("MAIN", "Error parsing data: "+err.Error())
 		var responseData LiveDataOutput
-		responseData.Result = "nok"
+		responseData.Result = "nok: " + err.Error()
 		writer.Header().Set("Content-Type", "application/json")
 		_ = json.NewEncoder(writer).Encode(responseData)
 		logInfo("MAIN", "Parsing data ended")
@@ -182,26 +183,41 @@ func getLiveSelection(writer http.ResponseWriter, request *http.Request, _ httpr
 	if err != nil {
 		logError("MAIN", "Error parsing data: "+err.Error())
 		var responseData LiveDataOutput
-		responseData.Result = "nok"
+		responseData.Result = "nok: " + err.Error()
 		writer.Header().Set("Content-Type", "application/json")
 		_ = json.NewEncoder(writer).Encode(responseData)
 		logInfo("MAIN", "Parsing data ended")
 		return
 	}
 	logInfo("MAIN", "Processing selection started for "+data.Input)
-	//todo: download real live data from database
+	db, err := gorm.Open(postgres.Open(config), &gorm.Config{})
+	sqlDB, _ := db.DB()
+	defer sqlDB.Close()
+	if err != nil {
+		logError("MAIN", "Cannot connect to database")
+		var responseData SelectionDataOutput
+		responseData.Result = "nok: " + err.Error()
+		writer.Header().Set("Content-Type", "application/json")
+		_ = json.NewEncoder(writer).Encode(responseData)
+		logInfo("MAIN", "Verifying user ended")
+		return
+	}
 	var selectionData []string
 	if data.Input == "group" {
-		selectionData = append(selectionData, "Hall A")
-		selectionData = append(selectionData, "Hall B")
-		selectionData = append(selectionData, "Hall C")
+		var groups []database.WorkplaceSection
+		db.Find(&groups)
+		for _, group := range groups {
+			selectionData = append(selectionData, group.Name)
+		}
 	}
 	if data.Input == "workplace" {
-		selectionData = append(selectionData, "CNC 1")
-		selectionData = append(selectionData, "CNC 2")
-		selectionData = append(selectionData, "MATSUSHITA 620D")
+		var workplaces []database.Workplace
+		db.Find(&workplaces)
+		for _, workplace := range workplaces {
+			selectionData = append(selectionData, workplace.Name)
+		}
 	}
-
+	sort.Strings(selectionData)
 	var outputData SelectionDataOutput
 	outputData.Result = "ok"
 	outputData.SelectionData = selectionData
@@ -219,7 +235,7 @@ func getCompanyName(writer http.ResponseWriter, request *http.Request, _ httprou
 	if err != nil {
 		logError("MAIN", "Cannot connect to database")
 		var responseData CompanyOutput
-		responseData.Result = "nok"
+		responseData.Result = "nok: " + err.Error()
 		writer.Header().Set("Content-Type", "application/json")
 		_ = json.NewEncoder(writer).Encode(responseData)
 		logInfo("MAIN", "Verifying user ended")
@@ -242,21 +258,70 @@ func getWorkplaceData(writer http.ResponseWriter, request *http.Request, _ httpr
 	if err != nil {
 		logError("MAIN", "Error parsing data: "+err.Error())
 		var responseData WorkplaceDataOutput
-		responseData.Result = "nok"
+		responseData.Result = "nok: " + err.Error()
 		writer.Header().Set("Content-Type", "application/json")
 		_ = json.NewEncoder(writer).Encode(responseData)
 		logInfo("MAIN", "Parsing data ended")
 		return
 	}
 	logInfo("MAIN", "Processing workplace data for "+data.Input)
-	//todo: download real live data for workplace from database
+	db, err := gorm.Open(postgres.Open(config), &gorm.Config{})
+	sqlDB, _ := db.DB()
+	defer sqlDB.Close()
+	if err != nil {
+		logError("MAIN", "Cannot connect to database")
+		var responseData WorkplaceDataOutput
+		responseData.Result = "nok: " + err.Error()
+		writer.Header().Set("Content-Type", "application/json")
+		_ = json.NewEncoder(writer).Encode(responseData)
+		logInfo("MAIN", "Verifying user ended")
+		return
+	}
+
+	var workplace database.Workplace
+	db.Where("Name = ?", data.Input).Find(&workplace)
+	var orderRecord database.OrderRecord
+	db.Where("workplace_id = ?", workplace.ID).Where("date_time_end is null").Find(&orderRecord)
+	logInfo("MAIN", orderRecord.DateTimeStart.String())
+	var order database.Order
+	db.Where("id = ?", orderRecord.OrderID).Find(&order)
+	logInfo("MAIN", "Order: "+order.Name)
+
+	var userRecord database.UserRecord
+	db.Where("workplace_id = ?", workplace.ID).Where("date_time_end is null").Where("order_record_id = ?", orderRecord.ID).Find(&userRecord)
+	var user database.User
+	db.Where("id = ?", userRecord.UserID).Find(&user)
+	logInfo("MAIN", "User: "+user.FirstName+" "+user.SecondName)
+
+	var downtimeRecord database.DowntimeRecord
+	db.Where("workplace_id = ?", workplace.ID).Where("date_time_end is null").Find(&downtimeRecord)
+	var downtime database.Downtime
+	db.Where("id = ?", downtimeRecord.DowntimeID).Find(&downtime)
+	logInfo("MAIN", "Downtime: "+downtime.Name)
+
+	var breakdownRecord database.BreakdownRecord
+	db.Where("workplace_id = ?", workplace.ID).Where("date_time_end is null").Find(&breakdownRecord)
+	var breakdown database.Breakdown
+	db.Where("id = ?", breakdownRecord.BreakdownID).Find(&breakdown)
+	logInfo("MAIN", "Breakdown: "+breakdown.Name)
+
+	var alarmRecord database.AlarmRecord
+	db.Where("workplace_id = ?", workplace.ID).Where("date_time_end is null").Find(&alarmRecord)
+	var alarm database.Alarm
+	db.Where("id = ?", alarmRecord.AlarmID).Find(&alarm)
+	logInfo("MAIN", "Alarm: "+alarm.Name)
+
 	var outputData WorkplaceDataOutput
 	outputData.Result = "ok"
-	outputData.Order = "OP-1234-12"
-	outputData.OrderDuration = 127 * time.Minute
-	outputData.User = "Petr Jahoda"
-	outputData.Downtime = "Cleaning"
-	outputData.DowntimeDuration = 12 * time.Minute
+	outputData.Order = order.Name
+	outputData.OrderDuration = time.Now().Sub(orderRecord.DateTimeStart).Round(1 * time.Second).String()
+	outputData.User = user.FirstName + " " + user.SecondName
+	outputData.Downtime = downtime.Name
+	outputData.DowntimeDuration = time.Now().Sub(downtimeRecord.DateTimeStart).Round(1 * time.Second).String()
+	outputData.Breakdown = breakdown.Name
+	outputData.BreakdownDuration = time.Now().Sub(breakdownRecord.DateTimeStart).Round(1 * time.Second).String()
+	outputData.Alarm = alarm.Name
+	outputData.AlarmDuration = time.Now().Sub(alarmRecord.DateTimeStart).Round(1 * time.Second).String()
 	writer.Header().Set("Content-Type", "application/json")
 	_ = json.NewEncoder(writer).Encode(outputData)
 	logInfo("MAIN", "Parsing data ended")

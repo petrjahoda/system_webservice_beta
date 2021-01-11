@@ -236,6 +236,10 @@ function displaySelection(input) {
                 if (input === "group") {
                     displayOverview(input, selectionElement.value)
                 }
+                if (input === "workplace") {
+                    displayWorkplaceData("workplace", selectionElement.value)
+                }
+
             })
         });
 
@@ -292,33 +296,33 @@ function displayWorkplaceData(workplace, savedSelection) {
     }).then((response) => {
         response.text().then(function (data) {
             let result = JSON.parse(data);
-            const shortEnglishHumanizer = humanizeDuration.humanizer({
-                language: "shortEn",
-                languages: {
-                    shortEn: {
-                        y: () => "y",
-                        mo: () => "mo",
-                        w: () => "w",
-                        d: () => "d",
-                        h: () => "h",
-                        m: () => "m",
-                        s: () => "s",
-                        ms: () => "ms",
-                    },
-                },
-            });
+            console.log(result)
+
             if (result["Order"].length > 0) {
-                document.getElementById("navbar-live-workplace-3-order-data").textContent = result["Order"] + " (" + shortEnglishHumanizer(result["OrderDuration"] / 1000000) + ")"
+                document.getElementById("navbar-live-workplace-3-order-data").textContent = result["Order"] + " (" + result["OrderDuration"] + ")"
+                console.log(result["OrderDuration"])
+            } else {
+                document.getElementById("navbar-live-workplace-3-order-data").textContent = "-"
             }
-            document.getElementById("navbar-live-workplace-3-user-data").textContent = result["User"]
+            if (result["User"].length > 1) {
+                document.getElementById("navbar-live-workplace-3-user-data").textContent = result["User"]
+            } else {
+                document.getElementById("navbar-live-workplace-3-user-data").textContent = "-"
+            }
             if (result["Downtime"].length > 0) {
-                document.getElementById("navbar-live-workplace-3-downtime-data").textContent = result["Downtime"] + " (" + shortEnglishHumanizer(result["DowntimeDuration"] / 1000000) + ")"
+                document.getElementById("navbar-live-workplace-3-downtime-data").textContent = result["Downtime"] + " (" + result["DowntimeDuration"] + ")"
+            } else {
+                document.getElementById("navbar-live-workplace-3-downtime-data").textContent = "-"
             }
             if (result["Breakdown"].length > 0) {
-                document.getElementById("navbar-live-workplace-3-breakdown-data").textContent = result["Breakdown"] + " (" + shortEnglishHumanizer(result["BreakdownDuration"] / 1000000) + ")"
+                document.getElementById("navbar-live-workplace-3-breakdown-data").textContent = result["Breakdown"] + " (" + result["BreakdownDuration"] + ")"
+            } else {
+                document.getElementById("navbar-live-workplace-3-breakdown-data").textContent = "-"
             }
             if (result["Alarm"].length > 0) {
-                document.getElementById("navbar-live-workplace-3-alarm-data").textContent = result["Alarm"] + " (" + shortEnglishHumanizer(result["AlarmDuration"] / 1000000) + ")"
+                document.getElementById("navbar-live-workplace-3-alarm-data").textContent = result["Alarm"] + " (" + result["AlarmDuration"] + ")"
+            } else {
+                document.getElementById("navbar-live-workplace-3-alarm-data").textContent = "-"
             }
         });
     }).catch((error) => {
