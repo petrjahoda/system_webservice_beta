@@ -1,4 +1,4 @@
-function displayLiveProductivityData(input, selectionData) {
+function displayLiveProductivity(input, selectionData) {
     console.log("displaying live productivity data for " + input)
     let data = {
         input: input,
@@ -10,16 +10,16 @@ function displayLiveProductivityData(input, selectionData) {
     }).then((response) => {
         response.text().then(function (data) {
             let result = JSON.parse(data);
-            displayData(result, "navbar-live-" + input + "-1-data-day", result["Today"], result["Yesterday"]);
-            displayData(result, "navbar-live-" + input + "-1-data-week", result["ThisWeek"], result["LastWeek"]);
-            displayData(result, "navbar-live-" + input + "-1-data-month", result["ThisMonth"], result["LastMonth"]);
+            displayLiveProductivityData(result, "navbar-live-" + input + "-1-data-day", result["Today"], result["Yesterday"]);
+            displayLiveProductivityData(result, "navbar-live-" + input + "-1-data-week", result["ThisWeek"], result["LastWeek"]);
+            displayLiveProductivityData(result, "navbar-live-" + input + "-1-data-month", result["ThisMonth"], result["LastMonth"]);
         });
     }).catch((error) => {
         console.log(error)
     });
 }
 
-function displayData(result, elementId, actual, last) {
+function displayLiveProductivityData(result, elementId, actual, last) {
     const data = document.getElementById(elementId)
     data.innerHTML = ""
     let lastPercent = document.createElement("div");
@@ -78,7 +78,6 @@ function drawCalendar(data, input) {
         document.getElementById("navbar-live-" + input + "-2-calendar-chart").innerHTML = ""
     }
     let result = new Map(data.map(value => [value["Date"], value["ProductionValue"]]));
-    let thisYear = new Date().getFullYear()
     const width = 960, height = 136, cellSize = 17;
     const color = d3.scaleQuantize()
         .domain([0, 100])
@@ -86,7 +85,7 @@ function drawCalendar(data, input) {
 
     const svg = d3.select("#navbar-live-" + input + "-2-calendar-chart")
         .selectAll("svg")
-        .data(d3.range(thisYear - 1, thisYear + 1))
+        .data(d3.range(parseInt(data[0]["Date"]) - 1, parseInt(data[0]["Date"]) + 1))
         .enter().append("svg")
         .attr("width", width)
         .attr("height", height)
@@ -214,7 +213,7 @@ function displayOverViewData(elementId, resultElement, elementColor) {
 }
 
 
-function downloadSelection(input) {
+function displaySelection(input) {
     console.log("downloading selection for " + input)
     let data = {
         input: input,
@@ -225,16 +224,19 @@ function downloadSelection(input) {
     }).then((response) => {
         response.text().then(function (data) {
             let result = JSON.parse(data);
-            displayLiveSelection("live-select-" + input, result["SelectionData"], input);
+            displaySelectionData("live-select-" + input, result["SelectionData"], input);
             let selectionElement = document.getElementById("live-select-" + input);
+            if (sessionStorage.getItem(input + "Name") === null) {
+                sessionStorage.setItem(input + "Name", result["SelectionData"][0])
+            }
             selectionElement.addEventListener("change", (event) => {
-                console.log(selectionElement.value)
                 sessionStorage.setItem(input + "Name", selectionElement.value)
-                displayLiveProductivityData(input, selectionElement.value)
+                displayLiveProductivity(input, selectionElement.value)
                 displayCalendar(input, selectionElement.value)
-                displayOverview(input, selectionElement.value)
+                if (input === "group") {
+                    displayOverview(input, selectionElement.value)
+                }
             })
-            return result["SelectionData"]
         });
 
     }).catch((error) => {
@@ -242,7 +244,7 @@ function downloadSelection(input) {
     });
 }
 
-function displayLiveSelection(element, selectionData, input) {
+function displaySelectionData(element, selectionData, input) {
     let content = document.getElementById(element)
     for (let selection of selectionData) {
         let selectionData = document.createElement("option")
@@ -258,12 +260,19 @@ function displayLiveSelection(element, selectionData, input) {
 
 function displayCompanyName(company) {
     console.log("downloading name for " + company)
+    let companyName = sessionStorage.getItem("CompanyName")
+    console.log(companyName)
+    if (companyName != null) {
+        document.getElementById("navbar-live-company-name").textContent = companyName
+        return
+    }
     fetch("/get_company_name", {
         method: "POST",
     }).then((response) => {
         response.text().then(function (data) {
             let result = JSON.parse(data);
             document.getElementById("navbar-live-company-name").textContent = result["CompanyName"]
+            sessionStorage.setItem("CompanyName", result["CompanyName"])
         });
 
     }).catch((error) => {
@@ -283,7 +292,6 @@ function displayWorkplaceData(workplace, savedSelection) {
     }).then((response) => {
         response.text().then(function (data) {
             let result = JSON.parse(data);
-            console.log(result["OrderDuration"])
             const shortEnglishHumanizer = humanizeDuration.humanizer({
                 language: "shortEn",
                 languages: {
@@ -312,9 +320,7 @@ function displayWorkplaceData(workplace, savedSelection) {
             if (result["Alarm"].length > 0) {
                 document.getElementById("navbar-live-workplace-3-alarm-data").textContent = result["Alarm"] + " (" + shortEnglishHumanizer(result["AlarmDuration"] / 1000000) + ")"
             }
-
         });
-
     }).catch((error) => {
         console.log(error)
     });

@@ -41,38 +41,6 @@ navbar.addEventListener("click", (event) => {
     }
 })
 
-function Process(menuData) {
-    if (menuData.includes("navbar-live-company")) {
-        console.log("Processing page " + menuData)
-        displayCompanyName("company")
-        displayLiveProductivityData("company", "")
-        displayCalendar("company", "")
-        displayOverview("company", "")
-    }
-    if (menuData.includes("navbar-live-group")) {
-        console.log("Processing page " + menuData)
-        let selectionData = downloadSelection("group")
-        let savedSelection = sessionStorage.getItem("groupName")
-        if (savedSelection.length === 0) {
-            savedSelection = selectionData[0]
-        }
-        displayLiveProductivityData("group", savedSelection)
-        displayCalendar("group", savedSelection)
-        displayOverview("group", savedSelection)
-    }
-    if (menuData.includes("navbar-live-workplace")) {
-        console.log("Processing page " + menuData)
-        let selectionData = downloadSelection("workplace")
-        let savedSelection = sessionStorage.getItem("workplaceName")
-        if (savedSelection.length === 0) {
-            savedSelection = selectionData[0]
-        }
-        displayLiveProductivityData("workplace", savedSelection)
-        displayCalendar("workplace", savedSelection)
-        displayWorkplaceData("workplace", savedSelection)
-    }
-}
-
 navbarMenu.addEventListener("click", (event) => {
     let menuData = null
     if (event.target.id !== "navbar-menu") {
@@ -116,9 +84,31 @@ navbarMenu.addEventListener("click", (event) => {
     }
 })
 
-content.addEventListener("click", (event) => {
-    console.log(event.target)
-})
+function Process(menuData) {
+    if (menuData.includes("navbar-live-company")) {
+        console.log("Processing page " + menuData)
+        displayCompanyName("company")
+        displayLiveProductivity("company", "")
+        displayCalendar("company", "")
+        displayOverview("company", "");
+    }
+    if (menuData.includes("navbar-live-group")) {
+        console.log("Processing page " + menuData)
+        displaySelection("group")
+        let savedSelection = sessionStorage.getItem("groupName")
+        displayLiveProductivity("group", savedSelection)
+        displayCalendar("group", savedSelection)
+        displayOverview("group", savedSelection);
+    }
+    if (menuData.includes("navbar-live-workplace")) {
+        console.log("Processing page " + menuData)
+        displaySelection("workplace")
+        let savedSelection = sessionStorage.getItem("workplaceName")
+        displayLiveProductivity("workplace", savedSelection)
+        displayCalendar("workplace", savedSelection)
+        displayWorkplaceData("workplace", savedSelection)
+    }
+}
 
 
 
