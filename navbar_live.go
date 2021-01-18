@@ -7,7 +7,6 @@ import (
 	"github.com/snabb/isoweek"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"math/rand"
 	"net/http"
 	"sort"
 	"strconv"
@@ -43,7 +42,7 @@ type CalendarDataOutput struct {
 
 type CalendarData struct {
 	Date            string
-	ProductionValue int
+	ProductionValue string
 }
 
 type WorkplaceData struct {
@@ -90,7 +89,6 @@ func getCalendarData(writer http.ResponseWriter, request *http.Request, _ httpro
 		return
 	}
 	logInfo("MAIN", "Processing calendar data started for "+data.Input+" and "+data.Selection)
-	//todo: process real calendar data from database
 	db, err := gorm.Open(postgres.Open(config), &gorm.Config{})
 	sqlDB, _ := db.DB()
 	defer sqlDB.Close()
@@ -106,15 +104,14 @@ func getCalendarData(writer http.ResponseWriter, request *http.Request, _ httpro
 	lastYear := time.Now().AddDate(-1, 0, 0)
 	lastYearStart := time.Date(lastYear.Year(), 1, 1, 0, 0, 0, 0, time.UTC)
 	workplaceStateRecords := downloadWorkplaceStateRecords(data, db, lastYearStart)
-	for workplace := range workplaceStateRecords {
-		// todo: process data
-	}
+	productionRate := calculateProductionRate(workplaceStateRecords)
 	var calendarData []CalendarData
-	for i := 0; i < 365; i++ {
+	secondInOneDay := 86400.0
+	for datetime, totalDuration := range productionRate {
+		averageDayDurationInSeconds := totalDuration / float64(len(workplaceStateRecords))
 		var oneCalendarData CalendarData
-		oneCalendarData.Date = time.Now().AddDate(0, 0, -i).Format("2006-01-02")
-		randomProduction := rand.Intn(100-0) + 0
-		oneCalendarData.ProductionValue = randomProduction
+		oneCalendarData.Date = datetime
+		oneCalendarData.ProductionValue = strconv.FormatFloat(averageDayDurationInSeconds*100/secondInOneDay, 'f', 1, 64)
 		calendarData = append(calendarData, oneCalendarData)
 	}
 	var outputData CalendarDataOutput
@@ -123,6 +120,30 @@ func getCalendarData(writer http.ResponseWriter, request *http.Request, _ httpro
 	_ = json.NewEncoder(writer).Encode(outputData)
 	logInfo("MAIN", "Parsing data ended")
 	return
+}
+
+func calculateProductionRate(workplaceStateRecords map[database.Workplace][]database.StateRecord) map[string]float64 {
+	var productionRate map[string]float64
+	productionRate = make(map[string]float64)
+	for _, records := range workplaceStateRecords {
+		var previousRecord database.StateRecord
+		for _, record := range records {
+			format := record.DateTimeStart.Format("2006-01-02")
+			if record.StateID != 1 {
+				if previousRecord.DateTimeStart.YearDay() == record.DateTimeStart.YearDay() {
+					productionRate[format] = productionRate[format] + record.DateTimeStart.Sub(previousRecord.DateTimeStart).Seconds()
+				} else {
+					if !previousRecord.DateTimeStart.IsZero() {
+						//fmt.Println("We have production in another day, beginning at: " + previousRecord.DateTimeStart.String())
+						// you have to calculate that previous date should be more days before
+						// add proper language translations into database
+					}
+				}
+			}
+			previousRecord = record
+		}
+	}
+	return productionRate
 }
 
 func getLiveProductivityData(writer http.ResponseWriter, request *http.Request, _ httprouter.Params) {
@@ -164,19 +185,31 @@ func getLiveProductivityData(writer http.ResponseWriter, request *http.Request, 
 	lastWeekStart := thisWeekStart.AddDate(0, 0, -7)
 	workplaceStateRecords := downloadWorkplaceStateRecords(data, db, lastMonthStart)
 	logInfo("MAIN", "Found total of "+strconv.Itoa(len(workplaceStateRecords))+" state records")
-	var lastMonthTotalTime time.Duration
-	var lastMonthProductivityTime time.Duration
-	var thisMonthTotalTime time.Duration
-	var thisMonthProductivityTime time.Duration
-	var lastWeekTotalTime time.Duration
-	var lastWeekProductivityTime time.Duration
-	var thisWeekTotalTime time.Duration
-	var thisWeekProductivityTime time.Duration
-	var yesterdayTotalTime time.Duration
-	var yesterdayProductivityTime time.Duration
-	var todayTotalTime time.Duration
-	var todayProductivityTime time.Duration
+	var lastMonthTotalTimeAll time.Duration
+	var lastMonthProductivityTimeAll time.Duration
+	var thisMonthTotalTimeAll time.Duration
+	var thisMonthProductivityTimeAll time.Duration
+	var lastWeekTotalTimeAll time.Duration
+	var lastWeekProductivityTimeAll time.Duration
+	var thisWeekTotalTimeAll time.Duration
+	var thisWeekProductivityTimeAll time.Duration
+	var yesterdayTotalTimeAll time.Duration
+	var yesterdayProductivityTimeAll time.Duration
+	var todayTotalTimeAll time.Duration
+	var todayProductivityTimeAll time.Duration
 	for _, records := range workplaceStateRecords {
+		var lastMonthTotalTime time.Duration
+		var lastMonthProductivityTime time.Duration
+		var thisMonthTotalTime time.Duration
+		var thisMonthProductivityTime time.Duration
+		var lastWeekTotalTime time.Duration
+		var lastWeekProductivityTime time.Duration
+		var thisWeekTotalTime time.Duration
+		var thisWeekProductivityTime time.Duration
+		var yesterdayTotalTime time.Duration
+		var yesterdayProductivityTime time.Duration
+		var todayTotalTime time.Duration
+		var todayProductivityTime time.Duration
 		var previousTime time.Time
 		var initial int
 		var lastMonthCompleted bool
@@ -283,22 +316,35 @@ func getLiveProductivityData(writer http.ResponseWriter, request *http.Request, 
 			thisWeekProductivityTime += time.Now().Sub(previousTime)
 			todayProductivityTime += time.Now().Sub(previousTime)
 		}
+		lastMonthTotalTimeAll = lastMonthTotalTimeAll + lastMonthTotalTime
+		lastMonthProductivityTimeAll = lastMonthProductivityTimeAll + lastMonthProductivityTime
+		thisMonthTotalTimeAll = thisMonthTotalTimeAll + thisMonthTotalTime
+		thisMonthProductivityTimeAll = thisMonthProductivityTimeAll + thisMonthProductivityTime
+		lastWeekTotalTimeAll = lastWeekTotalTimeAll + lastWeekTotalTime
+		lastWeekProductivityTimeAll = lastWeekProductivityTimeAll + lastWeekProductivityTime
+		thisWeekTotalTimeAll = thisWeekTotalTimeAll + thisWeekTotalTime
+		thisWeekProductivityTimeAll = thisWeekProductivityTimeAll + thisWeekProductivityTime
+		thisWeekProductivityTimeAll = thisWeekProductivityTimeAll + thisWeekProductivityTime
+		yesterdayProductivityTimeAll = yesterdayProductivityTimeAll + yesterdayProductivityTime
+		todayTotalTimeAll = yesterdayProductivityTimeAll + yesterdayProductivityTime
+		todayProductivityTimeAll = todayProductivityTimeAll + todayProductivityTime
 	}
-	logInfo("MAIN", "Last month, total time: "+lastMonthTotalTime.String()+",  productivity time: "+lastMonthProductivityTime.String())
-	logInfo("MAIN", "This month, total time: "+thisMonthTotalTime.String()+",  productivity time: "+thisMonthProductivityTime.String())
-	logInfo("MAIN", "Last week, total time: "+lastWeekTotalTime.String()+",  productivity time: "+lastWeekProductivityTime.String())
-	logInfo("MAIN", "This week, total time: "+thisWeekTotalTime.String()+",  productivity time: "+thisWeekProductivityTime.String())
-	logInfo("MAIN", "Yesterday, total time: "+yesterdayTotalTime.String()+",  productivity time: "+yesterdayProductivityTime.String())
-	logInfo("MAIN", "Today, total time: "+todayTotalTime.String()+",  productivity time: "+todayProductivityTime.String())
+	// TODO: pocita to tady nejake nesmysly pro viceropracovist
+	logInfo("MAIN", "Last month, total time: "+lastMonthTotalTimeAll.String()+",  productivity time: "+lastMonthProductivityTimeAll.String())
+	logInfo("MAIN", "This month, total time: "+thisMonthTotalTimeAll.String()+",  productivity time: "+thisMonthProductivityTimeAll.String())
+	logInfo("MAIN", "Last week, total time: "+lastWeekTotalTimeAll.String()+",  productivity time: "+lastWeekProductivityTimeAll.String())
+	logInfo("MAIN", "This week, total time: "+thisWeekTotalTimeAll.String()+",  productivity time: "+thisWeekProductivityTimeAll.String())
+	logInfo("MAIN", "Yesterday, total time: "+yesterdayTotalTimeAll.String()+",  productivity time: "+yesterdayProductivityTimeAll.String())
+	logInfo("MAIN", "Today, total time: "+todayTotalTimeAll.String()+",  productivity time: "+todayProductivityTimeAll.String())
 
 	var outputData LiveDataOutput
 	outputData.Result = "ok"
-	outputData.Today = strconv.FormatFloat(todayProductivityTime.Seconds()*100/todayTotalTime.Seconds(), 'f', 1, 64)
-	outputData.Yesterday = strconv.FormatFloat(yesterdayProductivityTime.Seconds()*100/yesterdayTotalTime.Seconds(), 'f', 1, 64)
-	outputData.LastWeek = strconv.FormatFloat(lastWeekProductivityTime.Seconds()*100/lastWeekTotalTime.Seconds(), 'f', 1, 64)
-	outputData.ThisWeek = strconv.FormatFloat(thisWeekProductivityTime.Seconds()*100/thisWeekTotalTime.Seconds(), 'f', 1, 64)
-	outputData.LastMonth = strconv.FormatFloat(lastMonthProductivityTime.Seconds()*100/lastMonthTotalTime.Seconds(), 'f', 1, 64)
-	outputData.ThisMonth = strconv.FormatFloat(thisMonthProductivityTime.Seconds()*100/thisMonthTotalTime.Seconds(), 'f', 1, 64)
+	outputData.Today = strconv.FormatFloat(todayProductivityTimeAll.Seconds()*100/todayTotalTimeAll.Seconds(), 'f', 1, 64)
+	outputData.Yesterday = strconv.FormatFloat(yesterdayProductivityTimeAll.Seconds()*100/yesterdayTotalTimeAll.Seconds(), 'f', 1, 64)
+	outputData.LastWeek = strconv.FormatFloat(lastWeekProductivityTimeAll.Seconds()*100/lastWeekTotalTimeAll.Seconds(), 'f', 1, 64)
+	outputData.ThisWeek = strconv.FormatFloat(thisWeekProductivityTimeAll.Seconds()*100/thisWeekTotalTimeAll.Seconds(), 'f', 1, 64)
+	outputData.LastMonth = strconv.FormatFloat(lastMonthProductivityTimeAll.Seconds()*100/lastMonthTotalTimeAll.Seconds(), 'f', 1, 64)
+	outputData.ThisMonth = strconv.FormatFloat(thisMonthProductivityTimeAll.Seconds()*100/thisMonthTotalTimeAll.Seconds(), 'f', 1, 64)
 	writer.Header().Set("Content-Type", "application/json")
 	_ = json.NewEncoder(writer).Encode(outputData)
 	logInfo("MAIN", "Parsing data ended in "+time.Since(start).String())
@@ -334,12 +380,17 @@ func downloadWorkplaceStateRecords(data LiveDataInput, db *gorm.DB, lastMonthSta
 			db.Where("name = ?", data.Selection).Find(&workplaceSection)
 			var workplaces []database.Workplace
 			var stateRecords []database.StateRecord
-
 			db.Where("workplace_section_id = ?", workplaceSection.ID).Find(&workplaces)
 			for _, workplace := range workplaces {
 				db.Where("date_time_start > ?", lastMonthStart).Where("workplace_id = ?", workplace.ID).Order("date_time_start asc").Find(&stateRecords)
 				workplacesData[workplace] = stateRecords
 			}
+			// INFO: if slow, check to use below
+			//var workplaceByStateId []database.StateRecord
+			//db.Debug().Select("MAX(date_time_start), workplace_id, state_id").Group("workplace_id").Group("state_id").Find(&workplaceByStateId)
+			//for _, record := range workplaceByStateId {
+			//	fmt.Println(record.WorkplaceID, record.StateID)
+			//}
 		}
 	default:
 		{
@@ -350,6 +401,12 @@ func downloadWorkplaceStateRecords(data LiveDataInput, db *gorm.DB, lastMonthSta
 				db.Where("date_time_start > ?", lastMonthStart).Where("workplace_id = ?", workplace.ID).Order("date_time_start asc").Find(&stateRecords)
 				workplacesData[workplace] = stateRecords
 			}
+			// INFO: if slow, check to use below
+			//var workplaceByStateId []database.StateRecord
+			//db.Debug().Select("MAX(date_time_start), workplace_id, state_id").Group("workplace_id").Group("state_id").Find(&workplaceByStateId)
+			//for _, record := range workplaceByStateId {
+			//	fmt.Println(record.WorkplaceID, record.StateID)
+			//}
 		}
 	}
 	return workplacesData

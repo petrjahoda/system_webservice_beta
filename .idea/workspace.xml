@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f4279880-9db2-4e82-91da-7ce54060e021" name="Default Changelist" comment="">
+    <list default="true" id="f4279880-9db2-4e82-91da-7ce54060e021" name="Default Changelist" comment="a">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/189878a8-ac07-4d15-9931-ed82d7860fe1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/189878a8-ac07-4d15-9931-ed82d7860fe1.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/navbar_live.go" beforeDir="false" afterPath="$PROJECT_DIR$/navbar_live.go" afterDir="false" />
     </list>
@@ -11,7 +12,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="DarkyenusTimeTracker">
-    <option name="totalTimeSeconds" value="139509" />
+    <option name="totalTimeSeconds" value="146658" />
     <option name="gitIntegration" value="true" />
     <option name="naggedAbout" value="1" />
   </component>
