@@ -1511,6 +1511,7 @@ sequence|table|17217|17219|1
     </table>
     <table id="127" parent="30" name="workplaces">
       <ObjectId>16578</ObjectId>
+      <Outdated>1</Outdated>
       <Owner>postgres</Owner>
       <StateNumber>532</StateNumber>
     </table>

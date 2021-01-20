@@ -29,9 +29,9 @@ type LiveDataOutput struct {
 }
 
 type LiveOverviewDataOutput struct {
-	Production []WorkplaceData
-	Downtime   []WorkplaceData
-	Poweroff   []WorkplaceData
+	Production []WorkplaceDataString
+	Downtime   []WorkplaceDataString
+	Poweroff   []WorkplaceDataString
 	Result     string
 }
 
@@ -48,9 +48,14 @@ type CalendarData struct {
 type WorkplaceData struct {
 	WorkplaceName string
 	State         string
-	StateDuration string
+	StateDuration time.Duration
 }
 
+type WorkplaceDataString struct {
+	WorkplaceName string
+	State         string
+	StateDuration string
+}
 type SelectionDataOutput struct {
 	Result        string
 	SelectionData []string
@@ -134,6 +139,7 @@ func calculateProductionRate(workplaceStateRecords map[database.Workplace][]data
 					productionRate[format] = productionRate[format] + record.DateTimeStart.Sub(previousRecord.DateTimeStart).Seconds()
 				} else {
 					if !previousRecord.DateTimeStart.IsZero() {
+						// TODO: calculate data when previous in different day
 						//fmt.Println("We have production in another day, beginning at: " + previousRecord.DateTimeStart.String())
 						// you have to calculate that previous date should be more days before
 						// add proper language translations into database
@@ -174,6 +180,7 @@ func getLiveProductivityData(writer http.ResponseWriter, request *http.Request, 
 		logInfo("MAIN", "Parsing data ended in "+time.Since(start).String())
 		return
 	}
+	// TODO: do it somehow different, this is horrible
 	lastMonth := time.Now().AddDate(0, -1, 0)
 	yesterday := time.Now().AddDate(0, 0, -1)
 	lastMonthStart := time.Date(lastMonth.Year(), lastMonth.Month(), 1, 0, 0, 0, 0, time.UTC)
@@ -453,30 +460,55 @@ func getLiveOverviewData(writer http.ResponseWriter, request *http.Request, _ ht
 		var stateRecord database.StateRecord
 		db.Where("workplace_id = ?", workplace.ID).Last(&stateRecord)
 		if stateRecord.StateID == 1 {
-			productionWorkplaces = append(productionWorkplaces, WorkplaceData{WorkplaceName: workplace.Name, State: "production", StateDuration: time.Now().Sub(stateRecord.DateTimeStart).Round(1 * time.Second).String()})
+			productionWorkplaces = append(productionWorkplaces, WorkplaceData{WorkplaceName: workplace.Name, State: "production", StateDuration: time.Now().Sub(stateRecord.DateTimeStart).Round(1 * time.Second)})
 		}
 		if stateRecord.StateID == 2 {
-			downtimeWorkplaces = append(downtimeWorkplaces, WorkplaceData{WorkplaceName: workplace.Name, State: "downtime", StateDuration: time.Now().Sub(stateRecord.DateTimeStart).Round(1 * time.Second).String()})
+			downtimeWorkplaces = append(downtimeWorkplaces, WorkplaceData{WorkplaceName: workplace.Name, State: "downtime", StateDuration: time.Now().Sub(stateRecord.DateTimeStart).Round(1 * time.Second)})
 		}
 		if stateRecord.StateID == 3 {
-			poweroffWorkplaces = append(poweroffWorkplaces, WorkplaceData{WorkplaceName: workplace.Name, State: "poweroff", StateDuration: time.Now().Sub(stateRecord.DateTimeStart).Round(1 * time.Second).String()})
+			poweroffWorkplaces = append(poweroffWorkplaces, WorkplaceData{WorkplaceName: workplace.Name, State: "poweroff", StateDuration: time.Now().Sub(stateRecord.DateTimeStart).Round(1 * time.Second)})
 		}
 	}
 
 	sort.Slice(productionWorkplaces, func(i, j int) bool {
-		return productionWorkplaces[i].WorkplaceName < productionWorkplaces[j].WorkplaceName
+		return productionWorkplaces[i].StateDuration > productionWorkplaces[j].StateDuration
 	})
 	sort.Slice(downtimeWorkplaces, func(i, j int) bool {
-		return downtimeWorkplaces[i].WorkplaceName < downtimeWorkplaces[j].WorkplaceName
+		return downtimeWorkplaces[i].StateDuration > downtimeWorkplaces[j].StateDuration
 	})
 	sort.Slice(poweroffWorkplaces, func(i, j int) bool {
-		return poweroffWorkplaces[i].WorkplaceName < poweroffWorkplaces[j].WorkplaceName
+		return poweroffWorkplaces[i].StateDuration > poweroffWorkplaces[j].StateDuration
 	})
+	var productionWorkplacesString []WorkplaceDataString
+	var downtimeWorkplacesString []WorkplaceDataString
+	var poweroffWorkplacesString []WorkplaceDataString
+	for _, workplace := range productionWorkplaces {
+		productionWorkplacesString = append(productionWorkplacesString, WorkplaceDataString{
+			WorkplaceName: workplace.WorkplaceName,
+			State:         workplace.State,
+			StateDuration: workplace.StateDuration.String(),
+		})
+	}
+	for _, workplace := range downtimeWorkplaces {
+		downtimeWorkplacesString = append(downtimeWorkplacesString, WorkplaceDataString{
+			WorkplaceName: workplace.WorkplaceName,
+			State:         workplace.State,
+			StateDuration: workplace.StateDuration.String(),
+		})
+	}
+	for _, workplace := range poweroffWorkplaces {
+		poweroffWorkplacesString = append(poweroffWorkplacesString, WorkplaceDataString{
+			WorkplaceName: workplace.WorkplaceName,
+			State:         workplace.State,
+			StateDuration: workplace.StateDuration.String(),
+		})
+	}
+
 	var outputData LiveOverviewDataOutput
 	outputData.Result = "ok"
-	outputData.Production = productionWorkplaces
-	outputData.Downtime = downtimeWorkplaces
-	outputData.Poweroff = poweroffWorkplaces
+	outputData.Production = productionWorkplacesString
+	outputData.Downtime = downtimeWorkplacesString
+	outputData.Poweroff = poweroffWorkplacesString
 	writer.Header().Set("Content-Type", "application/json")
 	_ = json.NewEncoder(writer).Encode(outputData)
 	logInfo("MAIN", "Parsing data ended")
