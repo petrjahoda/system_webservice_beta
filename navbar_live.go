@@ -138,11 +138,19 @@ func calculateProductionRate(workplaceStateRecords map[database.Workplace][]data
 				if previousRecord.DateTimeStart.YearDay() == record.DateTimeStart.YearDay() {
 					productionRate[format] = productionRate[format] + record.DateTimeStart.Sub(previousRecord.DateTimeStart).Seconds()
 				} else {
-					if !previousRecord.DateTimeStart.IsZero() {
-						// TODO: calculate data when previous in different day
-						//fmt.Println("We have production in another day, beginning at: " + previousRecord.DateTimeStart.String())
-						// you have to calculate that previous date should be more days before
-						// add proper language translations into database
+					if previousRecord.DateTimeStart.IsZero() {
+						logInfo("MAIN", "First record detected")
+					} else {
+						endOfDay := time.Date(previousRecord.DateTimeStart.Year(), previousRecord.DateTimeStart.Month(), previousRecord.DateTimeStart.Day(), 24, 0, 0, 0, time.UTC)
+						dayFormat := endOfDay.Format("2006-01-02")
+						productionRate[dayFormat] = productionRate[dayFormat] + endOfDay.Sub(previousRecord.DateTimeStart).Seconds()
+						for endOfDay.YearDay() != record.DateTimeStart.YearDay() {
+							previousDay := endOfDay
+							previousDayFormat := dayFormat
+							endOfDay = endOfDay.Add(24 * time.Hour)
+							productionRate[previousDayFormat] = productionRate[previousDayFormat] + endOfDay.Sub(previousDay).Seconds()
+						}
+						productionRate[format] = productionRate[format] + record.DateTimeStart.Sub(endOfDay).Seconds()
 					}
 				}
 			}
