@@ -83,9 +83,16 @@ function drawCalendar(data, input) {
         .domain([0, 100])
         .range(["#f3f6e7", "#e7eecf", "#dbe5b7", "#d0dd9f", "#c4d587", "#b8cd6f", "#acc457", "#a1bc3f", "#94b327", "#89ab0f"]);
 
+    let today = new Date();
+    let startDate = today.getFullYear()
+    let endDate = today.getFullYear()+1
+    for (const element of data) {
+        if (parseInt(element["Date"]) < startDate)
+            startDate = parseInt(element["Date"])
+    }
     const svg = d3.select("#navbar-live-" + input + "-2-calendar-chart")
         .selectAll("svg")
-        .data(d3.range(parseInt(data[0]["Date"]) - 1, parseInt(data[0]["Date"]) + 1))
+        .data(d3.range(startDate, endDate))
         .enter().append("svg")
         .attr("width", width)
         .attr("height", height)

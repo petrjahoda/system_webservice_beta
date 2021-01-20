@@ -24,6 +24,7 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html) rules.
 
 ### Changed
 - sorting workplaces by state duration desc
+- calendar is displaying properly for number of days
 
 
 ## [2021.1.1.18] - 2021-01-18
