@@ -11,7 +11,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="DarkyenusTimeTracker">
-    <option name="totalTimeSeconds" value="153380" />
+    <option name="totalTimeSeconds" value="153769" />
     <option name="gitIntegration" value="true" />
     <option name="naggedAbout" value="1" />
   </component>
@@ -114,7 +114,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_CLEANUP_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="## [2020.4.2.24] - 2020-11-24&#10;&#10;### Added &#10;- loading user menu based on user locale&#10;- loading user sub-menu based on user locale&#10;- loading page content dynamically" />
     <MESSAGE value="## [2020.4.2.25] - 2020-11-25&#10;&#10;### Added &#10;- service functionality" />
     <MESSAGE value="## [2020.4.2.25] - 2020-11-25&#10;&#10;### Added &#10;- service functionality&#10;- dynamically loading menu content" />
     <MESSAGE value="## [2020.4.2.25] - 2020-11-25&#10;&#10;### Added &#10;- service functionality&#10;- dynamically loading menu content&#10;- basic ui frame design" />
@@ -139,7 +138,8 @@
     <MESSAGE value="## [2021.1.1.18] - 2021-01-18&#10;&#10;### Added&#10;- calculating proper data for calendar" />
     <MESSAGE value="## [2021.1.1.20] - 2021-01-20&#10;&#10;### Fixed&#10;- proper displaying number of workplace in a state&#10;&#10;### Changed &#10;- sorting workplaces by state duration desc" />
     <MESSAGE value="## [2021.1.1.20] - 2021-01-20&#10;&#10;### Fixed&#10;- proper displaying number of workplace in a state&#10;- proper calculating data for calendar&#10;&#10;### Changed&#10;- sorting workplaces by state duration desc" />
-    <option name="LAST_COMMIT_MESSAGE" value="## [2021.1.1.20] - 2021-01-20&#10;&#10;### Fixed&#10;- proper displaying number of workplace in a state&#10;- proper calculating data for calendar&#10;&#10;### Changed&#10;- sorting workplaces by state duration desc" />
+    <MESSAGE value="## [2021.1.1.20] - 2021-01-20&#10;&#10;### Fixed&#10;- proper displaying number of workplace in a state&#10;- proper calculating data for calendar&#10;- proper calculating data for overview&#10;&#10;### Changed&#10;- sorting workplaces by state duration desc" />
+    <option name="LAST_COMMIT_MESSAGE" value="## [2021.1.1.20] - 2021-01-20&#10;&#10;### Fixed&#10;- proper displaying number of workplace in a state&#10;- proper calculating data for calendar&#10;- proper calculating data for overview&#10;&#10;### Changed&#10;- sorting workplaces by state duration desc" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
   </component>

@@ -20,6 +20,7 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html) rules.
 - proper displaying number of workplace in a state
 - proper calculating data for calendar
 - proper calculating data for overview
+- proper calculating today productivity
 
 ### Changed
 - sorting workplaces by state duration desc

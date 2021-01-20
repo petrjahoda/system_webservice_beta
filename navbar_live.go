@@ -112,11 +112,19 @@ func getCalendarData(writer http.ResponseWriter, request *http.Request, _ httpro
 	productionRate := calculateProductionRate(workplaceStateRecords)
 	var calendarData []CalendarData
 	secondInOneDay := 86400.0
+	todayStart := time.Date(time.Now().Year(), time.Now().Month(), time.Now().Day(), 0, 0, 0, 0, time.UTC)
+	secondToday := time.Now().Sub(todayStart).Seconds()
+	today := time.Now()
+	todayFormatted := today.Format("2006-01-02")
 	for datetime, totalDuration := range productionRate {
 		averageDayDurationInSeconds := totalDuration / float64(len(workplaceStateRecords))
 		var oneCalendarData CalendarData
 		oneCalendarData.Date = datetime
-		oneCalendarData.ProductionValue = strconv.FormatFloat(averageDayDurationInSeconds*100/secondInOneDay, 'f', 1, 64)
+		if oneCalendarData.Date == todayFormatted {
+			oneCalendarData.ProductionValue = strconv.FormatFloat(averageDayDurationInSeconds*100/secondToday, 'f', 1, 64)
+		} else {
+			oneCalendarData.ProductionValue = strconv.FormatFloat(averageDayDurationInSeconds*100/secondInOneDay, 'f', 1, 64)
+		}
 		calendarData = append(calendarData, oneCalendarData)
 	}
 	var outputData CalendarDataOutput
@@ -235,7 +243,8 @@ func getLiveProductivityData(writer http.ResponseWriter, request *http.Request, 
 			outputData.Yesterday = strconv.FormatFloat(totalDuration/float64(len(workplaceStateRecords))/secondInOneDay*100, 'f', 1, 64)
 		}
 		if dateTimeConverted == todayStart || todayStart.Before(dateTimeConverted) {
-			outputData.Today = strconv.FormatFloat(totalDuration/float64(len(workplaceStateRecords))/secondInOneDay*100, 'f', 1, 64)
+			secondToday := time.Now().Sub(todayStart).Seconds()
+			outputData.Today = strconv.FormatFloat(totalDuration/float64(len(workplaceStateRecords))/secondToday*100, 'f', 1, 64)
 		}
 	}
 	if lastMonthDays == 0 {
