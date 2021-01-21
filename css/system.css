@@ -29,6 +29,7 @@
     height: 30px;
     background-color: #1e1f1f;
     min-width: 1024px;
+    box-shadow: 0 5px 5px 0 #888;
 }
 
 #content {

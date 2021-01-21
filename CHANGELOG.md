@@ -21,6 +21,9 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html) rules.
 - proper displaying group and workplace data on initial load
 - added proper locales
 
+### Added
+- just a simple shadow for menu
+
 
 ## [2021.1.1.20] - 2021-01-20
 
