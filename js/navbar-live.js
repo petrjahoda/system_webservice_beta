@@ -178,9 +178,9 @@ function displayOverViewData(elementId, resultElement, elementColor) {
     const data = document.getElementById(elementId)
     if (resultElement != null) {
         if (resultElement.length > 0) {
-            data.textContent = resultElement.length + "" + data.textContent.replace(/\d/g, "")
+            data.textContent = resultElement.length + " " + data.textContent.replace(/\d/g, "")
         } else {
-            data.textContent = "0" + data.textContent.replace(/\d/g, "")
+            data.textContent = "0 " + data.textContent.replace(/\d/g, "")
         }
         console.log("Adding new data with size of " + resultElement.length + " for " + elementId)
         let content = document.createElement("div")
@@ -219,7 +219,7 @@ function displayOverViewData(elementId, resultElement, elementColor) {
             elementData.style.marginRight = "" + 276 - elementData.clientWidth + "px"
         }
     } else {
-        data.textContent = "0" + data.textContent.replace(/\d/g, "")
+        data.textContent = "0 " + data.textContent.replace(/\d/g, "")
     }
 
 }
