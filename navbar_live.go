@@ -153,9 +153,11 @@ func calculateProductionRate(workplaceStateRecords map[database.Workplace][]data
 						productionRate[dayFormat] = productionRate[dayFormat] + endOfDay.Sub(previousRecord.DateTimeStart).Seconds()
 						for endOfDay.YearDay() != record.DateTimeStart.YearDay() {
 							previousDay := endOfDay
-							previousDayFormat := dayFormat
+							previousDayFormat := endOfDay.Format("2006-01-02")
 							endOfDay = endOfDay.Add(24 * time.Hour)
-							productionRate[previousDayFormat] = productionRate[previousDayFormat] + endOfDay.Sub(previousDay).Seconds()
+							if productionRate[previousDayFormat] == 0 {
+								productionRate[previousDayFormat] = productionRate[previousDayFormat] + endOfDay.Sub(previousDay).Seconds()
+							}
 						}
 						productionRate[format] = productionRate[format] + record.DateTimeStart.Sub(endOfDay).Seconds()
 					}

@@ -84,15 +84,16 @@ function drawCalendar(data, input) {
         .range(["#f3f6e7", "#e7eecf", "#dbe5b7", "#d0dd9f", "#c4d587", "#b8cd6f", "#acc457", "#a1bc3f", "#94b327", "#89ab0f"]);
 
     let today = new Date();
-    let startDate = today.getFullYear()
-    let endDate = today.getFullYear()+1
-    for (const element of data) {
-        if (parseInt(element["Date"]) < startDate)
-            startDate = parseInt(element["Date"])
+    let startYear = today.getFullYear()
+    let endYear = startYear+1
+    for (const dayData of data) {
+        let yearOfDay = parseInt(dayData["Date"])
+        if (yearOfDay < startYear)
+            startYear = yearOfDay
     }
     const svg = d3.select("#navbar-live-" + input + "-2-calendar-chart")
         .selectAll("svg")
-        .data(d3.range(startDate, endDate))
+        .data(d3.range(startYear, endYear))
         .enter().append("svg")
         .attr("width", width)
         .attr("height", height)
