@@ -17,7 +17,8 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html) rules.
 ## [2021.1.1.21] - 2021-01-21
 
 ### Fixed
-- proper calculating data for production that takes more days 
+- proper calculating data for production that takes more days
+- proper displaying group and workplace data on initial load
 
 
 ## [2021.1.1.20] - 2021-01-20

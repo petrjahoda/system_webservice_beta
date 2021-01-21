@@ -76,6 +76,7 @@ navbarMenu.addEventListener("click", (event) => {
                 } else {
                     console.log("no data")
                 }
+                console.log("PROCESSING MENU DATA")
                 Process(menuData)
             });
 
@@ -95,19 +96,11 @@ function Process(menuData) {
     }
     if (menuData.includes("navbar-live-group")) {
         console.log("Processing page " + menuData)
-        displaySelection("group")
-        let savedSelection = sessionStorage.getItem("groupName")
-        displayLiveProductivity("group", savedSelection)
-        displayCalendar("group", savedSelection)
-        displayOverview("group", savedSelection);
+        displaySelection("group", "groupName")
     }
     if (menuData.includes("navbar-live-workplace")) {
         console.log("Processing page " + menuData)
-        displaySelection("workplace")
-        let savedSelection = sessionStorage.getItem("workplaceName")
-        displayLiveProductivity("workplace", savedSelection)
-        displayCalendar("workplace", savedSelection)
-        displayWorkplaceData("workplace", savedSelection)
+        displaySelection("workplace", "workplaceName")
     }
 }
 

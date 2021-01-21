@@ -1,5 +1,5 @@
 function displayLiveProductivity(input, selectionData) {
-    console.log("displaying live productivity data for " + input + " and " +selectionData)
+    console.log("displaying live productivity data for " + input + " and " + selectionData)
     let data = {
         input: input,
         selection: selectionData
@@ -85,7 +85,7 @@ function drawCalendar(data, input) {
 
     let today = new Date();
     let startYear = today.getFullYear()
-    let endYear = startYear+1
+    let endYear = startYear + 1
     for (const dayData of data) {
         let yearOfDay = parseInt(dayData["Date"])
         if (yearOfDay < startYear)
@@ -150,7 +150,7 @@ function drawCalendar(data, input) {
 
 
 function displayOverview(input, selectionData) {
-    console.log("displaying overview for " + input)
+    console.log("displaying overview for " + input + " and " + selectionData)
     let data = {
         input: input,
         selection: selectionData,
@@ -177,7 +177,6 @@ function displayOverViewData(elementId, resultElement, elementColor) {
     console.log("Updating text for " + elementId)
     const data = document.getElementById(elementId)
     if (resultElement != null) {
-        console.log(resultElement.length)
         if (resultElement.length > 0) {
             data.textContent = resultElement.length + "" + data.textContent.replace(/\d/g, "")
         } else {
@@ -226,7 +225,7 @@ function displayOverViewData(elementId, resultElement, elementColor) {
 }
 
 
-function displaySelection(input) {
+function displaySelection(input, name) {
     console.log("downloading selection for " + input)
     let data = {
         input: input,
@@ -252,8 +251,11 @@ function displaySelection(input) {
                 if (input === "workplace") {
                     displayWorkplaceData("workplace", selectionElement.value)
                 }
-
             })
+            let savedSelection = sessionStorage.getItem(name)
+            displayLiveProductivity(input, savedSelection)
+            displayCalendar(input, savedSelection)
+            displayOverview(input, savedSelection);
         });
 
     }).catch((error) => {
@@ -278,7 +280,6 @@ function displaySelectionData(element, selectionData, input) {
 function displayCompanyName(company) {
     console.log("downloading name for " + company)
     let companyName = sessionStorage.getItem("CompanyName")
-    console.log(companyName)
     if (companyName != null) {
         document.getElementById("navbar-live-company-name").textContent = companyName
         return
@@ -299,7 +300,7 @@ function displayCompanyName(company) {
 
 
 function displayWorkplaceData(workplace, savedSelection) {
-    console.log("downloading workplace data for  for " + savedSelection)
+    console.log("downloading workplace data for workplace" + savedSelection)
     let data = {
         input: savedSelection,
     };
@@ -309,11 +310,8 @@ function displayWorkplaceData(workplace, savedSelection) {
     }).then((response) => {
         response.text().then(function (data) {
             let result = JSON.parse(data);
-            console.log(result)
-
             if (result["Order"].length > 0) {
                 document.getElementById("navbar-live-workplace-3-order-data").textContent = result["Order"] + " (" + result["OrderDuration"] + ")"
-                console.log(result["OrderDuration"])
             } else {
                 document.getElementById("navbar-live-workplace-3-order-data").textContent = "-"
             }
