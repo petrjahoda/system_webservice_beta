@@ -64,7 +64,6 @@ navbarMenu.addEventListener("click", (event) => {
                 let result = JSON.parse(data);
                 content.innerHTML = result.Html
                 if (result.MenuLocales !== null) {
-                    console.log(result.MenuLocales)
                     for (menuLocale of result.MenuLocales) {
                         const menuItem = document.getElementById(menuLocale.Name)
                         try {
@@ -76,7 +75,6 @@ navbarMenu.addEventListener("click", (event) => {
                 } else {
                     console.log("no data")
                 }
-                console.log("PROCESSING MENU DATA")
                 Process(menuData)
             });
 
@@ -85,6 +83,15 @@ navbarMenu.addEventListener("click", (event) => {
         });
     }
 })
+
+
+function displayAllStandardCharts(chartsStart, chartsEnd) {
+    let workplace = sessionStorage.getItem("workplaceName")
+    document.getElementById("navbar-charts-standard-2-timeline").innerHTML = ""
+    displayTimelineChart(chartsStart.value, chartsEnd.value, workplace)
+    displayDigitalChart(chartsStart.value, chartsEnd.value, workplace)
+    displayAnalogChart(chartsStart.value, chartsEnd.value, workplace)
+}
 
 function Process(menuData) {
     if (menuData.includes("navbar-live-company")) {
@@ -96,11 +103,139 @@ function Process(menuData) {
     }
     if (menuData.includes("navbar-live-group")) {
         console.log("Processing page " + menuData)
-        displaySelection("group", "groupName")
+        displaySelectionLive("group", "groupName")
     }
     if (menuData.includes("navbar-live-workplace")) {
         console.log("Processing page " + menuData)
-        displaySelection("workplace", "workplaceName")
+        displaySelectionLive("workplace", "workplaceName")
+    }
+    if (menuData.includes("navbar-charts-standard")) {
+        console.log("Processing page " + menuData)
+        displaySelectionCharts("workplace", "workplaceName")
+
+        let chartsStart = document.getElementById("charts-standard-start")
+        let chartsEnd = document.getElementById("charts-standard-end")
+        let workplaceSelect = document.getElementById("charts-select-workplace")
+
+        if (sessionStorage.getItem("chartsStart")!== null) {
+            chartsStart.value = sessionStorage.getItem("chartsStart")
+        }
+        if (sessionStorage.getItem("chartsEnd")!== null) {
+            chartsEnd.value = sessionStorage.getItem("chartsEnd")
+        }
+
+        if (sessionStorage.getItem("chartsStart")!== null && sessionStorage.getItem("chartsEnd")!== null) {
+            console.log("Displaying charts right away")
+            if (chartsStart.value < chartsEnd.value) {
+                chartsStart.style.border = "1px solid black"
+                chartsEnd.style.border = "1px solid black"
+                displayAllStandardCharts(chartsStart, chartsEnd);
+
+            } else {
+                chartsStart.style.border = "1px solid lightcoral"
+                chartsEnd.style.border = "1px solid lightcoral"
+            }
+
+        }
+
+        workplaceSelect.addEventListener("change", (event) => {
+            sessionStorage.setItem("workplaceName", event.target.value)
+            if (chartsStart.value < chartsEnd.value) {
+                chartsStart.style.border = "1px solid black"
+                chartsEnd.style.border = "1px solid black"
+                displayAllStandardCharts(chartsStart, chartsEnd);
+
+            } else {
+                chartsStart.style.border = "1px solid lightcoral"
+                chartsEnd.style.border = "1px solid lightcoral"
+            }
+        })
+
+        chartsStart.addEventListener("change", (event) => {
+            sessionStorage.setItem("chartsStart", chartsStart.value)
+            if (chartsEnd.value.length>0) {
+                if (chartsStart.value < chartsEnd.value) {
+                    chartsStart.style.border = "1px solid black"
+                    chartsEnd.style.border = "1px solid black"
+                    displayAllStandardCharts(chartsStart, chartsEnd);
+
+                } else {
+                    chartsStart.style.border = "1px solid lightcoral"
+                    chartsEnd.style.border = "1px solid lightcoral"
+                }
+            }
+        })
+
+        chartsEnd.addEventListener("change", (event) => {
+            sessionStorage.setItem("chartsEnd", chartsEnd.value)
+            if (chartsStart.value.length>0) {
+                if (chartsStart.value < chartsEnd.value) {
+                    chartsStart.style.border = "1px solid black"
+                    chartsEnd.style.border = "1px solid black"
+                    displayAllStandardCharts(chartsStart, chartsEnd);
+
+                } else {
+                    chartsStart.style.border = "1px solid lightcoral"
+                    chartsEnd.style.border = "1px solid lightcoral"
+                }
+            }
+        })
+
+
+
+    }
+    if (menuData.includes("navbar-charts-special")) {
+        console.log("Processing page " + menuData)
+        displaySelectionCharts("workplace", "workplaceName")
+        let chartsStart = document.getElementById("charts-special-start")
+        let chartsEnd = document.getElementById("charts-special-end")
+        let workplace = document.getElementById("charts-select-workplace")
+        if (sessionStorage.getItem("chartsStart")!== null) {
+            chartsStart.value = sessionStorage.getItem("chartsStart")
+        }
+        if (sessionStorage.getItem("chartsEnd")!== null) {
+            chartsEnd.value = sessionStorage.getItem("chartsEnd")
+        }
+        if (sessionStorage.getItem("chartsStart")!== null && sessionStorage.getItem("chartsEnd")!== null) {
+            console.log("Displaying charts right away")
+            if (chartsStart.value < chartsEnd.value) {
+                chartsStart.style.border = "1px solid black"
+                chartsEnd.style.border = "1px solid black"
+                displayProductionRateChart(chartsStart.value, chartsEnd.value, workplace)
+            } else {
+                chartsStart.style.border = "1px solid lightcoral"
+                chartsEnd.style.border = "1px solid lightcoral"
+            }
+        }
+        chartsStart.addEventListener("change", (event) => {
+            sessionStorage.setItem("chartsStart", chartsStart.value)
+            if (chartsEnd.value.length>0) {
+                if (chartsStart.value < chartsEnd.value) {
+                    chartsStart.style.border = "1px solid black"
+                    chartsEnd.style.border = "1px solid black"
+                    displayProductionRateChart(chartsStart.value, chartsEnd.value, workplace)
+                } else {
+                    chartsStart.style.border = "1px solid lightcoral"
+                    chartsEnd.style.border = "1px solid lightcoral"
+
+                }
+            }
+        })
+        chartsEnd.addEventListener("change", (event) => {
+            sessionStorage.setItem("chartsEnd", chartsEnd.value)
+            if (chartsStart.value.length>0) {
+                if (chartsStart.value < chartsEnd.value) {
+                    chartsStart.style.border = "1px solid black"
+                    chartsEnd.style.border = "1px solid black"
+                    displayProductionRateChart(chartsStart.value, chartsEnd.value, workplace)
+
+                } else {
+                    chartsStart.style.border = "1px solid lightcoral"
+                    chartsEnd.style.border = "1px solid lightcoral"
+                }
+            }
+        })
+
     }
 }
 

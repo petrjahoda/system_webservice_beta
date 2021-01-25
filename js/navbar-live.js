@@ -225,7 +225,7 @@ function displayOverViewData(elementId, resultElement, elementColor) {
 }
 
 
-function displaySelection(input, name) {
+function displaySelectionLive(input, name) {
     console.log("downloading selection for " + input)
     let data = {
         input: input,
@@ -236,7 +236,7 @@ function displaySelection(input, name) {
     }).then((response) => {
         response.text().then(function (data) {
             let result = JSON.parse(data);
-            displaySelectionData("live-select-" + input, result["SelectionData"], input);
+            displaySelectionLiveData("live-select-" + input, result["SelectionData"], input);
             let selectionElement = document.getElementById("live-select-" + input);
             if (sessionStorage.getItem(input + "Name") === null) {
                 sessionStorage.setItem(input + "Name", result["SelectionData"][0])
@@ -255,7 +255,9 @@ function displaySelection(input, name) {
             let savedSelection = sessionStorage.getItem(name)
             displayLiveProductivity(input, savedSelection)
             displayCalendar(input, savedSelection)
-            displayOverview(input, savedSelection);
+            if (input === "group") {
+                displayOverview(input, savedSelection);
+            }
         });
 
     }).catch((error) => {
@@ -263,7 +265,7 @@ function displaySelection(input, name) {
     });
 }
 
-function displaySelectionData(element, selectionData, input) {
+function displaySelectionLiveData(element, selectionData, input) {
     let content = document.getElementById(element)
     for (let selection of selectionData) {
         let selectionData = document.createElement("option")
