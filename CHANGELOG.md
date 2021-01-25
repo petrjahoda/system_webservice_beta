@@ -21,6 +21,9 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html) rules.
 - standard charts date from and date to select, with proper functionality
 - timeline chart version 1
 
+### Fixed
+- bug when calculating production for today
+
 ## [2021.1.1.21] - 2021-01-21
 
 ### Fixed

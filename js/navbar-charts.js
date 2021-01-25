@@ -69,6 +69,8 @@ function displayProductionRateChart() {
 function drawTimelineChart(data, chartsStart, chartsEnd) {
     // data
     const productionDataset = data["ProductionData"]
+
+    let result = new Map(productionDataset.map(value => [value["Date"], value["Date"]]));
     const downtimeDataset = data["DowntimeData"]
     const powerOffDataset = data["PowerOffData"]
     const xAccessor = d => d["Date"]
@@ -161,6 +163,10 @@ function drawTimelineChart(data, chartsStart, chartsEnd) {
     bounds.append("path")
         .attr("d", productionAreaGenerator(productionDataset))
         .attr("fill", "green")
+        .on("mouseover", function (e) {
+            console.log(e)
+        })
+
 
     bounds.append("path")
         .attr("d", downtimeAreaGenerator(downtimeDataset))

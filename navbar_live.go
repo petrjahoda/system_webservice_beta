@@ -141,8 +141,8 @@ func calculateProductionRate(workplaceStateRecords map[database.Workplace][]data
 	for _, records := range workplaceStateRecords {
 		var previousRecord database.StateRecord
 		for _, record := range records {
-			format := record.DateTimeStart.Format("2006-01-02")
 			if record.StateID != 1 {
+				format := record.DateTimeStart.Format("2006-01-02")
 				if previousRecord.DateTimeStart.YearDay() == record.DateTimeStart.YearDay() {
 					productionRate[format] = productionRate[format] + record.DateTimeStart.Sub(previousRecord.DateTimeStart).Seconds()
 				} else {
@@ -159,7 +159,7 @@ func calculateProductionRate(workplaceStateRecords map[database.Workplace][]data
 								productionRate[previousDayFormat] = productionRate[previousDayFormat] + endOfDay.Sub(previousDay).Seconds()
 							}
 						}
-						productionRate[format] = productionRate[format] + record.DateTimeStart.Sub(endOfDay).Seconds()
+						productionRate[format] = productionRate[format] + endOfDay.Sub(record.DateTimeStart).Seconds()
 					}
 				}
 			}
