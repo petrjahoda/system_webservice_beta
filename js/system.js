@@ -2,7 +2,8 @@ const navbar = document.getElementById("navbar");
 
 const content = document.getElementById("content")
 
-navbar.addEventListener("click", (event) => {
+navbar.addEventListener("mouseover", (event) => {
+    console.log("mouse on main menu")
     if (event.target.id !== "navbar") {
         const menuItems = document.getElementsByClassName("navbar-item")
         for (let i = 0; i < menuItems.length; i++) {

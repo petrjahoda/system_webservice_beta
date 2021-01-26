@@ -80,7 +80,7 @@ type CompanyOutput struct {
 }
 
 func getCalendarData(writer http.ResponseWriter, request *http.Request, _ httprouter.Params) {
-	start := time.Now()
+	start := time.Now().UTC()
 	logInfo("MAIN", "Parsing data")
 	var data LiveDataInput
 	err := json.NewDecoder(request.Body).Decode(&data)
@@ -106,15 +106,15 @@ func getCalendarData(writer http.ResponseWriter, request *http.Request, _ httpro
 		logInfo("MAIN", "Parsing data ended in "+time.Since(start).String())
 		return
 	}
-	lastYear := time.Now().AddDate(-1, 0, 0)
+	lastYear := time.Now().UTC().AddDate(-1, 0, 0)
 	lastYearStart := time.Date(lastYear.Year(), 1, 1, 0, 0, 0, 0, time.UTC)
 	workplaceStateRecords := downloadWorkplaceStateRecords(data, db, lastYearStart)
 	productionRate := calculateProductionRate(workplaceStateRecords)
 	var calendarData []CalendarData
 	secondInOneDay := 86400.0
-	todayStart := time.Date(time.Now().Year(), time.Now().Month(), time.Now().Day(), 0, 0, 0, 0, time.UTC)
-	secondToday := time.Now().Sub(todayStart).Seconds()
-	today := time.Now()
+	todayStart := time.Date(time.Now().UTC().Year(), time.Now().UTC().Month(), time.Now().UTC().Day(), 0, 0, 0, 0, time.UTC)
+	secondToday := time.Now().UTC().Sub(todayStart).Seconds()
+	today := time.Now().UTC()
 	todayFormatted := today.Format("2006-01-02")
 	for datetime, totalDuration := range productionRate {
 		averageDayDurationInSeconds := totalDuration / float64(len(workplaceStateRecords))
@@ -141,12 +141,15 @@ func calculateProductionRate(workplaceStateRecords map[database.Workplace][]data
 	for _, records := range workplaceStateRecords {
 		var previousRecord database.StateRecord
 		for _, record := range records {
-			if record.StateID != 1 {
-				format := record.DateTimeStart.Format("2006-01-02")
+			if record.StateID != 1 && previousRecord.StateID == 1 {
+				formattedRecordDateTime := record.DateTimeStart.Format("2006-01-02")
+				//fmt.Println(formattedRecordDateTime)
 				if previousRecord.DateTimeStart.YearDay() == record.DateTimeStart.YearDay() {
-					productionRate[format] = productionRate[format] + record.DateTimeStart.Sub(previousRecord.DateTimeStart).Seconds()
+					//calculating the same day
+					productionRate[formattedRecordDateTime] = productionRate[formattedRecordDateTime] + record.DateTimeStart.Sub(previousRecord.DateTimeStart).Seconds()
 				} else {
 					if previousRecord.DateTimeStart.IsZero() {
+						// initial data, skipping
 					} else {
 						endOfDay := time.Date(previousRecord.DateTimeStart.Year(), previousRecord.DateTimeStart.Month(), previousRecord.DateTimeStart.Day(), 24, 0, 0, 0, time.UTC)
 						dayFormat := endOfDay.Format("2006-01-02")
@@ -159,18 +162,23 @@ func calculateProductionRate(workplaceStateRecords map[database.Workplace][]data
 								productionRate[previousDayFormat] = productionRate[previousDayFormat] + endOfDay.Sub(previousDay).Seconds()
 							}
 						}
-						productionRate[format] = productionRate[format] + endOfDay.Sub(record.DateTimeStart).Seconds()
+						productionRate[formattedRecordDateTime] = productionRate[formattedRecordDateTime] + record.DateTimeStart.Sub(endOfDay).Seconds()
 					}
 				}
 			}
 			previousRecord = record
+		}
+		if previousRecord.StateID == 1 {
+			// adding last state if it is production
+			formattedRecordDateTime := previousRecord.DateTimeStart.Format("2006-01-02")
+			productionRate[formattedRecordDateTime] = productionRate[formattedRecordDateTime] + time.Now().UTC().Sub(previousRecord.DateTimeStart).Seconds()
 		}
 	}
 	return productionRate
 }
 
 func getLiveProductivityData(writer http.ResponseWriter, request *http.Request, _ httprouter.Params) {
-	start := time.Now()
+	start := time.Now().UTC()
 	logInfo("MAIN", "Parsing data")
 	var data LiveDataInput
 	err := json.NewDecoder(request.Body).Decode(&data)
@@ -197,15 +205,15 @@ func getLiveProductivityData(writer http.ResponseWriter, request *http.Request, 
 		logInfo("MAIN", "Parsing data ended in "+time.Since(start).String())
 		return
 	}
-	lastMonth := time.Now().AddDate(0, -1, 0)
+	lastMonth := time.Now().UTC().AddDate(0, -1, 0)
 	lastMonthStart := time.Date(lastMonth.Year(), lastMonth.Month(), 1, 0, 0, 0, 0, time.UTC)
-	thisMonthStarts := time.Date(time.Now().Year(), time.Now().Month(), 1, 0, 0, 0, 0, time.UTC)
-	year, week := time.Now().ISOWeek()
+	thisMonthStarts := time.Date(time.Now().UTC().Year(), time.Now().UTC().Month(), 1, 0, 0, 0, 0, time.UTC)
+	year, week := time.Now().UTC().ISOWeek()
 	thisWeekStart := isoweek.StartTime(year, week, time.UTC)
 	lastWeekStart := thisWeekStart.AddDate(0, 0, -7)
-	yesterday := time.Now().AddDate(0, 0, -1)
+	yesterday := time.Now().UTC().AddDate(0, 0, -1)
 	yesterdayStart := time.Date(yesterday.Year(), yesterday.Month(), yesterday.Day(), 0, 0, 0, 0, time.UTC)
-	todayStart := time.Date(time.Now().Year(), time.Now().Month(), time.Now().Day(), 0, 0, 0, 0, time.UTC)
+	todayStart := time.Date(time.Now().UTC().Year(), time.Now().UTC().Month(), time.Now().UTC().Day(), 0, 0, 0, 0, time.UTC)
 
 	workplaceStateRecords := downloadWorkplaceStateRecords(data, db, lastMonthStart)
 	productionRate := calculateProductionRate(workplaceStateRecords)
@@ -245,7 +253,7 @@ func getLiveProductivityData(writer http.ResponseWriter, request *http.Request, 
 			outputData.Yesterday = strconv.FormatFloat(totalDuration/float64(len(workplaceStateRecords))/secondInOneDay*100, 'f', 1, 64)
 		}
 		if dateTimeConverted == todayStart || todayStart.Before(dateTimeConverted) {
-			secondToday := time.Now().Sub(todayStart).Seconds()
+			secondToday := time.Now().UTC().Sub(todayStart).Seconds()
 			outputData.Today = strconv.FormatFloat(totalDuration/float64(len(workplaceStateRecords))/secondToday*100, 'f', 1, 64)
 		}
 	}
@@ -378,13 +386,13 @@ func getLiveOverviewData(writer http.ResponseWriter, request *http.Request, _ ht
 		var stateRecord database.StateRecord
 		db.Where("workplace_id = ?", workplace.ID).Last(&stateRecord)
 		if stateRecord.StateID == 1 {
-			productionWorkplaces = append(productionWorkplaces, WorkplaceData{WorkplaceName: workplace.Name, State: "production", StateDuration: time.Now().Sub(stateRecord.DateTimeStart).Round(1 * time.Second)})
+			productionWorkplaces = append(productionWorkplaces, WorkplaceData{WorkplaceName: workplace.Name, State: "production", StateDuration: time.Now().UTC().Sub(stateRecord.DateTimeStart).Round(1 * time.Second)})
 		}
 		if stateRecord.StateID == 2 {
-			downtimeWorkplaces = append(downtimeWorkplaces, WorkplaceData{WorkplaceName: workplace.Name, State: "downtime", StateDuration: time.Now().Sub(stateRecord.DateTimeStart).Round(1 * time.Second)})
+			downtimeWorkplaces = append(downtimeWorkplaces, WorkplaceData{WorkplaceName: workplace.Name, State: "downtime", StateDuration: time.Now().UTC().Sub(stateRecord.DateTimeStart).Round(1 * time.Second)})
 		}
 		if stateRecord.StateID == 3 {
-			poweroffWorkplaces = append(poweroffWorkplaces, WorkplaceData{WorkplaceName: workplace.Name, State: "poweroff", StateDuration: time.Now().Sub(stateRecord.DateTimeStart).Round(1 * time.Second)})
+			poweroffWorkplaces = append(poweroffWorkplaces, WorkplaceData{WorkplaceName: workplace.Name, State: "poweroff", StateDuration: time.Now().UTC().Sub(stateRecord.DateTimeStart).Round(1 * time.Second)})
 		}
 	}
 
@@ -575,14 +583,14 @@ func getWorkplaceData(writer http.ResponseWriter, request *http.Request, _ httpr
 	var outputData WorkplaceDataOutput
 	outputData.Result = "ok"
 	outputData.Order = order.Name
-	outputData.OrderDuration = time.Now().Sub(orderRecord.DateTimeStart).Round(1 * time.Second).String()
+	outputData.OrderDuration = time.Now().UTC().Sub(orderRecord.DateTimeStart).Round(1 * time.Second).String()
 	outputData.User = user.FirstName + " " + user.SecondName
 	outputData.Downtime = downtime.Name
-	outputData.DowntimeDuration = time.Now().Sub(downtimeRecord.DateTimeStart).Round(1 * time.Second).String()
+	outputData.DowntimeDuration = time.Now().UTC().Sub(downtimeRecord.DateTimeStart).Round(1 * time.Second).String()
 	outputData.Breakdown = breakdown.Name
-	outputData.BreakdownDuration = time.Now().Sub(breakdownRecord.DateTimeStart).Round(1 * time.Second).String()
+	outputData.BreakdownDuration = time.Now().UTC().Sub(breakdownRecord.DateTimeStart).Round(1 * time.Second).String()
 	outputData.Alarm = alarm.Name
-	outputData.AlarmDuration = time.Now().Sub(alarmRecord.DateTimeStart).Round(1 * time.Second).String()
+	outputData.AlarmDuration = time.Now().UTC().Sub(alarmRecord.DateTimeStart).Round(1 * time.Second).String()
 	writer.Header().Set("Content-Type", "application/json")
 	_ = json.NewEncoder(writer).Encode(outputData)
 	logInfo("MAIN", "Parsing data ended")
