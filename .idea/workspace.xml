@@ -6,8 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="f4279880-9db2-4e82-91da-7ce54060e021" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/system.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/system.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/navbar_live.go" beforeDir="false" afterPath="$PROJECT_DIR$/navbar_live.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/navbar-charts.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/navbar-charts.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/navbar_charts.go" beforeDir="false" afterPath="$PROJECT_DIR$/navbar_charts.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,7 +15,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="DarkyenusTimeTracker">
-    <option name="totalTimeSeconds" value="183987" />
+    <option name="totalTimeSeconds" value="184983" />
     <option name="gitIntegration" value="true" />
     <option name="naggedAbout" value="1" />
   </component>
@@ -120,7 +120,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_CLEANUP_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="## [2020.4.3.16] - 2020-12-16&#10;&#10;### Added&#10;- workplace live company calendar view with start on mondays" />
     <MESSAGE value="## [2020.4.3.17] - 2020-12-17&#10;&#10;### Added&#10;- workplace live company workplaces overview" />
     <MESSAGE value="## [2020.4.3.17] - 2020-12-17&#10;&#10;### Added&#10;- live company workplaces overview" />
     <MESSAGE value="## [2020.4.3.18] - 2020-12-18&#10;&#10;### Added&#10;- complete live company page" />
@@ -145,7 +144,8 @@
     <MESSAGE value="## [2021.1.1.21] - 2021-01-21&#10;&#10;### Fixed&#10;- proper calculating data for production that takes more days&#10;- proper displaying group and workplace data on initial load&#10;- added proper locales&#10;&#10;### Added&#10;- just a simple shadow for menu" />
     <MESSAGE value="## [2021.1.1.25] - 2021-01-25&#10;&#10;### Added&#10;- standard charts workplace select, with proper functionality&#10;- standard charts date from and date to select, with proper functionality&#10;- timeline chart version 1" />
     <MESSAGE value="## [2021.1.1.25] - 2021-01-25&#10;&#10;### Added&#10;- standard charts workplace select, with proper functionality&#10;- standard charts date from and date to select, with proper functionality&#10;- timeline chart version 1&#10;&#10;### Fixed&#10;- bug when calculating production for today" />
-    <option name="LAST_COMMIT_MESSAGE" value="## [2021.1.1.25] - 2021-01-25&#10;&#10;### Added&#10;- standard charts workplace select, with proper functionality&#10;- standard charts date from and date to select, with proper functionality&#10;- timeline chart version 1&#10;&#10;### Fixed&#10;- bug when calculating production for today" />
+    <MESSAGE value="## [2021.1.1.26] - 2021-01-26&#10;&#10;### Changed&#10;- submenu is displayed on hover&#10;&#10;### Fixed&#10;- proper calculation production for today if last state is production" />
+    <option name="LAST_COMMIT_MESSAGE" value="## [2021.1.1.26] - 2021-01-26&#10;&#10;### Changed&#10;- submenu is displayed on hover&#10;&#10;### Fixed&#10;- proper calculation production for today if last state is production" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
   </component>

@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/julienschmidt/httprouter"
 	"github.com/petrjahoda/database"
 	"gorm.io/driver/postgres"
@@ -81,11 +80,6 @@ func getTimelineChart(writer http.ResponseWriter, request *http.Request, params 
 	logInfo("MAIN", "There are "+strconv.Itoa(len(productionData))+" production records")
 	logInfo("MAIN", "There are "+strconv.Itoa(len(downtimeData))+" downtime records")
 	logInfo("MAIN", "There are "+strconv.Itoa(len(powerOffData))+" poweroff records")
-	fmt.Println(recordsFrom.Unix())
-	fmt.Println(productionData[0])
-	fmt.Println(downtimeData[0])
-	fmt.Println(powerOffData[0])
-
 	var outputData TimelineChartData
 	outputData.Result = "ok"
 	outputData.ProductionData = productionData
@@ -101,9 +95,9 @@ func downloadTimelineData(db *gorm.DB, data ChartDataInput, recordsFrom time.Tim
 	var workplace database.Workplace
 	db.Where("Name = ?", data.Workplace).Find(&workplace)
 	var lastStateRecord database.StateRecord
-	db.Where("workplace_id = ?", workplace.ID).Where("date_time_start < ?", recordsFrom).Last(&lastStateRecord)
+	db.Where("workplace_id = ?", workplace.ID).Where("date_time_start <= ?", recordsFrom).Last(&lastStateRecord)
 	var allStateRecords []database.StateRecord
-	db.Where("workplace_id = ?", workplace.ID).Where("date_time_start > ?", recordsFrom).Where("date_time_start < ?", recordsTo).Order("date_time_start ASC").Find(&allStateRecords)
+	db.Where("workplace_id = ?", workplace.ID).Where("date_time_start >= ?", recordsFrom).Where("date_time_start < ?", recordsTo).Order("date_time_start ASC").Find(&allStateRecords)
 	var productionData []TimelineData
 	var downtimeData []TimelineData
 	var powerOffData []TimelineData
