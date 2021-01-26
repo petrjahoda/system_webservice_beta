@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/julienschmidt/httprouter"
 	"github.com/petrjahoda/database"
 	"gorm.io/driver/postgres"
@@ -80,6 +81,17 @@ func getTimelineChart(writer http.ResponseWriter, request *http.Request, params 
 	logInfo("MAIN", "There are "+strconv.Itoa(len(productionData))+" production records")
 	logInfo("MAIN", "There are "+strconv.Itoa(len(downtimeData))+" downtime records")
 	logInfo("MAIN", "There are "+strconv.Itoa(len(powerOffData))+" poweroff records")
+	for _, datum := range productionData {
+		fmt.Println(datum.Date, datum.Value)
+	}
+	fmt.Println()
+	for _, datum := range downtimeData {
+		fmt.Println(datum.Date, datum.Value)
+	}
+	fmt.Println()
+	for _, datum := range powerOffData {
+		fmt.Println(datum.Date, datum.Value)
+	}
 	var outputData TimelineChartData
 	outputData.Result = "ok"
 	outputData.ProductionData = productionData
@@ -101,6 +113,105 @@ func downloadTimelineData(db *gorm.DB, data ChartDataInput, recordsFrom time.Tim
 	var productionData []TimelineData
 	var downtimeData []TimelineData
 	var powerOffData []TimelineData
+	previousRecordStateId := lastStateRecord.StateID
+	lastStateIdToInsert := lastStateRecord.StateID
+	productionData, downtimeData, powerOffData = addFirstRecordToData(lastStateRecord, productionData, recordsFrom, downtimeData, powerOffData)
+	lastStateIdToInsert, productionData, downtimeData, powerOffData = addAllRecordsToData(allStateRecords, previousRecordStateId, productionData, lastStateIdToInsert, downtimeData, powerOffData)
+	productionData, downtimeData, powerOffData = addLastRecordToData(lastStateIdToInsert, productionData, recordsTo, downtimeData, powerOffData)
+	return productionData, downtimeData, powerOffData
+}
+
+func addAllRecordsToData(allStateRecords []database.StateRecord, previousRecordStateId int, productionData []TimelineData, lastStateIdToInsert int, downtimeData []TimelineData, powerOffData []TimelineData) (int, []TimelineData, []TimelineData, []TimelineData) {
+	for _, record := range allStateRecords {
+		if record.StateID == previousRecordStateId {
+			continue
+		}
+		if record.StateID == 1 {
+			productionData = append(productionData, TimelineData{
+				Date:  record.DateTimeStart.Unix(),
+				Value: 1,
+			})
+			lastStateIdToInsert = 1
+		} else if record.StateID == 2 {
+			downtimeData = append(downtimeData, TimelineData{
+				Date:  record.DateTimeStart.Unix(),
+				Value: 1,
+			})
+			lastStateIdToInsert = 2
+		} else if record.StateID == 3 {
+			powerOffData = append(powerOffData, TimelineData{
+				Date:  record.DateTimeStart.Unix(),
+				Value: 1,
+			})
+			lastStateIdToInsert = 3
+		}
+		if previousRecordStateId == 1 {
+			productionData = append(productionData, TimelineData{
+				Date:  record.DateTimeStart.Unix(),
+				Value: 0,
+			})
+
+		} else if previousRecordStateId == 2 {
+			downtimeData = append(downtimeData, TimelineData{
+				Date:  record.DateTimeStart.Unix(),
+				Value: 0,
+			})
+		} else if previousRecordStateId == 3 {
+			powerOffData = append(powerOffData, TimelineData{
+				Date:  record.DateTimeStart.Unix(),
+				Value: 0,
+			})
+		}
+		previousRecordStateId = record.StateID
+	}
+	return lastStateIdToInsert, productionData, downtimeData, powerOffData
+}
+
+func addLastRecordToData(lastStateIdToInsert int, productionData []TimelineData, recordsTo time.Time, downtimeData []TimelineData, powerOffData []TimelineData) ([]TimelineData, []TimelineData, []TimelineData) {
+	if lastStateIdToInsert == 1 {
+		productionData = append(productionData, TimelineData{
+			Date:  recordsTo.Unix(),
+			Value: 0,
+		})
+		downtimeData = append(downtimeData, TimelineData{
+			Date:  recordsTo.Unix(),
+			Value: 1,
+		})
+		powerOffData = append(powerOffData, TimelineData{
+			Date:  recordsTo.Unix(),
+			Value: 1,
+		})
+	} else if lastStateIdToInsert == 2 {
+		downtimeData = append(downtimeData, TimelineData{
+			Date:  recordsTo.Unix(),
+			Value: 0,
+		})
+		productionData = append(productionData, TimelineData{
+			Date:  recordsTo.Unix(),
+			Value: 1,
+		})
+		powerOffData = append(powerOffData, TimelineData{
+			Date:  recordsTo.Unix(),
+			Value: 1,
+		})
+	} else if lastStateIdToInsert == 3 {
+		powerOffData = append(powerOffData, TimelineData{
+			Date:  recordsTo.Unix(),
+			Value: 0,
+		})
+		productionData = append(productionData, TimelineData{
+			Date:  recordsTo.Unix(),
+			Value: 1,
+		})
+		downtimeData = append(downtimeData, TimelineData{
+			Date:  recordsTo.Unix(),
+			Value: 1,
+		})
+	}
+	return productionData, downtimeData, powerOffData
+}
+
+func addFirstRecordToData(lastStateRecord database.StateRecord, productionData []TimelineData, recordsFrom time.Time, downtimeData []TimelineData, powerOffData []TimelineData) ([]TimelineData, []TimelineData, []TimelineData) {
 	if lastStateRecord.StateID == 1 {
 		productionData = append(productionData, TimelineData{
 			Date:  recordsFrom.Unix(),
@@ -140,88 +251,6 @@ func downloadTimelineData(db *gorm.DB, data ChartDataInput, recordsFrom time.Tim
 		downtimeData = append(downtimeData, TimelineData{
 			Date:  recordsFrom.Unix(),
 			Value: 0,
-		})
-	}
-	previousRecordStateId := lastStateRecord.StateID
-	lastStateIdToInsert := lastStateRecord.StateID
-	for _, record := range allStateRecords {
-		if record.StateID == 1 {
-			productionData = append(productionData, TimelineData{
-				Date:  record.DateTimeStart.Unix(),
-				Value: 1,
-			})
-			lastStateIdToInsert = 1
-		} else if record.StateID == 2 {
-			downtimeData = append(downtimeData, TimelineData{
-				Date:  record.DateTimeStart.Unix(),
-				Value: 1,
-			})
-			lastStateIdToInsert = 2
-		} else if record.StateID == 3 {
-			powerOffData = append(powerOffData, TimelineData{
-				Date:  record.DateTimeStart.Unix(),
-				Value: 1,
-			})
-			lastStateIdToInsert = 3
-		}
-		if previousRecordStateId == 1 {
-			productionData = append(productionData, TimelineData{
-				Date:  record.DateTimeStart.Unix(),
-				Value: 0,
-			})
-
-		} else if previousRecordStateId == 2 {
-			downtimeData = append(downtimeData, TimelineData{
-				Date:  record.DateTimeStart.Unix(),
-				Value: 0,
-			})
-		} else if previousRecordStateId == 3 {
-			powerOffData = append(powerOffData, TimelineData{
-				Date:  record.DateTimeStart.Unix(),
-				Value: 0,
-			})
-		}
-		previousRecordStateId = record.StateID
-	}
-
-	if lastStateIdToInsert == 1 {
-		productionData = append(productionData, TimelineData{
-			Date:  recordsTo.Unix(),
-			Value: 0,
-		})
-		downtimeData = append(downtimeData, TimelineData{
-			Date:  recordsTo.Unix(),
-			Value: 1,
-		})
-		powerOffData = append(powerOffData, TimelineData{
-			Date:  recordsTo.Unix(),
-			Value: 1,
-		})
-	} else if lastStateIdToInsert == 2 {
-		downtimeData = append(downtimeData, TimelineData{
-			Date:  recordsTo.Unix(),
-			Value: 0,
-		})
-		productionData = append(productionData, TimelineData{
-			Date:  recordsTo.Unix(),
-			Value: 1,
-		})
-		powerOffData = append(powerOffData, TimelineData{
-			Date:  recordsTo.Unix(),
-			Value: 1,
-		})
-	} else if lastStateIdToInsert == 3 {
-		powerOffData = append(powerOffData, TimelineData{
-			Date:  recordsTo.Unix(),
-			Value: 0,
-		})
-		productionData = append(productionData, TimelineData{
-			Date:  recordsTo.Unix(),
-			Value: 1,
-		})
-		downtimeData = append(downtimeData, TimelineData{
-			Date:  recordsTo.Unix(),
-			Value: 1,
 		})
 	}
 	return productionData, downtimeData, powerOffData

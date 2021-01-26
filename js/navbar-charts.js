@@ -129,9 +129,9 @@ function drawTimelineChart(data, chartsStart, chartsEnd) {
 
 
     // draw data
-    const productionLineGenerator = d3.line()
-        .x(d => productionxScale(xAccessor(d)))
-        .y(d => productionyScale(yAccessor(d)))
+    // const productionLineGenerator = d3.line()
+    //     .x(d => productionxScale(xAccessor(d)))
+    //     .y(d => productionyScale(yAccessor(d)))
         // .curve(d3.curveStep);
     const productionAreaGenerator = d3.area()
         .x(d => productionxScale(xAccessor(d)))
@@ -139,9 +139,9 @@ function drawTimelineChart(data, chartsStart, chartsEnd) {
         .y1(d => productionyScale(yAccessor(d)))
         .curve(d3.curveStepAfter);
 
-    const downtimeLineGenerator = d3.line()
-        .x(d => downtimexScale(xAccessor(d)))
-        .y(d => downtimeyScale(yAccessor(d)))
+    // const downtimeLineGenerator = d3.line()
+    //     .x(d => downtimexScale(xAccessor(d)))
+    //     .y(d => downtimeyScale(yAccessor(d)))
         // .curve(d3.curveStep);
     const downtimeAreaGenerator = d3.area()
         .x(d => downtimexScale(xAccessor(d)))
@@ -149,9 +149,9 @@ function drawTimelineChart(data, chartsStart, chartsEnd) {
         .y1(d => downtimeyScale(yAccessor(d)))
         .curve(d3.curveStepAfter);
 
-    const powerOffLineGenerator = d3.line()
-        .x(d => poweroffxScale(xAccessor(d)))
-        .y(d => poweroffyScale(yAccessor(d)))
+    // const powerOffLineGenerator = d3.line()
+    //     .x(d => poweroffxScale(xAccessor(d)))
+    //     .y(d => poweroffyScale(yAccessor(d)))
         // .curve(d3.curveStep);
     const powerOffAreaGenerator = d3.area()
         .x(d => poweroffxScale(xAccessor(d)))
@@ -176,23 +176,23 @@ function drawTimelineChart(data, chartsStart, chartsEnd) {
         .attr("d", powerOffAreaGenerator(powerOffDataset))
         .attr("fill", "red")
 
-    bounds.append("path")
-        .attr("d", productionLineGenerator(productionDataset))
-        .attr("fill", "none")
-        .attr("stroke", "black")
-        .attr("stroke-width", 1)
-    bounds.append("path")
-        .attr("d", downtimeLineGenerator(downtimeDataset))
-        .attr("fill", "none")
-        .attr("stroke", "black")
-        .attr("stroke-width", 1)
-        .attr("stroke-dasharray", ("3, 3"))
-    bounds.append("path")
-        .attr("d", powerOffLineGenerator(powerOffDataset))
-        .attr("fill", "none")
-        .attr("stroke", "black")
-        .attr("stroke-width", 1)
-        .attr("stroke-dasharray", ("1, 1"))
+    // bounds.append("path")
+    //     .attr("d", productionLineGenerator(productionDataset))
+    //     .attr("fill", "none")
+    //     .attr("stroke", "black")
+    //     .attr("stroke-width", 1)
+    // bounds.append("path")
+    //     .attr("d", downtimeLineGenerator(downtimeDataset))
+    //     .attr("fill", "none")
+    //     .attr("stroke", "black")
+    //     .attr("stroke-width", 1)
+    //     .attr("stroke-dasharray", ("3, 3"))
+    // bounds.append("path")
+    //     .attr("d", powerOffLineGenerator(powerOffDataset))
+    //     .attr("fill", "none")
+    //     .attr("stroke", "black")
+    //     .attr("stroke-width", 1)
+    //     .attr("stroke-dasharray", ("1, 1"))
 
 
 }

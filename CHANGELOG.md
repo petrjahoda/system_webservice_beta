@@ -21,6 +21,7 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html) rules.
 
 ### Fixed
 - proper calculation production for today if last state is production
+- proper calculation for timeline chart, when two states in database one after another
 
 ## [2021.1.1.25] - 2021-01-25
 
