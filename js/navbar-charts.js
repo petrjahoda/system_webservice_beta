@@ -115,19 +115,24 @@ function drawTimelineChart(data) {
         .y0(dimensions.height - dimensions.margin.bottom)
         .y1(d => yScale(yAccessor(d)))
         .curve(d3.curveStepAfter);
+    let div = d3.select("#navbar-charts-standard-2-timeline").append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
+
 
     bounds.append("path")
         .attr("d", productionAreaGenerator(productionDataset))
         .attr("fill", data["ProductionColor"])
-        .on('mouseenter', (event) => {
+        .on('mousemove', (event) => {
                 let coords = d3.pointer(event);
                 let timeEntered = timeScale.invert(coords[0]) / 1000
+                let now = new Date(timeEntered * 1000).toLocaleString()
                 let start = new Date(productionDataset.filter(i => i["Date"] < timeEntered).pop()["Date"] * 1000).toLocaleString()
                 let end = new Date(productionDataset.filter(i => i["Date"] > timeEntered)[0]["Date"] * 1000).toLocaleString()
                 div.transition()
                     .duration(200)
                     .style("opacity", .9);
-                div.html(start + "<br/>" + end)
+                div.html(now + "<br/>Production<br/>" + start + "<br/>" + end)
                     .style("visibility", "visible")
                     .style("top", (event.pageY) + "px")
                     .style("left", (event.pageX) - 60 + "px")
@@ -140,15 +145,16 @@ function drawTimelineChart(data) {
     bounds.append("path")
         .attr("d", downtimeAreaGenerator(downtimeDataset))
         .attr("fill", data["DowntimeColor"])
-        .on('mouseenter', (event) => {
+        .on('mousemove', (event) => {
                 let coords = d3.pointer(event);
                 let timeEntered = timeScale.invert(coords[0]) / 1000
+                let now = new Date(timeEntered * 1000).toLocaleString()
                 let start = new Date(downtimeDataset.filter(i => i["Date"] < timeEntered).pop()["Date"] * 1000).toLocaleString()
                 let end = new Date(downtimeDataset.filter(i => i["Date"] > timeEntered)[0]["Date"] * 1000).toLocaleString()
                 div.transition()
                     .duration(200)
                     .style("opacity", .9);
-                div.html(start + "<br/>" + end)
+                div.html(now + "<br/>Downtime<br/>" + start + "<br/>" + end)
                     .style("visibility", "visible")
                     .style("top", (event.pageY) + "px")
                     .style("left", (event.pageX) - 60 + "px")
@@ -159,22 +165,20 @@ function drawTimelineChart(data) {
             }
         )
 
-    let div = d3.select("#navbar-charts-standard-2-timeline").append("div")
-        .attr("class", "tooltip")
-        .style("opacity", 0);
 
     bounds.append("path")
         .attr("d", powerOffAreaGenerator(powerOffDataset))
         .attr("fill", data["PoweroffColor"])
-        .on('mouseenter', (event) => {
+        .on('mousemove', (event) => {
                 let coords = d3.pointer(event);
                 let timeEntered = timeScale.invert(coords[0]) / 1000
+                let now = new Date(timeEntered * 1000).toLocaleString()
                 let start = new Date(powerOffDataset.filter(i => i["Date"] < timeEntered).pop()["Date"] * 1000).toLocaleString()
                 let end = new Date(powerOffDataset.filter(i => i["Date"] > timeEntered)[0]["Date"] * 1000).toLocaleString()
                 div.transition()
                     .duration(200)
                     .style("opacity", .9);
-                div.html(start + "<br/>" + end)
+                div.html(now + "<br/>Poweroff<br/>" + start + "<br/>" + end)
                     .style("visibility", "visible")
                     .style("top", (event.pageY) + "px")
                     .style("left", (event.pageX) - 60 + "px")
@@ -189,7 +193,6 @@ function drawTimelineChart(data) {
 // Define the axes
     const timeScale = d3.scaleTime()
         .domain([new Date(chartStartsAt * 1000), new Date(chartEndsAt * 1000)])
-        .nice()
         .range([dimensions.margin.left, dimensions.width - dimensions.margin.right])
     bounds.append("g")
         .attr("transform", "translate(0," + (dimensions.height - dimensions.margin.bottom) + ")")
