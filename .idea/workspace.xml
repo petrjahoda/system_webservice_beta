@@ -5,7 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f4279880-9db2-4e82-91da-7ce54060e021" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/189878a8-ac07-4d15-9931-ed82d7860fe1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/189878a8-ac07-4d15-9931-ed82d7860fe1.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CHANGELOG.md" beforeDir="false" afterPath="$PROJECT_DIR$/CHANGELOG.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/css/system.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/system.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html/content/navbar-charts-standard.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/content/navbar-charts-standard.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html/system.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/system.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/navbar-charts.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/navbar-charts.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/system.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/system.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/linux/system_webservice_beta" beforeDir="false" afterPath="$PROJECT_DIR$/linux/system_webservice_beta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/navbar_charts.go" beforeDir="false" afterPath="$PROJECT_DIR$/navbar_charts.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -14,7 +25,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="DarkyenusTimeTracker">
-    <option name="totalTimeSeconds" value="186088" />
+    <option name="totalTimeSeconds" value="205295" />
     <option name="gitIntegration" value="true" />
     <option name="naggedAbout" value="1" />
   </component>
@@ -119,7 +130,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_CLEANUP_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="## [2020.4.3.17] - 2020-12-17&#10;&#10;### Added&#10;- workplace live company workplaces overview" />
     <MESSAGE value="## [2020.4.3.17] - 2020-12-17&#10;&#10;### Added&#10;- live company workplaces overview" />
     <MESSAGE value="## [2020.4.3.18] - 2020-12-18&#10;&#10;### Added&#10;- complete live company page" />
     <MESSAGE value="## [2020.4.3.19] - 2020-12-19&#10;&#10;### Changed&#10;- html, css and js for live page" />
@@ -144,7 +154,8 @@
     <MESSAGE value="## [2021.1.1.25] - 2021-01-25&#10;&#10;### Added&#10;- standard charts workplace select, with proper functionality&#10;- standard charts date from and date to select, with proper functionality&#10;- timeline chart version 1" />
     <MESSAGE value="## [2021.1.1.25] - 2021-01-25&#10;&#10;### Added&#10;- standard charts workplace select, with proper functionality&#10;- standard charts date from and date to select, with proper functionality&#10;- timeline chart version 1&#10;&#10;### Fixed&#10;- bug when calculating production for today" />
     <MESSAGE value="## [2021.1.1.26] - 2021-01-26&#10;&#10;### Changed&#10;- submenu is displayed on hover&#10;&#10;### Fixed&#10;- proper calculation production for today if last state is production" />
-    <option name="LAST_COMMIT_MESSAGE" value="## [2021.1.1.26] - 2021-01-26&#10;&#10;### Changed&#10;- submenu is displayed on hover&#10;&#10;### Fixed&#10;- proper calculation production for today if last state is production" />
+    <MESSAGE value="## [2021.1.1.26] - 2021-01-26&#10;&#10;### Changed&#10;- submenu is displayed on hover&#10;&#10;### Fixed&#10;- proper calculation production for today if last state is production&#10;- proper calculation for timeline chart, when two states in database one after another" />
+    <option name="LAST_COMMIT_MESSAGE" value="## [2021.1.1.26] - 2021-01-26&#10;&#10;### Changed&#10;- submenu is displayed on hover&#10;&#10;### Fixed&#10;- proper calculation production for today if last state is production&#10;- proper calculation for timeline chart, when two states in database one after another" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
   </component>

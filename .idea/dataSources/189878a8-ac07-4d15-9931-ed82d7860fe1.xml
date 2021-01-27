@@ -1329,6 +1329,7 @@ sequence|table|17217|17219|1
     </table>
     <table id="91" parent="30" name="device_port_analog_records">
       <ObjectId>16474</ObjectId>
+      <Outdated>1</Outdated>
       <Owner>postgres</Owner>
       <StateNumber>515</StateNumber>
     </table>
@@ -1450,6 +1451,7 @@ sequence|table|17217|17219|1
     </table>
     <table id="115" parent="30" name="settings">
       <ObjectId>16422</ObjectId>
+      <Outdated>1</Outdated>
       <Owner>postgres</Owner>
       <StateNumber>496</StateNumber>
     </table>

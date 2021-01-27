@@ -43,12 +43,12 @@ function displayTimelineChart(chartsStart, chartsEnd, workplace) {
     d3.json("/get_timeline_chart", {
         method: "POST",
         body: JSON.stringify({
-            chartsStart: chartsStart,
-            chartsEnd: chartsEnd,
+            chartsStart: new Date(chartsStart).toISOString(),
+            chartsEnd: new Date(chartsEnd).toISOString(),
             workplace: workplace,
         })
     }).then((data) => {
-        drawTimelineChart(data, chartsStart, chartsEnd);
+        drawTimelineChart(data);
     }).catch((error) => {
         console.error("Error loading the data: " + error);
     });
@@ -66,11 +66,10 @@ function displayProductionRateChart() {
     console.log("Displaying production rate chart")
 }
 
-function drawTimelineChart(data, chartsStart, chartsEnd) {
+
+function drawTimelineChart(data) {
     // data
     const productionDataset = data["ProductionData"]
-
-    let result = new Map(productionDataset.map(value => [value["Date"], value["Date"]]));
     const downtimeDataset = data["DowntimeData"]
     const powerOffDataset = data["PowerOffData"]
     const xAccessor = d => d["Date"]
@@ -78,121 +77,123 @@ function drawTimelineChart(data, chartsStart, chartsEnd) {
 
     //dimensions
     let dimensions = {
-        width: 960,
-        height: 100,
-        // margin: {top: 15, right: 15, bottom: 40, left: 60,},
-        margin: {top: 0, right: 0, bottom: 0, left: 0,},
+        width: screen.width - 500,
+        height: 70,
+        margin: {top: 0, right: 40, bottom: 20, left: 40,},
     }
-    dimensions.boundedWidth = dimensions.width - dimensions.margin.left - dimensions.margin.right
-    dimensions.boundedHeight = dimensions.height - dimensions.margin.top - dimensions.margin.bottom
 
     //canvas
     const wrapper = d3.select("#navbar-charts-standard-2-timeline")
         .append("svg")
-        .attr("width", dimensions.width)
-        .attr("height", dimensions.height)
+        .attr("viewBox", "0 0 " + dimensions.width + " 100")
+        .attr("preserveAspectRatio", "xMinYMin meet")
     const bounds = wrapper.append("g")
-        .style("transform", `translate(${dimensions.margin.left}px, ${dimensions.margin.top}px)`);
 
     //scales
-
-    const chartStartsAt = new Date(chartsStart).valueOf()/1000
-    const chartEndsAt = new Date(chartsEnd).valueOf()/1000
-    const productionxScale = d3.scaleTime()
+    const chartStartsAt = productionDataset[0]["Date"]
+    const chartEndsAt = productionDataset[productionDataset.length - 1]["Date"]
+    const xScale = d3.scaleTime()
         .domain([chartStartsAt, chartEndsAt])
-        .range([0, dimensions.boundedWidth])
-        .nice()
-    const productionyScale = d3.scaleLinear()
+        .range([dimensions.margin.left, dimensions.width - dimensions.margin.right])
+    const yScale = d3.scaleLinear()
         .domain(d3.extent(productionDataset, yAccessor))
-        .range([dimensions.boundedHeight, 0])
-        .nice()
-
-    const downtimexScale = d3.scaleTime()
-        .domain([chartStartsAt, chartEndsAt])
-        .range([0, dimensions.boundedWidth])
-        .nice()
-    const downtimeyScale = d3.scaleLinear()
-        .domain(d3.extent(downtimeDataset, yAccessor))
-        .range([dimensions.boundedHeight, 0])
-        .nice()
-
-    const poweroffxScale = d3.scaleTime()
-        .domain([chartStartsAt, chartEndsAt])
-        .range([0, dimensions.boundedWidth])
-        .nice()
-    const poweroffyScale = d3.scaleLinear()
-        .domain(d3.extent(powerOffDataset, yAccessor))
-        .range([dimensions.boundedHeight, 0])
-        .nice()
-
-
-
+        .range([dimensions.height - dimensions.margin.bottom, 0])
 
     // draw data
-    // const productionLineGenerator = d3.line()
-    //     .x(d => productionxScale(xAccessor(d)))
-    //     .y(d => productionyScale(yAccessor(d)))
-        // .curve(d3.curveStep);
     const productionAreaGenerator = d3.area()
-        .x(d => productionxScale(xAccessor(d)))
-        .y0(dimensions.boundedHeight)
-        .y1(d => productionyScale(yAccessor(d)))
+        .x(d => xScale(xAccessor(d)))
+        .y0(dimensions.height - dimensions.margin.bottom)
+        .y1(d => yScale(yAccessor(d)))
         .curve(d3.curveStepAfter);
-
-    // const downtimeLineGenerator = d3.line()
-    //     .x(d => downtimexScale(xAccessor(d)))
-    //     .y(d => downtimeyScale(yAccessor(d)))
-        // .curve(d3.curveStep);
     const downtimeAreaGenerator = d3.area()
-        .x(d => downtimexScale(xAccessor(d)))
-        .y0(dimensions.boundedHeight)
-        .y1(d => downtimeyScale(yAccessor(d)))
+        .x(d => xScale(xAccessor(d)))
+        .y0(dimensions.height - dimensions.margin.bottom)
+        .y1(d => yScale(yAccessor(d)))
         .curve(d3.curveStepAfter);
-
-    // const powerOffLineGenerator = d3.line()
-    //     .x(d => poweroffxScale(xAccessor(d)))
-    //     .y(d => poweroffyScale(yAccessor(d)))
-        // .curve(d3.curveStep);
     const powerOffAreaGenerator = d3.area()
-        .x(d => poweroffxScale(xAccessor(d)))
-        .y0(dimensions.boundedHeight)
-        .y1(d => poweroffyScale(yAccessor(d)))
+        .x(d => xScale(xAccessor(d)))
+        .y0(dimensions.height - dimensions.margin.bottom)
+        .y1(d => yScale(yAccessor(d)))
         .curve(d3.curveStepAfter);
 
-    //
     bounds.append("path")
         .attr("d", productionAreaGenerator(productionDataset))
-        .attr("fill", "green")
-        .on("mouseover", function (e) {
-            console.log(e)
-        })
-
-
+        .attr("fill", data["ProductionColor"])
+        .on('mouseenter', (event) => {
+                let coords = d3.pointer(event);
+                let timeEntered = timeScale.invert(coords[0]) / 1000
+                let start = new Date(productionDataset.filter(i => i["Date"] < timeEntered).pop()["Date"] * 1000).toLocaleString()
+                let end = new Date(productionDataset.filter(i => i["Date"] > timeEntered)[0]["Date"] * 1000).toLocaleString()
+                div.transition()
+                    .duration(200)
+                    .style("opacity", .9);
+                div.html(start + "<br/>" + end)
+                    .style("visibility", "visible")
+                    .style("top", (event.pageY) + "px")
+                    .style("left", (event.pageX) - 60 + "px")
+            }
+        )
+        .on('mouseout', () => {
+                div.style("visibility", "hidden")
+            }
+        )
     bounds.append("path")
         .attr("d", downtimeAreaGenerator(downtimeDataset))
-        .attr("fill", "yellow")
+        .attr("fill", data["DowntimeColor"])
+        .on('mouseenter', (event) => {
+                let coords = d3.pointer(event);
+                let timeEntered = timeScale.invert(coords[0]) / 1000
+                let start = new Date(downtimeDataset.filter(i => i["Date"] < timeEntered).pop()["Date"] * 1000).toLocaleString()
+                let end = new Date(downtimeDataset.filter(i => i["Date"] > timeEntered)[0]["Date"] * 1000).toLocaleString()
+                div.transition()
+                    .duration(200)
+                    .style("opacity", .9);
+                div.html(start + "<br/>" + end)
+                    .style("visibility", "visible")
+                    .style("top", (event.pageY) + "px")
+                    .style("left", (event.pageX) - 60 + "px")
+            }
+        )
+        .on('mouseout', () => {
+                div.style("visibility", "hidden")
+            }
+        )
+
+    let div = d3.select("#navbar-charts-standard-2-timeline").append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
 
     bounds.append("path")
         .attr("d", powerOffAreaGenerator(powerOffDataset))
-        .attr("fill", "red")
+        .attr("fill", data["PoweroffColor"])
+        .on('mouseenter', (event) => {
+                let coords = d3.pointer(event);
+                let timeEntered = timeScale.invert(coords[0]) / 1000
+                let start = new Date(powerOffDataset.filter(i => i["Date"] < timeEntered).pop()["Date"] * 1000).toLocaleString()
+                let end = new Date(powerOffDataset.filter(i => i["Date"] > timeEntered)[0]["Date"] * 1000).toLocaleString()
+                div.transition()
+                    .duration(200)
+                    .style("opacity", .9);
+                div.html(start + "<br/>" + end)
+                    .style("visibility", "visible")
+                    .style("top", (event.pageY) + "px")
+                    .style("left", (event.pageX) - 60 + "px")
+            }
+        )
+        .on('mouseout', () => {
+                div.style("visibility", "hidden")
+            }
+        )
 
-    // bounds.append("path")
-    //     .attr("d", productionLineGenerator(productionDataset))
-    //     .attr("fill", "none")
-    //     .attr("stroke", "black")
-    //     .attr("stroke-width", 1)
-    // bounds.append("path")
-    //     .attr("d", downtimeLineGenerator(downtimeDataset))
-    //     .attr("fill", "none")
-    //     .attr("stroke", "black")
-    //     .attr("stroke-width", 1)
-    //     .attr("stroke-dasharray", ("3, 3"))
-    // bounds.append("path")
-    //     .attr("d", powerOffLineGenerator(powerOffDataset))
-    //     .attr("fill", "none")
-    //     .attr("stroke", "black")
-    //     .attr("stroke-width", 1)
-    //     .attr("stroke-dasharray", ("1, 1"))
+
+// Define the axes
+    const timeScale = d3.scaleTime()
+        .domain([new Date(chartStartsAt * 1000), new Date(chartEndsAt * 1000)])
+        .nice()
+        .range([dimensions.margin.left, dimensions.width - dimensions.margin.right])
+    bounds.append("g")
+        .attr("transform", "translate(0," + (dimensions.height - dimensions.margin.bottom) + ")")
+        .call(d3.axisBottom(timeScale))
 
 
 }

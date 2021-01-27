@@ -19,10 +19,13 @@ type ChartDataInput struct {
 }
 
 type TimelineChartData struct {
-	Result         string
-	ProductionData []TimelineData
-	DowntimeData   []TimelineData
-	PowerOffData   []TimelineData
+	Result          string
+	ProductionData  []TimelineData
+	DowntimeData    []TimelineData
+	PowerOffData    []TimelineData
+	ProductionColor string
+	DowntimeColor   string
+	PoweroffColor   string
 }
 
 type TimelineData struct {
@@ -44,7 +47,7 @@ func getTimelineChart(writer http.ResponseWriter, request *http.Request, params 
 		return
 	}
 	logInfo("MAIN", "Processing timeline charts data for "+data.Workplace+" from "+data.ChartsStart+" to "+data.ChartsEnd)
-	recordsFrom, err := time.Parse("2006-01-02T15:04", data.ChartsStart)
+	recordsFrom, err := time.Parse("2006-01-02T15:04:05.000Z", data.ChartsStart)
 	if err != nil {
 		logError("MAIN", "Problem parsing date: "+data.ChartsStart)
 		var responseData TimelineChartData
@@ -54,7 +57,7 @@ func getTimelineChart(writer http.ResponseWriter, request *http.Request, params 
 		logInfo("MAIN", "Verifying user ended")
 		return
 	}
-	recordsTo, err := time.Parse("2006-01-02T15:04", data.ChartsEnd)
+	recordsTo, err := time.Parse("2006-01-02T15:04:05.000Z", data.ChartsEnd)
 	if err != nil {
 		logError("MAIN", "Problem parsing date: "+data.ChartsEnd)
 		var responseData TimelineChartData
@@ -77,26 +80,27 @@ func getTimelineChart(writer http.ResponseWriter, request *http.Request, params 
 		logInfo("MAIN", "Verifying user ended")
 		return
 	}
-	productionData, downtimeData, powerOffData := downloadTimelineData(db, data, recordsFrom, recordsTo)
-	logInfo("MAIN", "There are "+strconv.Itoa(len(productionData))+" production records")
-	logInfo("MAIN", "There are "+strconv.Itoa(len(downtimeData))+" downtime records")
-	logInfo("MAIN", "There are "+strconv.Itoa(len(powerOffData))+" poweroff records")
-	for _, datum := range productionData {
-		fmt.Println(datum.Date, datum.Value)
-	}
-	fmt.Println()
-	for _, datum := range downtimeData {
-		fmt.Println(datum.Date, datum.Value)
-	}
-	fmt.Println()
-	for _, datum := range powerOffData {
-		fmt.Println(datum.Date, datum.Value)
-	}
+	fmt.Println(recordsFrom)
+	fmt.Println(recordsTo)
+	productionData, downtimeData, powerOffData := downloadTimelineData(db, data, recordsFrom.In(time.UTC), recordsTo.In(time.UTC))
+	logInfo("MAIN", "There are "+strconv.Itoa(len(productionData))+" production records from "+strconv.Itoa(int(productionData[0].Date)))
+	logInfo("MAIN", "There are "+strconv.Itoa(len(downtimeData))+" downtime records "+strconv.Itoa(int(downtimeData[0].Date)))
+	logInfo("MAIN", "There are "+strconv.Itoa(len(powerOffData))+" poweroff records "+strconv.Itoa(int(powerOffData[0].Date)))
+	var productionState database.State
+	var downtimeState database.State
+	var poweroffState database.State
+	db.Where("name = ?", "Production").Find(&productionState)
+	db.Where("name = ?", "Downtime").Find(&downtimeState)
+	db.Where("name = ?", "Poweroff").Find(&poweroffState)
+
 	var outputData TimelineChartData
 	outputData.Result = "ok"
 	outputData.ProductionData = productionData
 	outputData.DowntimeData = downtimeData
 	outputData.PowerOffData = powerOffData
+	outputData.ProductionColor = productionState.Color
+	outputData.DowntimeColor = downtimeState.Color
+	outputData.PoweroffColor = poweroffState.Color
 	writer.Header().Set("Content-Type", "application/json")
 	_ = json.NewEncoder(writer).Encode(outputData)
 	logInfo("MAIN", "Parsing data ended")
@@ -254,4 +258,20 @@ func addFirstRecordToData(lastStateRecord database.StateRecord, productionData [
 		})
 	}
 	return productionData, downtimeData, powerOffData
+}
+
+func readTimeZoneFromDatabase() string {
+	logInfo("MAIN", "Reading timezone from database")
+	timer := time.Now()
+	db, err := gorm.Open(postgres.Open(config), &gorm.Config{})
+	sqlDB, _ := db.DB()
+	defer sqlDB.Close()
+	if err != nil {
+		logError("MAIN", "Problem opening database: "+err.Error())
+		return ""
+	}
+	var settings database.Setting
+	db.Where("name=?", "timezone").Find(&settings)
+	logInfo("MAIN", "Timezone read in "+time.Since(timer).String())
+	return settings.Value
 }

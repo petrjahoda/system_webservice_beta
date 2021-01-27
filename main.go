@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-const version = "2020.4.3.14"
+const version = "2021.1.1.27"
 const serviceName = "System WebService"
 const serviceDescription = "System web interface"
 const config = "user=postgres password=Zps05..... dbname=version3 host=localhost port=5432 sslmode=disable"

@@ -14,6 +14,15 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html) rules.
 * ```Fixed``` for any bug fixes.
 * ```Security``` in case of vulnerabilities.
 
+## [2021.1.1.27] - 2021-01-27
+
+### Added
+- timeline chart: proper UTC time handling
+- timeline chart: proper displaying
+- timeline chart: proper tooltip displaying
+- timeline chart: proper responsive design
+- timeline chart: proper axis display
+
 ## [2021.1.1.26] - 2021-01-26
 
 ### Changed
