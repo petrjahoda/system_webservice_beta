@@ -8,7 +8,9 @@ import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"net/http"
+	"reflect"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -16,16 +18,20 @@ type ChartDataInput struct {
 	ChartsStart string
 	ChartsEnd   string
 	Workplace   string
+	Locale      string
 }
 
 type TimelineChartData struct {
-	Result          string
-	ProductionData  []TimelineData
-	DowntimeData    []TimelineData
-	PowerOffData    []TimelineData
-	ProductionColor string
-	DowntimeColor   string
-	PoweroffColor   string
+	Result           string
+	ProductionData   []TimelineData
+	DowntimeData     []TimelineData
+	PowerOffData     []TimelineData
+	ProductionColor  string
+	DowntimeColor    string
+	PoweroffColor    string
+	ProductionLocale string
+	DowntimeLocale   string
+	PoweroffLocale   string
 }
 
 type TimelineData struct {
@@ -92,8 +98,35 @@ func getTimelineChart(writer http.ResponseWriter, request *http.Request, params 
 	db.Where("name = ?", "Production").Find(&productionState)
 	db.Where("name = ?", "Downtime").Find(&downtimeState)
 	db.Where("name = ?", "Poweroff").Find(&poweroffState)
-
 	var outputData TimelineChartData
+	logInfo("MAIN", "Downloading locales for "+data.Locale)
+	var productionLocale database.Locale
+	var downtimeLocale database.Locale
+	var poweroffLocale database.Locale
+	db.Where("name = 'production'").Select(data.Locale).Find(&productionLocale)
+	db.Where("name = 'downtime'").Select(data.Locale).Find(&downtimeLocale)
+	db.Where("name = 'poweroff'").Select(data.Locale).Find(&poweroffLocale)
+	value := reflect.ValueOf(productionLocale)
+	for i := 0; i < value.NumField(); i++ {
+		temp := value.Field(i).String()
+		if len(temp) > 0 && !strings.Contains(temp, "{") {
+			outputData.ProductionLocale = temp
+		}
+	}
+	value = reflect.ValueOf(downtimeLocale)
+	for i := 0; i < value.NumField(); i++ {
+		temp := value.Field(i).String()
+		if len(temp) > 0 && !strings.Contains(temp, "{") {
+			outputData.DowntimeLocale = temp
+		}
+	}
+	value = reflect.ValueOf(poweroffLocale)
+	for i := 0; i < value.NumField(); i++ {
+		temp := value.Field(i).String()
+		if len(temp) > 0 && !strings.Contains(temp, "{") {
+			outputData.PoweroffLocale = temp
+		}
+	}
 	outputData.Result = "ok"
 	outputData.ProductionData = productionData
 	outputData.DowntimeData = downtimeData

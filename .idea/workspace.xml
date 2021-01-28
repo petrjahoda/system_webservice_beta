@@ -5,8 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f4279880-9db2-4e82-91da-7ce54060e021" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/189878a8-ac07-4d15-9931-ed82d7860fe1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/189878a8-ac07-4d15-9931-ed82d7860fe1.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CHANGELOG.md" beforeDir="false" afterPath="$PROJECT_DIR$/CHANGELOG.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/navbar-charts.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/navbar-charts.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/navbar_charts.go" beforeDir="false" afterPath="$PROJECT_DIR$/navbar_charts.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -14,7 +17,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="DarkyenusTimeTracker">
-    <option name="totalTimeSeconds" value="206459" />
+    <option name="totalTimeSeconds" value="210380" />
     <option name="gitIntegration" value="true" />
     <option name="naggedAbout" value="1" />
   </component>
