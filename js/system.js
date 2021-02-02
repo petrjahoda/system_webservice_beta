@@ -89,6 +89,7 @@ navbarMenu.addEventListener("click", (event) => {
 function displayAllStandardCharts(chartsStart, chartsEnd) {
     let workplace = sessionStorage.getItem("workplaceName")
     document.getElementById("navbar-charts-standard-2-timeline").innerHTML = ""
+    document.getElementById("navbar-charts-standard-2-timeline-panel").innerHTML = ""
     displayTimelineChart(chartsStart.value, chartsEnd.value, workplace)
     displayDigitalChart(chartsStart.value, chartsEnd.value, workplace)
     displayAnalogChart(chartsStart.value, chartsEnd.value, workplace)

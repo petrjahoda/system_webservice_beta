@@ -14,6 +14,11 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html) rules.
 * ```Fixed``` for any bug fixes.
 * ```Security``` in case of vulnerabilities.
 
+## [2021.1.2.2] - 2021-02-02
+
+### Added
+- zoom panel for timeline chart
+
 ## [2021.1.1.28] - 2021-01-28
 
 ### Added
