@@ -319,6 +319,10 @@ function DrawTimeLinePanel(productionDataset, downtimeDataset, powerOffDataset, 
         .call(brush)
 
     function CheckDatasetsForZeroValues(productionDatasetUpdated, downtimeDatasetUpdated, powerOffDatasetUpdated, lastDowntime, lastPowerOff, startBrush, endBrush, lastProduction) {
+        console.log("")
+        console.log(productionDatasetUpdated.length)
+        console.log(downtimeDatasetUpdated.length)
+        console.log(powerOffDatasetUpdated.length)
         if ((productionDatasetUpdated.length === 2) && (downtimeDatasetUpdated.length === 0) && (powerOffDatasetUpdated.length === 0)) {
             if (lastDowntime > lastPowerOff) {
                 downtimeDatasetUpdated = []
@@ -331,7 +335,7 @@ function DrawTimeLinePanel(productionDataset, downtimeDataset, powerOffDataset, 
                 powerOffDatasetUpdated.push({Date: endBrush * 1000, Value: 0})
                 downtimeDatasetUpdated = []
             }
-            if (lastProduction > lastDowntime) {
+            if ((lastProduction > lastDowntime) && (lastProduction>lastPowerOff)) {
                 powerOffDatasetUpdated = []
                 downtimeDatasetUpdated = []
             }
