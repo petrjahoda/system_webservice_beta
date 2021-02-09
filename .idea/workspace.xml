@@ -4,29 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f4279880-9db2-4e82-91da-7ce54060e021" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/189878a8-ac07-4d15-9931-ed82d7860fe1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/189878a8-ac07-4d15-9931-ed82d7860fe1.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/189878a8-ac07-4d15-9931-ed82d7860fe1/storage_v2/_src_/database/version3.W36uiQ/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/189878a8-ac07-4d15-9931-ed82d7860fe1/storage_v2/_src_/database/version3.W36uiQ/schema/public.abK9xQ.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CHANGELOG.md" beforeDir="false" afterPath="$PROJECT_DIR$/CHANGELOG.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/create.sh" beforeDir="false" afterPath="$PROJECT_DIR$/create.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/navbar-charts.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/navbar-charts.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/system.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/system.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/linux/system_webservice_beta" beforeDir="false" afterPath="$PROJECT_DIR$/linux/system_webservice_beta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/navbar_charts.go" beforeDir="false" afterPath="$PROJECT_DIR$/navbar_charts.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/navbar_live.go" beforeDir="false" afterPath="$PROJECT_DIR$/navbar_live.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/update" beforeDir="false" afterPath="$PROJECT_DIR$/update" afterDir="false" />
-    </list>
+    <list default="true" id="f4279880-9db2-4e82-91da-7ce54060e021" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="DarkyenusTimeTracker">
-    <option name="totalTimeSeconds" value="247193" />
+    <option name="totalTimeSeconds" value="247226" />
     <option name="gitIntegration" value="true" />
     <option name="naggedAbout" value="1" />
   </component>
@@ -131,7 +116,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_CLEANUP_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="## [2020.4.3.21] - 2020-12-21&#10;&#10;### Changed&#10;- d3 code reformat" />
     <MESSAGE value="## [2020.4.3.22] - 2020-12-22&#10;&#10;### Changed&#10;- company live design changed" />
     <MESSAGE value="## [2021.1.1.5] - 2021-01-05&#10;&#10;### Changed&#10;- company live design changed" />
     <MESSAGE value="## [2021.1.1.5] - 2021-01-05&#10;&#10;### Added&#10;- completed whole live menu for all three submenus" />
@@ -156,7 +140,8 @@
     <MESSAGE value="## [2021.1.1.27] - 2021-01-27&#10;&#10;### Added&#10;- timeline chart: proper UTC time handling&#10;- timeline chart: proper displaying&#10;- timeline chart: proper tooltip displaying&#10;- timeline chart: proper responsive design&#10;- timeline chart: proper axis display" />
     <MESSAGE value="## [2021.1.1.28] - 2021-01-28&#10;&#10;### Added&#10;- timeline chart: proper displaying locale" />
     <MESSAGE value="## [2021.1.2.2] - 2021-02-02&#10;&#10;### Added&#10;- zoom panel for timeline chart" />
-    <option name="LAST_COMMIT_MESSAGE" value="## [2021.1.2.2] - 2021-02-02&#10;&#10;### Added&#10;- zoom panel for timeline chart" />
+    <MESSAGE value="## [2021.1.2.9] - 2021-02-09&#10;&#10;### Added&#10;- digital chart for all digital data, with proper panel handling" />
+    <option name="LAST_COMMIT_MESSAGE" value="## [2021.1.2.9] - 2021-02-09&#10;&#10;### Added&#10;- digital chart for all digital data, with proper panel handling" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
   </component>

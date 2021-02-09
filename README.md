@@ -1,6 +1,6 @@
 [![developed_using](https://img.shields.io/badge/developed%20using-Jetbrains%20Goland-lightgrey)](https://www.jetbrains.com/go/)
 <br/>
-![GitHub](https://img.shields.io/github/license/petrjahoda/system_webservice_beta) 
+![GitHub](https://img.shields.io/github/license/petrjahoda/system_webservice_beta)
 [![GitHub last commit](https://img.shields.io/github/last-commit/petrjahoda/system_webservice_beta)](https://github.com/petrjahoda/system_webservice_beta/commits/master)
 [![GitHub issues](https://img.shields.io/github/issues/petrjahoda/system_webservice_beta)](https://github.com/petrjahoda/system_webservice_beta/issues)
 <br/>
@@ -16,36 +16,45 @@
 # System WebService Beta
 
 ## Description
+
 Go web service for user UI
 
 ## Installation Information
-Install under docker runtime using [this dockerfile image](https://github.com/petrjahoda/system/tree/master/latest) with this command: ```docker-compose up -d```
+
+Install under docker runtime using [this dockerfile image](https://github.com/petrjahoda/system/tree/master/latest) with
+this command: ```docker-compose up -d```
 
 ## Implementation Information
+
 Check the software running with this command: ```docker stats```. <br/>
 System_service has to be running. No need to make a specific setup.
 
 ## Developer Information
+
 Use software only as a [part of a system](https://github.com/petrjahoda/system) using Docker runtime.<br/>
- Do not run under linux, windows or mac on its own.
- 
- ## Roadmap
- - [x] Project structure
- - [x] Service
- - [x] Main menu
- - [x] User login
- - [x] Locale based user interface (česky, deutsch, english, español, français, italiano, polski, slovensky, русский )
- - [x] Dynamically load menu content
- - [x] Dynamically load proper javascript behavior
- - [x] All pages structure
- - [x] Live menu
+Do not run under linux, windows or mac on its own.
+
+## Roadmap
+
+- [x] Project structure
+- [x] Service
+- [x] Main menu
+- [x] User login
+- [x] Locale based user interface (česky, deutsch, english, español, français, italiano, polski, slovensky, русский )
+- [x] Dynamically load menu content
+- [x] Dynamically load proper javascript behavior
+- [x] All pages structure
+- [x] Live menu
     - [x] Factory submenu
-    - [x] Group submenu 
+    - [x] Group submenu
     - [x] Workplace submenu
- - [ ] Charts menu --IN PROGRESS--
+- [ ] Charts menu --IN PROGRESS--
     - [ ] Standard Charts submenu
+      - [x] Timeline Chart
+      - [x] Digital Chart
+      - [ ] Analog Chart --IN PROGRESS--
     - [ ] Special Charts submenu
- - [ ] Statistics menu
+- [ ] Statistics menu
     - [ ] Factory submenu
     - [ ] Group submenu
     - [ ] Workplace submenu
@@ -53,48 +62,48 @@ Use software only as a [part of a system](https://github.com/petrjahoda/system) 
     - [ ] Downtime submenu
     - [ ] Breakdown submenu
     - [ ] Alarm submenu
- - [ ] Comparisons menu
-     - [ ] Factory submenu
-     - [ ] Group submenu
-     - [ ] Workplace submenu
-     - [ ] User submenu
-     - [ ] Downtime submenu
-     - [ ] Breakdown submenu
-     - [ ] Alarm submenu
- - [ ] Trends menu
-     - [ ] Factory submenu
-     - [ ] Group submenu
-     - [ ] Workplace submenu
-     - [ ] User submenu
-     - [ ] Downtime submenu
-     - [ ] Breakdown submenu
-     - [ ] Alarm submenu
-     - [ ] Top 10
-     - [ ] Bottom 10
- - [ ] Data menu
-     - [ ] Factory submenu
-     - [ ] Group submenu
-     - [ ] Workplace submenu
-     - [ ] User submenu
-     - [ ] Downtime submenu
-     - [ ] Breakdown submenu
-     - [ ] Alarm submenu
-     - [ ] Order submenu
-     - [ ] Product submenu
- - [ ] Settings menu
-     - [ ] Factory submenu
-     - [ ] Group submenu
-     - [ ] Workplace submenu
-     - [ ] User submenu
-     - [ ] Downtime submenu
-     - [ ] Breakdown submenu
-     - [ ] Alarm submenu      
-     - [ ] Device submenu      
+- [ ] Comparisons menu
+    - [ ] Factory submenu
+    - [ ] Group submenu
+    - [ ] Workplace submenu
+    - [ ] User submenu
+    - [ ] Downtime submenu
+    - [ ] Breakdown submenu
+    - [ ] Alarm submenu
+- [ ] Trends menu
+    - [ ] Factory submenu
+    - [ ] Group submenu
+    - [ ] Workplace submenu
+    - [ ] User submenu
+    - [ ] Downtime submenu
+    - [ ] Breakdown submenu
+    - [ ] Alarm submenu
+    - [ ] Top 10
+    - [ ] Bottom 10
+- [ ] Data menu
+    - [ ] Factory submenu
+    - [ ] Group submenu
+    - [ ] Workplace submenu
+    - [ ] User submenu
+    - [ ] Downtime submenu
+    - [ ] Breakdown submenu
+    - [ ] Alarm submenu
+    - [ ] Order submenu
+    - [ ] Product submenu
+- [ ] Settings menu
+    - [ ] Factory submenu
+    - [ ] Group submenu
+    - [ ] Workplace submenu
+    - [ ] User submenu
+    - [ ] Downtime submenu
+    - [ ] Breakdown submenu
+    - [ ] Alarm submenu
+    - [ ] Device submenu
 
- Sketch design
->![design](screenshots/design.png)
+Sketch design
+> ![design](screenshots/design.png)
 
 Actual screenshot
->![actual screenshot](screenshots/actual.png)
+> ![actual screenshot](screenshots/actual.png)
 
 © 2020 Petr Jahoda
