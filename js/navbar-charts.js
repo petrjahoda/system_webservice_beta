@@ -31,16 +31,18 @@ function displaySelectionChartsData(element, selectionData, input) {
         selectionData.value = selection
         selectionData.appendChild(document.createTextNode(selection));
         if (selection === sessionStorage.getItem(input + "Name")) {
-            console.log("match for " + selection)
             selectionData.selected = "selected"
         }
         content.appendChild(selectionData)
     }
 }
 
-function displayTimelineChart(chartsStart, chartsEnd, workplace) {
-    console.log("Displaying timeline chart for " + workplace)
-    d3.json("/get_timeline_chart", {
+function displayAllCharts(chartsStart, chartsEnd, workplace) {
+    console.log("Displaying charts for " + workplace)
+    document.getElementById("charts-select-workplace").disabled = true
+    document.getElementById("charts-standard-start").disabled = true
+    document.getElementById("charts-standard-end").disabled = true
+    d3.json("/get_chart_data", {
         method: "POST",
         body: JSON.stringify({
             chartsStart: new Date(chartsStart).toISOString(),
@@ -49,7 +51,7 @@ function displayTimelineChart(chartsStart, chartsEnd, workplace) {
             locale: sessionStorage.getItem("locale")
         })
     }).then((data) => {
-        drawTimelineChart(data);
+        drawCharts(data);
     }).catch((error) => {
         console.error("Error loading the data: " + error);
     });
@@ -59,35 +61,29 @@ function displayAnalogChart() {
     console.log("Displaying analog chart")
 }
 
-function displayDigitalChart() {
-    console.log("Displaying digital chart")
-}
 
 function displayProductionRateChart() {
     console.log("Displaying production rate chart")
 }
 
 
-function DrawTimeLine(productionDataset, downtimeDataset, powerOffDataset, data) {
-    // access data
+function DrawTimeLine(productionDataset, downtimeDataset, powerOffDataset, productionColor, downtimeColor, powerOffColor, productionName, downtimeName, powerOffName) {
     const xAccessor = d => d["Date"]
     const yAccessor = d => d["Value"]
-    //set dimensions
     let dimensions = {
         width: screen.width - 500,
-        height: 100,
+        height: 60,
         margin: {top: 0, right: 40, bottom: 20, left: 40,},
     }
-    //draw canvas
+
     const wrapper = d3.select("#navbar-charts-standard-2-timeline")
         .append("svg")
         .attr("viewBox", "0 0 " + dimensions.width + " " + dimensions.height)
     const bounds = wrapper.append("g")
 
-
-    //set scales
     const chartStartsAt = productionDataset[0]["Date"]
     const chartEndsAt = productionDataset[productionDataset.length - 1]["Date"]
+
     const xScale = d3.scaleTime()
         .domain([chartStartsAt, chartEndsAt])
         .range([dimensions.margin.left, dimensions.width - dimensions.margin.right])
@@ -95,8 +91,6 @@ function DrawTimeLine(productionDataset, downtimeDataset, powerOffDataset, data)
         .domain(d3.extent(productionDataset, yAccessor))
         .range([dimensions.height - dimensions.margin.bottom, 0])
 
-
-    // prepare data
     const productionAreaGenerator = d3.area()
         .x(d => xScale(xAccessor(d)))
         .y0(dimensions.height - dimensions.margin.bottom)
@@ -113,11 +107,6 @@ function DrawTimeLine(productionDataset, downtimeDataset, powerOffDataset, data)
         .y1(d => yScale(yAccessor(d)))
         .curve(d3.curveStepAfter);
 
-    // prepare tooltip
-    let div = d3.select("#navbar-charts-standard-2-timeline").append("div")
-        .attr("class", "tooltip")
-        .style("opacity", 0.7)
-        .style("visibility", "hidden");
     const timeScale = d3.scaleTime()
         .domain([new Date(chartStartsAt * 1000), new Date(chartEndsAt * 1000)])
         .range([dimensions.margin.left, dimensions.width - dimensions.margin.right])
@@ -125,17 +114,21 @@ function DrawTimeLine(productionDataset, downtimeDataset, powerOffDataset, data)
         .attr("transform", "translate(0," + (dimensions.height - dimensions.margin.bottom) + ")")
         .call(d3.axisBottom(timeScale))
 
-    // draw data with tooltip
+    let div = d3.select("#navbar-charts-standard-2-timeline").append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0.7)
+        .style("visibility", "hidden");
+
     bounds.append("path")
         .attr("d", productionAreaGenerator(productionDataset))
-        .attr("fill", data["ProductionColor"])
+        .attr("fill", productionColor)
         .on('mousemove', (event) => {
                 let coords = d3.pointer(event);
                 let timeEntered = timeScale.invert(coords[0]) / 1000
                 let now = new Date(timeEntered * 1000).toLocaleString()
                 let start = new Date(productionDataset.filter(i => i["Date"] < timeEntered).pop()["Date"] * 1000).toLocaleString()
                 let end = new Date(productionDataset.filter(i => i["Date"] > timeEntered)[0]["Date"] * 1000).toLocaleString()
-                div.html(now + "<br/>" + data["ProductionLocale"].toUpperCase() + "<br/>" + start + "<br/>" + end)
+                div.html(now + "<br/>" + productionName.toUpperCase() + "<br/>" + start + "<br/>" + end)
                     .style("visibility", "visible")
                     .style("top", (event.pageY) - 60 + "px")
                     .style("left", (event.pageX) - 60 + "px")
@@ -148,14 +141,14 @@ function DrawTimeLine(productionDataset, downtimeDataset, powerOffDataset, data)
         )
     bounds.append("path")
         .attr("d", downtimeAreaGenerator(downtimeDataset))
-        .attr("fill", data["DowntimeColor"])
+        .attr("fill", downtimeColor)
         .on('mousemove', (event) => {
                 let coords = d3.pointer(event);
                 let timeEntered = timeScale.invert(coords[0]) / 1000
                 let now = new Date(timeEntered * 1000).toLocaleString()
                 let start = new Date(downtimeDataset.filter(i => i["Date"] < timeEntered).pop()["Date"] * 1000).toLocaleString()
                 let end = new Date(downtimeDataset.filter(i => i["Date"] > timeEntered)[0]["Date"] * 1000).toLocaleString()
-                div.html(now + "<br/>" + data["DowntimeLocale"].toUpperCase() + "<br/>" + start + "<br/>" + end)
+                div.html(now + "<br/>" + downtimeName.toUpperCase() + "<br/>" + start + "<br/>" + end)
                     .style("visibility", "visible")
                     .style("top", (event.pageY) - 60 + "px")
                     .style("left", (event.pageX) - 60 + "px")
@@ -167,14 +160,14 @@ function DrawTimeLine(productionDataset, downtimeDataset, powerOffDataset, data)
         )
     bounds.append("path")
         .attr("d", powerOffAreaGenerator(powerOffDataset))
-        .attr("fill", data["PoweroffColor"])
+        .attr("fill", powerOffColor)
         .on('mousemove', (event) => {
                 let coords = d3.pointer(event);
                 let timeEntered = timeScale.invert(coords[0]) / 1000
                 let now = new Date(timeEntered * 1000).toLocaleString()
                 let start = new Date(powerOffDataset.filter(i => i["Date"] < timeEntered).pop()["Date"] * 1000).toLocaleString()
                 let end = new Date(powerOffDataset.filter(i => i["Date"] > timeEntered)[0]["Date"] * 1000).toLocaleString()
-                div.html(now + "<br/>" + data["PoweroffLocale"].toUpperCase() + "<br/>" + start + "<br/>" + end)
+                div.html(now + "<br/>" + powerOffName.toUpperCase() + "<br/>" + start + "<br/>" + end)
                     .style("visibility", "visible")
                     .style("top", (event.pageY) - 60 + "px")
                     .style("left", (event.pageX) - 60 + "px")
@@ -260,22 +253,65 @@ function updatePowerOffDataset(powerOffDataset, startBrush, endBrush) {
     return {powerOffDatasetUpdated, lastPowerOff};
 }
 
-function DrawTimeLinePanel(productionDataset, downtimeDataset, powerOffDataset, data) {
+function UpdateDigitalDataset(digitalDataset, startBrush, endBrush) {
+    let updatedDigitalDataset
+    updatedDigitalDataset = []
+    for (const dataset of digitalDataset) {let datasetUpdated
+        datasetUpdated = {Name: dataset["Name"], Data:[]}
+        let data
+        data = []
+        let startValue = true;
+        let lastDataValue = 0
+        for (const element of dataset["Data"]) {
+            if ((+(element["Date"] / 1000) <= +startBrush)) {
+                lastDataValue = element["Value"]
+            }
+            if ((+(element["Date"] / 1000) >= +startBrush) && (+(element["Date"] / 1000) <= +endBrush)) {
+                if (startValue) {
+                    if (element["Value"] === 0) {
+                        data.push({Date: startBrush * 1000, Value: 1})
+                    }
+                    if (element["Value"] === 1) {
+                        data.push({Date: startBrush * 1000, Value: 0})
+                    }
+                    startValue = false;
+                }
+                data.push(element)
+            }
+        }
+        if (data.length === 0) {
+            if (lastDataValue === 1) {
+                data.push({Date: startBrush * 1000, Value: 1})
+                data.push({Date: endBrush * 1000, Value: 0})
+            } else {
+                data.push({Date: startBrush * 1000, Value: 0})
+                data.push({Date: endBrush * 1000, Value: 1})
+            }
+        } else {
+            data.push({Date: endBrush * 1000, Value: 1})
+        }
+        datasetUpdated["Data"] = data
+        updatedDigitalDataset.push(datasetUpdated)
+    }
+    return updatedDigitalDataset
+}
+
+function DrawTimeLinePanel(productionDataset, downtimeDataset, powerOffDataset, productionColor, downtimeColor, powerOffColor, productionName, downtimeName, powerOffName, digitalDataset) {
     const xAccessor = d => d["Date"]
     const yAccessor = d => d["Value"]
     let dimensionsPanel = {
         width: screen.width - 500,
-        height: 20,
-        margin: {top: 0, right: 40, bottom: 0, left: 40,},
+        height: 40,
+        margin: {top: 0, right: 40, bottom: 20, left: 40,},
     }
-
-    const chartStartsAt = productionDataset[0]["Date"]
-    const chartEndsAt = productionDataset[productionDataset.length - 1]["Date"]
 
     const wrapperPanel = d3.select("#navbar-charts-standard-2-timeline-panel")
         .append("svg")
         .attr("viewBox", "0 0 " + dimensionsPanel.width + " " + dimensionsPanel.height)
     const boundsPanel = wrapperPanel.append("g")
+
+    const chartStartsAt = productionDataset[0]["Date"]
+    const chartEndsAt = productionDataset[productionDataset.length - 1]["Date"]
 
     const xScalePanel = d3.scaleTime()
         .domain([chartStartsAt, chartEndsAt])
@@ -300,15 +336,22 @@ function DrawTimeLinePanel(productionDataset, downtimeDataset, powerOffDataset, 
         .y1(d => yScalePanel(yAccessor(d)))
         .curve(d3.curveStepAfter);
 
+    const timeScalePanel = d3.scaleTime()
+        .domain([new Date(chartStartsAt * 1000), new Date(chartEndsAt * 1000)])
+        .range([dimensionsPanel.margin.left, dimensionsPanel.width - dimensionsPanel.margin.right])
+    boundsPanel.append("g")
+        .attr("transform", "translate(0," + (dimensionsPanel.height - dimensionsPanel.margin.bottom) + ")")
+        .call(d3.axisBottom(timeScalePanel))
+
     boundsPanel.append("path")
         .attr("d", productionAreaGeneratorPanel(productionDataset))
-        .attr("fill", data["ProductionColor"])
+        .attr("fill", productionColor)
     boundsPanel.append("path")
         .attr("d", downtimeAreaGeneratorPanel(downtimeDataset))
-        .attr("fill", data["DowntimeColor"])
+        .attr("fill", downtimeColor)
     boundsPanel.append("path")
         .attr("d", powerOffAreaGeneratorPanel(powerOffDataset))
-        .attr("fill", data["PoweroffColor"])
+        .attr("fill", powerOffColor)
 
 
     const brush = d3.brushX()
@@ -318,11 +361,8 @@ function DrawTimeLinePanel(productionDataset, downtimeDataset, powerOffDataset, 
     wrapperPanel.append("g")
         .call(brush)
 
+    //
     function CheckDatasetsForZeroValues(productionDatasetUpdated, downtimeDatasetUpdated, powerOffDatasetUpdated, lastDowntime, lastPowerOff, startBrush, endBrush, lastProduction) {
-        console.log("")
-        console.log(productionDatasetUpdated.length)
-        console.log(downtimeDatasetUpdated.length)
-        console.log(powerOffDatasetUpdated.length)
         if ((productionDatasetUpdated.length === 2) && (downtimeDatasetUpdated.length === 0) && (powerOffDatasetUpdated.length === 0)) {
             if (lastDowntime > lastPowerOff) {
                 downtimeDatasetUpdated = []
@@ -335,7 +375,7 @@ function DrawTimeLinePanel(productionDataset, downtimeDataset, powerOffDataset, 
                 powerOffDatasetUpdated.push({Date: endBrush * 1000, Value: 0})
                 downtimeDatasetUpdated = []
             }
-            if ((lastProduction > lastDowntime) && (lastProduction>lastPowerOff)) {
+            if ((lastProduction > lastDowntime) && (lastProduction > lastPowerOff)) {
                 powerOffDatasetUpdated = []
                 downtimeDatasetUpdated = []
             }
@@ -355,17 +395,170 @@ function DrawTimeLinePanel(productionDataset, downtimeDataset, powerOffDataset, 
                 const updatedDatasets = CheckDatasetsForZeroValues(productionDatasetUpdated, downtimeDatasetUpdated, powerOffDatasetUpdated, lastDowntime, lastPowerOff, startBrush, endBrush, lastProduction);
                 downtimeDatasetUpdated = updatedDatasets.downtimeDatasetUpdated;
                 powerOffDatasetUpdated = updatedDatasets.powerOffDatasetUpdated;
-                DrawTimeLine(productionDatasetUpdated, downtimeDatasetUpdated, powerOffDatasetUpdated, data);
+                DrawTimeLine(productionDatasetUpdated, downtimeDatasetUpdated, powerOffDatasetUpdated, productionColor, downtimeColor, powerOffColor, productionName, downtimeName, powerOffName);
+                document.getElementById("navbar-charts-standard-3-digital").innerHTML = ""
+                const updatedDigitalDataset = UpdateDigitalDataset(digitalDataset, startBrush, endBrush)
+                DrawDigital(updatedDigitalDataset)
             }
         }
 
     }
 }
 
-function drawTimelineChart(data) {
-    const productionDataset = data["ProductionData"]
-    const downtimeDataset = data["DowntimeData"]
-    const powerOffDataset = data["PowerOffData"]
-    DrawTimeLine(productionDataset, downtimeDataset, powerOffDataset, data);
-    DrawTimeLinePanel(productionDataset, downtimeDataset, powerOffDataset, data);
+function DrawDigital(digitalDataset) {
+    for (const dataset of digitalDataset) {
+        // access data
+        const xAccessor = d => d["Date"]
+        const yAccessor = d => d["Value"]
+        //set dimensions
+        let dimensions = {
+            width: screen.width - 500,
+            height: 60,
+            margin: {top: 0, right: 40, bottom: 20, left: 40,},
+        }
+
+        //draw canvas
+        const wrapper = d3.select("#navbar-charts-standard-3-digital")
+            .append("svg")
+            .attr("viewBox", "0 0 " + dimensions.width + " " + dimensions.height)
+        const bounds = wrapper.append("g")
+
+        //set scales
+        const chartStartsAt = dataset["Data"][0]["Date"]
+        const chartEndsAt = dataset["Data"][dataset["Data"].length - 1]["Date"]
+        const xScale = d3.scaleTime()
+            .domain([chartStartsAt, chartEndsAt])
+            .range([dimensions.margin.left, dimensions.width - dimensions.margin.right])
+        const yScale = d3.scaleLinear()
+            .domain(d3.extent(dataset["Data"], yAccessor))
+            .range([dimensions.height - dimensions.margin.bottom, 0])
+
+
+        // prepare data
+        const productionAreaGenerator = d3.area()
+            .x(d => xScale(xAccessor(d)))
+            .y0(dimensions.height - dimensions.margin.bottom)
+            .y1(d => yScale(yAccessor(d)))
+            .curve(d3.curveStepAfter);
+        const downtimeAreaGenerator = d3.area()
+            .x(d => xScale(xAccessor(d)))
+            .y0(dimensions.height - dimensions.margin.bottom)
+            .y1(d => yScale(yAccessor(d)))
+            .curve(d3.curveStepAfter);
+        const powerOffAreaGenerator = d3.area()
+            .x(d => xScale(xAccessor(d)))
+            .y0(dimensions.height - dimensions.margin.bottom)
+            .y1(d => yScale(yAccessor(d)))
+            .curve(d3.curveStepAfter);
+
+        // prepare tooltip
+        let div = d3.select("#navbar-charts-standard-3-digital").append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0.7)
+            .style("visibility", "hidden");
+        const timeScale = d3.scaleTime()
+            .domain([new Date(chartStartsAt * 1000), new Date(chartEndsAt * 1000)])
+            .range([dimensions.margin.left, dimensions.width - dimensions.margin.right])
+        bounds.append("g")
+            .attr("transform", "translate(0," + (dimensions.height - dimensions.margin.bottom) + ")")
+            .call(d3.axisBottom(timeScale))
+
+        // draw data with tooltip
+        bounds.append("path")
+            .attr("d", productionAreaGenerator(dataset["Data"]))
+            .attr("fill", 'steelblue')
+            .on('mousemove', (event) => {
+                    let coords = d3.pointer(event);
+                    let timeEntered = timeScale.invert(coords[0]) / 1000
+                    let now = new Date(timeEntered * 1000).toLocaleString()
+                    let start = new Date(dataset["Data"].filter(i => i["Date"] < timeEntered).pop()["Date"] * 1000).toLocaleString()
+                    let end = new Date(dataset["Data"].filter(i => i["Date"] > timeEntered)[0]["Date"] * 1000).toLocaleString()
+                    div.html(now + "<br/>" + dataset["Name"].toUpperCase() + "<br/>" + start + "<br/>" + end)
+                        .style("visibility", "visible")
+                        .style("top", (event.pageY) - 60 + "px")
+                        .style("left", (event.pageX) - 60 + "px")
+                }
+            )
+            .on('mouseout', () => {
+                    div.transition()
+                    div.style("visibility", "hidden")
+                }
+            )
+    }
+}
+
+function drawCharts(data) {
+    const productionDataset = data["TimelineDataList"][0]
+    const downtimeDataset = data["TimelineDataList"][1]
+    const powerOffDataset = data["TimelineDataList"][2]
+    const digitalDataset = data["DigitalDataList"]
+    const analogDataset = data["AnalogDataList"]
+    DrawTimeLine(productionDataset["Data"], downtimeDataset["Data"], powerOffDataset["Data"], productionDataset["Color"], downtimeDataset["Color"], powerOffDataset["Color"], productionDataset["Name"], downtimeDataset["Name"], powerOffDataset["Name"]);
+    DrawTimeLinePanel(productionDataset["Data"], downtimeDataset["Data"], powerOffDataset["Data"], productionDataset["Color"], downtimeDataset["Color"], powerOffDataset["Color"], productionDataset["Name"], downtimeDataset["Name"], powerOffDataset["Name"], digitalDataset);
+    DrawDigital(digitalDataset)
+    document.getElementById("charts-select-workplace").disabled = false
+    document.getElementById("charts-standard-start").disabled = false
+    document.getElementById("charts-standard-end").disabled = false
+    // DrawAnalog(analogDataset)
+}
+
+
+function DrawDigitalDataToChart(name, dataset) {
+    // access data
+    const xAccessor = d => d["Date"]
+    const yAccessor = d => d["Value"]
+    //set dimensions
+    let dimensions = {
+        width: screen.width - 500,
+        height: 100,
+        margin: {top: 0, right: 40, bottom: 20, left: 40,},
+    }
+    //draw canvas
+    const wrapper = d3.select("#navbar-charts-standard-3-digital")
+        .append("svg")
+        .attr("viewBox", "0 0 " + dimensions.width + " " + dimensions.height)
+    const bounds = wrapper.append("g")
+
+
+    //set scales
+    const chartStartsAt = dataset[0]["Date"]
+    const chartEndsAt = dataset[dataset.length - 1]["Date"]
+    const xScale = d3.scaleTime()
+        .domain([chartStartsAt, chartEndsAt])
+        .range([dimensions.margin.left, dimensions.width - dimensions.margin.right])
+    const yScale = d3.scaleLinear()
+        .domain(d3.extent(dataset, yAccessor))
+        .range([dimensions.height - dimensions.margin.bottom, 0])
+
+
+    // prepare data
+    const productionAreaGenerator = d3.area()
+        .x(d => xScale(xAccessor(d)))
+        .y0(dimensions.height - dimensions.margin.bottom)
+        .y1(d => yScale(yAccessor(d)))
+        .curve(d3.curveStepAfter);
+
+    // prepare tooltip
+    let div = d3.select("#navbar-charts-standard-3-digital").append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0.7)
+        .style("visibility", "hidden");
+    const timeScale = d3.scaleTime()
+        .domain([new Date(chartStartsAt * 1000), new Date(chartEndsAt * 1000)])
+        .range([dimensions.margin.left, dimensions.width - dimensions.margin.right])
+    bounds.append("g")
+        .attr("transform", "translate(0," + (dimensions.height - dimensions.margin.bottom) + ")")
+        .call(d3.axisBottom(timeScale))
+
+    // draw data with tooltip
+    bounds.append("path")
+        .attr("d", productionAreaGenerator(dataset))
+        .attr("fill", "grey")
+}
+
+function DrawDigitalChart(digitalDataList) {
+    for (const digitalData of digitalDataList) {
+        const dataset = digitalData["Data"]
+        DrawDigitalDataToChart(digitalData["Name"], dataset)
+    }
 }

@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-const version = "2021.1.1.27"
+const version = "2021.1.2.9"
 const serviceName = "System WebService"
 const serviceDescription = "System web interface"
 const config = "user=postgres password=Zps05..... dbname=version3 host=localhost port=5432 sslmode=disable"
@@ -70,7 +70,7 @@ func (p *program) run() {
 	router.POST("/get_live_selection", getLiveSelection)
 	router.POST("/get_company_name", getCompanyName)
 	router.POST("/get_workplace_data", getWorkplaceData)
-	router.POST("/get_timeline_chart", getTimelineChart)
+	router.POST("/get_chart_data", getChartData)
 
 	err := http.ListenAndServe(":80", router)
 	if err != nil {

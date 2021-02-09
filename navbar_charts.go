@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/julienschmidt/httprouter"
 	"github.com/petrjahoda/database"
 	"gorm.io/driver/postgres"
@@ -21,17 +20,17 @@ type ChartDataInput struct {
 	Locale      string
 }
 
-type TimelineChartData struct {
+type ChartDataOutput struct {
 	Result           string
-	ProductionData   []TimelineData
-	DowntimeData     []TimelineData
-	PowerOffData     []TimelineData
-	ProductionColor  string
-	DowntimeColor    string
-	PoweroffColor    string
-	ProductionLocale string
-	DowntimeLocale   string
-	PoweroffLocale   string
+	TimelineDataList []TimelineDataList
+	DigitalDataList  []DigitalDataList
+	AnalogDataList   []AnalogDataList
+}
+
+type TimelineDataList struct {
+	Name  string
+	Color string
+	Data  []TimelineData
 }
 
 type TimelineData struct {
@@ -39,66 +38,218 @@ type TimelineData struct {
 	Value int
 }
 
-func getTimelineChart(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
+type AnalogDataList struct {
+	Name string
+	Data []AnalogData
+}
+
+type AnalogData struct {
+	Date  int64
+	Value float32
+}
+
+type DigitalDataList struct {
+	Name string
+	Data []DigitalData
+}
+
+type DigitalData struct {
+	Date  int64
+	Value int
+}
+
+func processDownloadedDigitalRecords(listOfDigitalRecords [][]database.DevicePortDigitalRecord, db *gorm.DB) []DigitalDataList {
+	var responseDigitalData []DigitalDataList
+	for _, digitalRecords := range listOfDigitalRecords {
+		var portDigitalData DigitalDataList
+		var workplacePort database.WorkplacePort
+		db.Where("device_port_id = ?", digitalRecords[0].DevicePortID).Find(&workplacePort)
+		portDigitalData.Name = workplacePort.Name
+		for _, record := range digitalRecords {
+			portDigitalData.Data = append(portDigitalData.Data, DigitalData{
+				Date:  record.DateTime.Unix(),
+				Value: record.Data,
+			})
+		}
+		responseDigitalData = append(responseDigitalData, portDigitalData)
+	}
+	return responseDigitalData
+}
+
+func getDigitalRecords(listOfDigitalDevicePorts []database.DevicePort, db *gorm.DB, recordsFrom time.Time, recordsTo time.Time) [][]database.DevicePortDigitalRecord {
+	var listOfDigitalRecords [][]database.DevicePortDigitalRecord
+	for _, port := range listOfDigitalDevicePorts {
+		var digitalRecords []database.DevicePortDigitalRecord
+		db.Where("device_port_id = ?", port.ID).Where("date_time >= ?", recordsFrom).Where("date_time <= ?", recordsTo).Order("date_time").Find(&digitalRecords)
+		if len(digitalRecords) > 0 {
+			digitalRecords = prependFirstRecord(digitalRecords, recordsFrom, int(port.ID))
+			digitalRecords = appendLastRecord(recordsTo, digitalRecords, int(port.ID))
+			listOfDigitalRecords = append(listOfDigitalRecords, digitalRecords)
+		}
+	}
+	return listOfDigitalRecords
+}
+
+func appendLastRecord(recordsTo time.Time, digitalRecords []database.DevicePortDigitalRecord, portId int) []database.DevicePortDigitalRecord {
+	var lastRecord database.DevicePortDigitalRecord
+	lastRecord.DateTime = recordsTo
+	lastRecord.Data = 0
+	lastRecord.DevicePortID = portId
+	digitalRecords = append(digitalRecords, lastRecord)
+	return digitalRecords
+}
+
+func prependFirstRecord(digitalRecords []database.DevicePortDigitalRecord, recordsFrom time.Time, portId int) []database.DevicePortDigitalRecord {
+	var firstRecord database.DevicePortDigitalRecord
+	if digitalRecords[0].Data == 1 {
+		firstRecord.DateTime = recordsFrom
+		firstRecord.Data = 0
+		firstRecord.DevicePortID = portId
+	} else {
+		firstRecord.DateTime = recordsFrom
+		firstRecord.Data = 1
+		firstRecord.DevicePortID = portId
+	}
+	digitalRecords = append([]database.DevicePortDigitalRecord{firstRecord}, digitalRecords...)
+	return digitalRecords
+}
+
+func getListOdDeviceDigitalPorts(db *gorm.DB, data ChartDataInput) []database.DevicePort {
+	var workplace database.Workplace
+	db.Where("name = ?", data.Workplace).Find(&workplace)
+	var listOfWorkplacePorts []database.WorkplacePort
+	db.Where("workplace_id = ?", workplace.ID).Find(&listOfWorkplacePorts)
+	var listOfDigitalDevicePorts []database.DevicePort
+	for _, port := range listOfWorkplacePorts {
+		var digitalDevicePort database.DevicePort
+		db.Where("id = ?", port.DevicePortID).Where("device_port_type_id = 1").Find(&digitalDevicePort)
+		if digitalDevicePort.ID > 0 {
+			listOfDigitalDevicePorts = append(listOfDigitalDevicePorts, digitalDevicePort)
+		}
+	}
+	return listOfDigitalDevicePorts
+}
+
+func getChartData(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
 	logInfo("MAIN", "Parsing data")
 	var data ChartDataInput
 	err := json.NewDecoder(request.Body).Decode(&data)
 	if err != nil {
 		logError("MAIN", "Error parsing data: "+err.Error())
-		var responseData TimelineChartData
+		var responseData ChartDataOutput
 		responseData.Result = "nok: " + err.Error()
 		writer.Header().Set("Content-Type", "application/json")
 		_ = json.NewEncoder(writer).Encode(responseData)
-		logInfo("MAIN", "Parsing data ended")
+		logInfo("MAIN", "Processing chart data ended")
 		return
 	}
-	logInfo("MAIN", "Processing timeline charts data for "+data.Workplace+" from "+data.ChartsStart+" to "+data.ChartsEnd)
+	logInfo("MAIN", "Processing chart data for "+data.Workplace+" from "+data.ChartsStart+" to "+data.ChartsEnd)
 	recordsFrom, err := time.Parse("2006-01-02T15:04:05.000Z", data.ChartsStart)
 	if err != nil {
 		logError("MAIN", "Problem parsing date: "+data.ChartsStart)
-		var responseData TimelineChartData
+		var responseData ChartDataOutput
 		responseData.Result = "nok: " + err.Error()
 		writer.Header().Set("Content-Type", "application/json")
 		_ = json.NewEncoder(writer).Encode(responseData)
-		logInfo("MAIN", "Verifying user ended")
+		logInfo("MAIN", "Processing chart data ended")
 		return
 	}
 	recordsTo, err := time.Parse("2006-01-02T15:04:05.000Z", data.ChartsEnd)
 	if err != nil {
 		logError("MAIN", "Problem parsing date: "+data.ChartsEnd)
-		var responseData TimelineChartData
+		var responseData ChartDataOutput
 		responseData.Result = "nok: " + err.Error()
 		writer.Header().Set("Content-Type", "application/json")
 		_ = json.NewEncoder(writer).Encode(responseData)
-		logInfo("MAIN", "Verifying user ended")
+		logInfo("MAIN", "Processing chart data ended")
 		return
 	}
-	logInfo("MAIN", "Processing timeline charts data for "+data.Workplace+" from "+strconv.Itoa(int(recordsFrom.Unix()))+" to "+strconv.Itoa(int(recordsTo.Unix())))
+	logInfo("MAIN", "Processing chart data for "+data.Workplace+" from "+strconv.Itoa(int(recordsFrom.Unix()))+" to "+strconv.Itoa(int(recordsTo.Unix())))
 	db, err := gorm.Open(postgres.Open(config), &gorm.Config{})
 	sqlDB, _ := db.DB()
 	defer sqlDB.Close()
 	if err != nil {
 		logError("MAIN", "Cannot connect to database")
-		var responseData TimelineChartData
+		var responseData ChartDataOutput
 		responseData.Result = "nok: " + err.Error()
 		writer.Header().Set("Content-Type", "application/json")
 		_ = json.NewEncoder(writer).Encode(responseData)
-		logInfo("MAIN", "Verifying user ended")
+		logInfo("MAIN", "Processing chart data ended")
 		return
 	}
-	fmt.Println(recordsFrom)
-	fmt.Println(recordsTo)
-	productionData, downtimeData, powerOffData := downloadTimelineData(db, data, recordsFrom.In(time.UTC), recordsTo.In(time.UTC))
-	logInfo("MAIN", "There are "+strconv.Itoa(len(productionData))+" production records from "+strconv.Itoa(int(productionData[0].Date)))
-	logInfo("MAIN", "There are "+strconv.Itoa(len(downtimeData))+" downtime records "+strconv.Itoa(int(downtimeData[0].Date)))
-	logInfo("MAIN", "There are "+strconv.Itoa(len(powerOffData))+" poweroff records "+strconv.Itoa(int(powerOffData[0].Date)))
-	var productionState database.State
-	var downtimeState database.State
-	var poweroffState database.State
-	db.Where("name = ?", "Production").Find(&productionState)
-	db.Where("name = ?", "Downtime").Find(&downtimeState)
-	db.Where("name = ?", "Poweroff").Find(&poweroffState)
-	var outputData TimelineChartData
+
+	productionData, downtimeData, powerOffData := getTimelineData(db, data, recordsFrom.In(time.UTC), recordsTo.In(time.UTC))
+	productionState, downtimeState, poweroffState := getStates(db)
+	productionLocale, downtimeLocale, poweroffLocale := getLocales(data, db)
+	timelineDataList := processAllStates(productionData, productionState, productionLocale, downtimeData, downtimeState, downtimeLocale, powerOffData, poweroffState, poweroffLocale)
+
+	listOfDigitalDevicePorts := getListOdDeviceDigitalPorts(db, data)
+	listOfDigitalRecords := getDigitalRecords(listOfDigitalDevicePorts, db, recordsFrom, recordsTo)
+	digitalDataList := processDownloadedDigitalRecords(listOfDigitalRecords, db)
+
+	var outputData ChartDataOutput
+	outputData.Result = "ok"
+	outputData.TimelineDataList = timelineDataList
+	outputData.DigitalDataList = digitalDataList
+	writer.Header().Set("Content-Type", "application/json")
+	_ = json.NewEncoder(writer).Encode(outputData)
+	logInfo("MAIN", "Processing chart data ended")
+}
+
+func processAllStates(productionData []TimelineData, productionState database.State, productionLocale database.Locale, downtimeData []TimelineData, downtimeState database.State, downtimeLocale database.Locale, powerOffData []TimelineData, poweroffState database.State, poweroffLocale database.Locale) []TimelineDataList {
+	var timelineDataList []TimelineDataList
+	productionDataList := processProductionStates(productionData, productionState, productionLocale)
+	timelineDataList = append(timelineDataList, productionDataList)
+	downtimeDataList := processDowntimeStates(downtimeData, downtimeState, downtimeLocale)
+	timelineDataList = append(timelineDataList, downtimeDataList)
+	powerOffDataList := processPowerOffStates(powerOffData, poweroffState, poweroffLocale)
+	timelineDataList = append(timelineDataList, powerOffDataList)
+	return timelineDataList
+}
+
+func processPowerOffStates(powerOffData []TimelineData, poweroffState database.State, poweroffLocale database.Locale) TimelineDataList {
+	var powerOffDataList TimelineDataList
+	powerOffDataList.Data = powerOffData
+	powerOffDataList.Color = poweroffState.Color
+	value := reflect.ValueOf(poweroffLocale)
+	for i := 0; i < value.NumField(); i++ {
+		temp := value.Field(i).String()
+		if len(temp) > 0 && !strings.Contains(temp, "{") {
+			powerOffDataList.Name = temp
+		}
+	}
+	return powerOffDataList
+}
+
+func processDowntimeStates(downtimeData []TimelineData, downtimeState database.State, downtimeLocale database.Locale) TimelineDataList {
+	var downtimeDataList TimelineDataList
+	downtimeDataList.Data = downtimeData
+	downtimeDataList.Color = downtimeState.Color
+	value := reflect.ValueOf(downtimeLocale)
+	for i := 0; i < value.NumField(); i++ {
+		temp := value.Field(i).String()
+		if len(temp) > 0 && !strings.Contains(temp, "{") {
+			downtimeDataList.Name = temp
+		}
+	}
+	return downtimeDataList
+}
+
+func processProductionStates(productionData []TimelineData, productionState database.State, productionLocale database.Locale) TimelineDataList {
+	var productionDataList TimelineDataList
+	productionDataList.Data = productionData
+	productionDataList.Color = productionState.Color
+	value := reflect.ValueOf(productionLocale)
+	for i := 0; i < value.NumField(); i++ {
+		temp := value.Field(i).String()
+		if len(temp) > 0 && !strings.Contains(temp, "{") {
+			productionDataList.Name = temp
+		}
+	}
+	return productionDataList
+}
+
+func getLocales(data ChartDataInput, db *gorm.DB) (database.Locale, database.Locale, database.Locale) {
 	logInfo("MAIN", "Downloading locales for "+data.Locale)
 	var productionLocale database.Locale
 	var downtimeLocale database.Locale
@@ -106,41 +257,20 @@ func getTimelineChart(writer http.ResponseWriter, request *http.Request, params 
 	db.Where("name = 'production'").Select(data.Locale).Find(&productionLocale)
 	db.Where("name = 'downtime'").Select(data.Locale).Find(&downtimeLocale)
 	db.Where("name = 'poweroff'").Select(data.Locale).Find(&poweroffLocale)
-	value := reflect.ValueOf(productionLocale)
-	for i := 0; i < value.NumField(); i++ {
-		temp := value.Field(i).String()
-		if len(temp) > 0 && !strings.Contains(temp, "{") {
-			outputData.ProductionLocale = temp
-		}
-	}
-	value = reflect.ValueOf(downtimeLocale)
-	for i := 0; i < value.NumField(); i++ {
-		temp := value.Field(i).String()
-		if len(temp) > 0 && !strings.Contains(temp, "{") {
-			outputData.DowntimeLocale = temp
-		}
-	}
-	value = reflect.ValueOf(poweroffLocale)
-	for i := 0; i < value.NumField(); i++ {
-		temp := value.Field(i).String()
-		if len(temp) > 0 && !strings.Contains(temp, "{") {
-			outputData.PoweroffLocale = temp
-		}
-	}
-	outputData.Result = "ok"
-	outputData.ProductionData = productionData
-	outputData.DowntimeData = downtimeData
-	outputData.PowerOffData = powerOffData
-	outputData.ProductionColor = productionState.Color
-	outputData.DowntimeColor = downtimeState.Color
-	outputData.PoweroffColor = poweroffState.Color
-	writer.Header().Set("Content-Type", "application/json")
-	_ = json.NewEncoder(writer).Encode(outputData)
-	logInfo("MAIN", "Parsing data ended")
-	return
+	return productionLocale, downtimeLocale, poweroffLocale
 }
 
-func downloadTimelineData(db *gorm.DB, data ChartDataInput, recordsFrom time.Time, recordsTo time.Time) ([]TimelineData, []TimelineData, []TimelineData) {
+func getStates(db *gorm.DB) (database.State, database.State, database.State) {
+	var productionState database.State
+	var downtimeState database.State
+	var poweroffState database.State
+	db.Where("name = ?", "Production").Find(&productionState)
+	db.Where("name = ?", "Downtime").Find(&downtimeState)
+	db.Where("name = ?", "Poweroff").Find(&poweroffState)
+	return productionState, downtimeState, poweroffState
+}
+
+func getTimelineData(db *gorm.DB, data ChartDataInput, recordsFrom time.Time, recordsTo time.Time) ([]TimelineData, []TimelineData, []TimelineData) {
 	var workplace database.Workplace
 	db.Where("Name = ?", data.Workplace).Find(&workplace)
 	var lastStateRecord database.StateRecord

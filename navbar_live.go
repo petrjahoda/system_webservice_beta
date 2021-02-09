@@ -277,7 +277,9 @@ func getLiveProductivityData(writer http.ResponseWriter, request *http.Request, 
 	} else {
 		outputData.ThisWeek = strconv.FormatFloat(thisWeekTotal/float64(len(workplaceStateRecords))/(secondInOneDay*float64(thisWeekDays))*100, 'f', 1, 64)
 	}
-
+	if outputData.Yesterday == "" {
+		outputData.Yesterday = "0"
+	}
 	writer.Header().Set("Content-Type", "application/json")
 	_ = json.NewEncoder(writer).Encode(outputData)
 	logInfo("MAIN", "Parsing data ended in "+time.Since(start).String())
